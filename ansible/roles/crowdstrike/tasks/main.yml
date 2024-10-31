@@ -1,0 +1,36 @@
+---
+- name: install package falcon-sensor (i.e. CrowdStrike Falcon)
+  ansible.builtin.apt:
+    name: falcon-sensor
+    state: present
+    update_cache: yes
+
+- name: get current CID
+  ansible.builtin.command: /opt/CrowdStrike/falconctl -g --cid
+  register: falconctl_cid_result
+  failed_when: no
+  changed_when: no
+
+- name: get current tags
+  ansible.builtin.command: /opt/CrowdStrike/falconctl -g --tags
+  register: falconctl_tags_result
+  changed_when: no
+
+- name: set CID
+  ansible.builtin.command: "/opt/CrowdStrike/falconctl -s --cid={{ lookup('pipe', 'wallet -s wallet.stanford.edu get file password/its-rc/carina-nero/crowdstrike-falcon-cid') }}"
+  when: '"CID is not set." in falconctl_cid_result.stderr'
+  notify:
+    - restart falcon-sensor
+
+- name: set tags
+  ansible.builtin.command: /opt/CrowdStrike/falconctl -s --tags=SRCC
+  when: '"Sensor grouping tags are not set." in falconctl_tags_result.stdout'
+  notify:
+    - restart falcon-sensor
+
+- name: ensure falcon-sensor is running and enabled
+  ansible.builtin.systemd_service:
+    name: falcon-sensor
+    state: started
+    enabled: yes
+    daemon_reload: yes
