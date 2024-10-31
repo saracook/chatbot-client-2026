@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -e
+
+SSHCFG="$( mktemp )"
+
+vagrant ssh-config > $SSHCFG
+
+cat <<EOF
+{
+  "all": {
+    "children": [
+      "ungrouped"
+    ]
+  },
+  "ungrouped": {
+    "hosts": [
+      "default"
+    ],
+    "vars": {}
+  },
+  "_meta": {
+    "hostvars": {
+      "default": {
+        "ansible_host": "default",
+        "ansible_ssh_extra_args": "-F $SSHCFG"
+      }
+    }
+  }
+}
+EOF

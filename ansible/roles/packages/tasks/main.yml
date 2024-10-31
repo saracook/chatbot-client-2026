@@ -1,0 +1,28 @@
+---
+- name: install /etc/apt/sources.list.d/stanford.list
+  ansible.builtin.copy:
+    content: |
+      deb http://debian.stanford.edu/debian-stanford bookworm main contrib non-free
+      deb http://debian.stanford.edu/debian-local bookworm main contrib non-free
+    dest: /etc/apt/sources.list.d/stanford.list 
+
+- name: install stanford apt signing key
+  ansible.builtin.copy:
+    src: etc/apt/trusted.gpg.d/stanford-keyring.asc
+    dest: /etc/apt/trusted.gpg.d/stanford-keyring.asc
+
+- name: install package stanford-keyring
+  ansible.builtin.apt:
+    name: stanford-keyring
+    state: present
+    update_cache: yes
+
+- name: install packages
+  ansible.builtin.apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+
+- name: disable unattended upgrades
+  ansible.builtin.command:
+    cmd: sed -i 's~"1"~"0"~' /etc/apt/apt.conf.d/20auto-upgrades

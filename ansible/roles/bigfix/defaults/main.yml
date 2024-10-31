@@ -1,0 +1,4 @@
+actionsite_url: https://web.stanford.edu/dept/its/support/bigfix/masthead/bfc/masthead.afxm
+actionsite_sha256: c1702e12a803e85a96b05c862f60bb2c3ca521fdd797048f8a08e321c31291e3
+agent_deb_url: https://software.bigfix.com/download/bes/110/BESAgent-11.0.3.82-ubuntu18.amd64.deb
+agent_deb_sha256: 608ab8d72abbc4679fc99f347eaab03b4f8e4d1643a18e36d408050001b28dc0
