@@ -18,12 +18,17 @@
     dest: /etc/default/cpufrequtils
 
 - name: detect current governor
-  ansible.builtin.command:
-    cmd: cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+  ansible.builtin.shell:
+    cmd: '[ "$( cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor | sort -u )" = "performance" ]'
   register: governor_result
   changed_when: false
+  failed_when: false
 
-- name: set governor to performance on all cpus
-  ansible.builtin.shell:
-    cmd: echo "performance" | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
-  when: governor_result.stdout != 'performance'
+# echo "performance" | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+- name: restart cpufrequtils service
+  ansible.builtin.systemd_service:
+    name: cpufrequtils.service
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  when: governor_result.rc != 0
