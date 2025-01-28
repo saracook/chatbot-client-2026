@@ -1,0 +1,5 @@
+- hosts: storage
+  become: yes
+  roles:
+    - role: cpufreq
+      tags: cpufreq
