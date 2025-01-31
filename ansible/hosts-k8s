@@ -1,16 +1,6 @@
-[gpu]
-kn-b12-gpu-1
-kn-b12-gpu-2
-kn-b12-gpu-3
-kn-b12-gpu-4
-kn-b12-gpu3-nigam
-kn-b13-gpu-1
-kn-b13-gpu-2
-kn-b13-gpu-boussard
-kn-b13-gpu-nigam
-kn-b13-gpu-ogevaert
-kn-b14-gpu-mrivas
-kn-b14-gpu2-nigam
+[k8s:children]
+cpu
+gpu
 
 [cpu]
 kn-b13-studdert
@@ -26,3 +16,17 @@ kn-b16-5-3
 kn-b16-7-3
 kn-b16-9-1
 kn-b16-9-2
+
+[gpu]
+kn-b12-gpu-1
+kn-b12-gpu-2
+kn-b12-gpu-3
+kn-b12-gpu-4
+kn-b12-gpu3-nigam
+kn-b13-gpu-1
+kn-b13-gpu-2
+kn-b13-gpu-boussard
+kn-b13-gpu-nigam
+kn-b13-gpu-ogevaert
+kn-b14-gpu-mrivas
+kn-b14-gpu2-nigam
