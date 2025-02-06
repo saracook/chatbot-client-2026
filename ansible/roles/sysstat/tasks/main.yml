@@ -1,0 +1,20 @@
+- name: install package sysstat
+  ansible.builtin.apt:
+    name: sysstat
+    state: present
+    update_cache: yes
+
+- name: install /etc/default/sysstat
+  ansible.builtin.copy:
+    content: |
+      ENABLED="true"
+    dest: /etc/default/sysstat
+  register: sysstat
+
+- name: restart sysstat service
+  ansible.builtin.systemd_service:
+    name: sysstat.service
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  when: sysstat is changed
