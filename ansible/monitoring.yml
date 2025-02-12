@@ -1,0 +1,7 @@
+- name: Run Monitoring roles
+  hosts: all
+  become: yes
+
+  roles:
+    - role: prometheus_node_exporter
+    - role: prometheus_juju_exporter
