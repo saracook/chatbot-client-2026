@@ -1,0 +1,60 @@
+---
+- name: Remove Node Exporter and Juju Exporter
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Stop Node Exporter service
+      ansible.builtin.service:
+        name: node_exporter
+        state: stopped
+      tags:
+        - remove_exporters
+
+    - name: Stop Juju Exporter service
+      ansible.builtin.service:
+        name: prometheus-juju-exporter
+        state: stopped
+      tags:
+        - remove_exporters
+
+    - name: Remove Node Exporter systemd service file
+      ansible.builtin.file:
+        path: /etc/systemd/system/node_exporter.service
+        state: absent
+      tags:
+        - remove_exporters
+
+    - name: Remove Juju Exporter systemd service file
+      ansible.builtin.file:
+        path: /etc/systemd/system/prometheus-juju-exporter.service
+        state: absent
+      tags:
+        - remove_exporters
+
+    - name: Remove Node Exporter executable files and directory
+      ansible.builtin.file:
+        path: /usr/local/bin/node_exporter
+        state: absent
+      tags:
+        - remove_exporters
+
+    - name: Remove Juju Exporter snap
+      snap:
+        name: prometheus-juju-exporter
+        state: absent
+      tags:
+        - remove_exporters
+
+    - name: Delete nodeusr account
+      ansible.builtin.user:
+        name: nodeusr
+        state: absent
+      tags:
+        - remove_exporters
+
+    - name: Reload systemd daemon
+      ansible.builtin.systemd:
+        daemon_reload: yes
+      tags:
+        - remove_exporters
