@@ -1,37 +1,30 @@
-- name: Install Juju Exporter
-  hosts: juju
-  become: yes
 
-  tasks:
-    - name: Install Prometheus Juju Exporter snap
-      snap:
-        name: prometheus-juju-exporter
-        channel: "{{snap_channel}}"
-        state: latest
+- name: Install Prometheus Juju Exporter snap
+  snap:
+    name: prometheus-juju-exporter
+    channel: "{{snap_channel}}"
+    state: latest
 
-    - name: Create systemd service file
-      copy:
-        dest: /etc/systemd/system/prometheus-juju-exporter.service
-        content: |
-          [Unit]
-          Description=Prometheus Juju Exporter
-          After=network.target
+- name: Create systemd service file
+  copy:
+    dest: /etc/systemd/system/prometheus-juju-exporter.service
+    content: |
+      [Unit]
+      Description=Prometheus Juju Exporter
+      After=network.target
 
-          [Service]
-          ExecStart=/snap/bin/prometheus-juju-exporter
-          Restart=always
-          User=nobody
-          Group=nogroup
+      [Service]
+      ExecStart=/snap/bin/prometheus-juju-exporter
+      Restart=always
+      User=nobody
+      Group=nogroup
 
-          [Install]
-          WantedBy=multi-user.target
+      [Install]
+      WantedBy=multi-user.target
 
-    - name: Reload systemd
-      systemd:
-        daemon_reload: yes
-
-    - name: Enable and start Prometheus Juju Exporter service
-      systemd:
-        name: prometheus-juju-exporter
-        enabled: yes
-        state: started
+- name: Enable and start Prometheus Juju Exporter service
+  ansible.builtin.systemd_service:
+    name: prometheus-juju-exporter
+    daemon_reload: true
+    state: started
+    enabled: true

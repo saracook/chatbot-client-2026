@@ -7,9 +7,9 @@
 #     name: python3
 #     state: present
 
-- name: Create nodeusr account to run node_exporter
+- name: Create nodeexporter account to run node_exporter
   ansible.builtin.user:
-    name: nodeusr
+    name: nodeexporter
     shell: /sbin/nologin
     home: /var/lib/node_exporter
     uid: "{{ prometheus_exporter_uid }}"
@@ -20,8 +20,8 @@
   unarchive:
     src: "{{node_exporter_link}}/v{{ node_exporter_version  }}/node_exporter-{{ node_exporter_version  }}.linux-amd64.tar.gz"
     dest: "{{ node_exporter_executable_path }}"
-    owner: nodeusr
-    group: nodeusr
+    owner: nodeexporter
+    group: nodeexporter
     remote_src: yes
     validate_certs: no
   tags:
@@ -36,11 +36,11 @@
   tags:
     - prometheus_node_exporter
 
-- name: Enable the systemd service file manually
-  ansible.builtin.file:
-    state: link
-    src: /etc/systemd/system/node_exporter.service
-    dest: /etc/systemd/system/multi-user.target.wants/node_exporter.service
+- name: Enable the systemd service file
+  ansible.builtin.systemd_service:
+    name: node_exporter
+    state: started
+    enabled: true
   tags:
     - prometheus_node_exporter
 
@@ -53,9 +53,10 @@
     - prometheus_node_exporter
       
 - name: Start the systemd service file if this is not a chroot
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: node_exporter
     state: started
+    enabled: true
   when: not ansible_is_chroot
   tags:
     - prometheus_node_exporter
@@ -63,7 +64,7 @@
 - name: Verify that smartmontools is installed
   ansible.builtin.package:
     name: smartmontools
-    state: latest
+    state: present
   tags:
     - smartmontools
 
