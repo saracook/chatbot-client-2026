@@ -60,8 +60,5 @@ hc-b13-3
 hc-b13-2
 hc-b13-1
 
-[juju]
-infra-b14-37
-
 [prometheus]
 192.168.1.58
