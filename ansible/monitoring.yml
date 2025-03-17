@@ -3,20 +3,22 @@
   become: yes
   roles:
     - role: prometheus_node_exporter
+    
 - name: Run juju exoporter on all infra
   hosts: juju
   become: yes
   roles:
-    - role: prometheus_juju_exporter  
+    - role: prometheus_juju_exporter 
+    
 - name: Copy down rules tmp to copy to prometheus vm
   hosts: juju
   tasks:
     - name: Install Exporter Rules
-      ansible.builtin.get_url:
+      ansible.builtin.copy:
         src: ./roles/prometheus_node_exporter/files/alert-dst.rules
         dest: /tmp/alert-dst.rules
+        
     - name: Install Ceph Rules
-      ansible.builtin.get_url:
+      ansible.builtin.copy:
         src: ./roles/prometheus_node_exporter/files/ceph.rules
         dest: /tmp/ceph.rules
-        
