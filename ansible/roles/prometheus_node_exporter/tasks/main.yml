@@ -1,12 +1,4 @@
-# Extracts node_exporter from a shared tarball and installs onto the specified inventory.
-# Creates a systemd file for starting, without actually using systemd. Design
-# decision was made to not use systemd for use with images
 ---
-# - name: install python3
-#   yum:
-#     name: python3
-#     state: present
-
 - name: Create nodeexporter account to run node_exporter
   ansible.builtin.user:
     name: nodeexporter
