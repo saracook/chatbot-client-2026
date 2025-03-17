@@ -1,4 +1,3 @@
-
 - name: Install Prometheus Juju Exporter snap
   snap:
     name: prometheus-juju-exporter
@@ -28,4 +27,3 @@
     daemon_reload: true
     state: started
     enabled: true
-    
