@@ -1,0 +1,406 @@
+groups:
+  - name: Exporter Alerts
+    rules:
+      - alert: Node down
+        expr: up{job="node"} == 0
+        for: 3m
+        labels:
+          severity: critical
+        annotations:
+          title: Node {{ $labels.instance }} is down
+          description: Failed to scrape {{ $labels.job }} on {{ $labels.instance }} for more than 3 minutes. Node could be down.
+          priority: P2
+
+      - alert: PrometheusTargetScrapingSlow
+        expr: prometheus_target_interval_length_seconds{quantile="0.9"} > 70
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Prometheus target scraping slow (instance {{ $labels.instance }})"
+          description: "Prometheus is scraping exporters slowly\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+          priority: P4
+
+      - alert: PrometheusNotConnectedToAlertmanager
+        expr: prometheus_notifications_alertmanagers_discovered < 1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Prometheus not connected to alertmanager (instance {{ $labels.instance }})"
+          description: "Prometheus cannot connect the alertmanager\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+          priority: P1
+
+  - name: Awesome Alert Rules
+    rules:
+      - alert: HostOutOfMemory
+        expr: node_memory_MemAvailable_bytes{job!="node_compute"} / node_memory_MemTotal_bytes{job!="node_compute"} * 100 < 10
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host out of memory (instance {{ $labels.instance }})
+          description: "Node memory is filling up (< 10% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P2
+
+      - alert: HostUnusualDiskReadRate
+        expr: sum by (instance) (rate(node_disk_read_bytes_total{job!="node_compute"}[2m])) / 1024 / 1024 > 50
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host unusual disk read rate (instance {{ $labels.instance }})
+          description: "Disk is probably reading too much data (> 50 MB/s)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P4
+
+      - alert: HostUnusualDiskWriteRate
+        expr: sum by (instance) (rate(node_disk_written_bytes_total{job!="node_compute"}[2m])) / 1024 / 1024 > 50
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host unusual disk write rate (instance {{ $labels.instance }})
+          description: "Disk is probably writing too much data (> 50 MB/s)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P4
+
+      # Please add ignored mountpoints in node_exporter parameters like
+      # "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|run)($|/)".
+      # Same rule using "node_filesystem_free_bytes" will fire when disk fills for non-root users.
+      - alert: HostOutOfDiskSpaceStorage
+        expr: (node_filesystem_avail_bytes{job="node_storage"} * 100) / node_filesystem_size_bytes{job="node_storage"} < 20 and ON (instance, device, mountpoint) node_filesystem_readonly{job="node_storage"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: Host out of disk space (instance {{ $labels.instance }})
+          description: "Disk is almost full (< 10% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P1
+      - alert: HostOutOfDiskSpace
+        expr: (node_filesystem_avail_bytes{job!="node_storage"} * 100) / node_filesystem_size_bytes{job!="node_storage"} < 10 and ON (instance, device, mountpoint) node_filesystem_readonly{job!="node_storage"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host out of disk space (instance {{ $labels.instance }})
+          description: "Disk is almost full (< 10% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P2
+
+      # Please add ignored mountpoints in node_exporter parameters like
+      # "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|run)($|/)".
+      # Same rule using "node_filesystem_free_bytes" will fire when disk fills for non-root users.
+      - alert: HostDiskWillFillIn24Hours
+        expr: (node_filesystem_avail_bytes{job!="node_storage"} * 100) / node_filesystem_size_bytes{job!="node_storage"} < 10 and ON (instance, device, mountpoint) predict_linear(node_filesystem_avail_bytes{fstype!~"tmpfs", job!="node_storage"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly{job!="node_storage"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host disk will fill in 24 hours (instance {{ $labels.instance }})
+          description: "Filesystem is predicted to run out of space within the next 24 hours at current write rate\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P3
+
+      - alert: HostDiskWillFillIn24HoursStorage
+        expr: (node_filesystem_avail_bytes{job="node_storage"} * 100) / node_filesystem_size_bytes{job="node_storage"} < 10 and ON (instance, device, mountpoint) predict_linear(node_filesystem_avail_bytes{fstype!~"tmpfs", job="node_storage"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly{job="node_storage"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: Host disk will fill in 24 hours (instance {{ $labels.instance }})
+          description: "Filesystem is predicted to run out of space within the next 24 hours at current write rate\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P2
+
+      - alert: HostOutOfInodes
+        expr: node_filesystem_files_free{job!="node_storage"} / node_filesystem_files{job!="node_storage"} * 100 < 10 and ON (instance, device, mountpoint) node_filesystem_readonly{job!="node_storage"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host out of inodes (instance {{ $labels.instance }})
+          description: "Disk is almost running out of available inodes (< 10% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P2
+
+      - alert: HostOutOfInodesStorage
+        expr: node_filesystem_files_free{job="node_storage"} / node_filesystem_files{job="node_storage"} * 100 < 10 and ON (instance, device, mountpoint) node_filesystem_readonly{job="node_storage"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: Host out of inodes (instance {{ $labels.instance }})
+          description: "Disk is almost running out of available inodes (< 20% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P1
+
+      - alert: HostInodesWillFillIn24Hours
+        expr: node_filesystem_files_free / node_filesystem_files * 100 < 10 and predict_linear(node_filesystem_files_free[1h], 24 * 3600) < 0.0001 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint="/rootfs"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host inodes will fill in 24 hours (instance {{ $labels.instance }})
+          description: "Filesystem is predicted to run out of inodes within the next 24 hours at current write rate\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P2
+
+      - alert: HostInodesWillFillIn24HoursCompute
+        expr: node_filesystem_files_free{job="node_compute"} / node_filesystem_files{job="node_compute"} * 100 < 10 and predict_linear(node_filesystem_files_free{job="node_compute"}[1h], 24 * 3600) < 0.0001 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint="/rootfs", job="node_compute"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host inodes will fill in 24 hours (instance {{ $labels.instance }})
+          description: "Filesystem is predicted to run out of inodes within the next 24 hours at current write rate\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P3
+
+      - alert: HostUnusualDiskReadLatency
+        expr: rate(node_disk_read_time_seconds_total{job!="node_compute"}[1m]) / rate(node_disk_reads_completed_total{job!="node_compute"}[1m]) > 0.1 and rate(node_disk_reads_completed_total{job!="node_compute"}[1m]) > 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host unusual disk read latency (instance {{ $labels.instance }})
+          description: "Disk latency is growing (read operations > 100ms)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P3
+
+      - alert: HostUnusualDiskWriteLatency
+        expr: rate(node_disk_write_time_seconds_total{job!="node_compute"}[1m]) / rate(node_disk_writes_completed_total{job!="node_compute"}[1m]) > 0.1 and rate(node_disk_writes_completed_total{job!="node_compute"}[1m]) > 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host unusual disk write latency (instance {{ $labels.instance }})
+          description: "Disk latency is growing (write operations > 100ms)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P3
+
+      - alert: HostHighCpuLoad
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle", job!="node_compute"}[2m])) * 100) > 80
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host high CPU load (instance {{ $labels.instance }})
+          description: "CPU load is > 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P3
+
+      # 1000 context switches is an arbitrary number.
+      # Alert threshold depends on nature of application.
+      # Please read: https://github.com/samber/awesome-prometheus-alerts/issues/58
+      - alert: HostContextSwitching
+        expr: (rate(node_context_switches_total[5m])) / (count without(cpu, mode) (node_cpu_seconds_total{mode="idle"})) > 1000
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host context switching (instance {{ $labels.instance }})
+          description: "Context switching is growing on node (> 1000 / s)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P5
+
+      - alert: HostSwapIsFillingUp
+        expr: (1 - (node_memory_SwapFree_bytes{job!="node_compute"} / node_memory_SwapTotal_bytes{job!="node_compute"})) * 100 > 80
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host swap is filling up (instance {{ $labels.instance }})
+          description: "Swap is filling up (>80%)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P3
+
+      - alert: HostSystemdServiceCrashed
+        expr: node_systemd_unit_state{state="failed"} == 1
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host systemd service crashed (instance {{ $labels.instance }})
+          description: "systemd service crashed\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P3
+
+      - alert: HostPhysicalComponentTooHot
+        expr: node_hwmon_temp_celsius > 89
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host physical component too hot (instance {{ $labels.instance }})
+          description: "Physical hardware component too hot\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P3
+
+      - alert: HostNodeOvertemperatureAlarm
+        expr: node_hwmon_temp_crit_alarm_celsius == 1
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: Host node overtemperature alarm (instance {{ $labels.instance }})
+          description: "Physical node temperature alarm triggered\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P2
+
+      - alert: HostRaidArrayGotInactive
+        expr: node_md_state{state="inactive", job!="node_storage"} > 0
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: Host RAID array got inactive (instance {{ $labels.instance }})
+          description: "RAID array {{ $labels.device }} is in degraded state due to one or more disks failures. Number of spare drives is insufficient to fix issue automatically.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P3
+
+      - alert: HostRaidArrayGotInactiveStorage
+        expr: node_md_state{state="inactive", job="node_storage"} > 0
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: Host RAID array got inactive (instance {{ $labels.instance }})
+          description: "RAID array {{ $labels.device }} is in degraded state due to one or more disks failures. Number of spare drives is insufficient to fix issue automatically.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P2
+
+      - alert: HostRaidDiskFailure
+        expr: node_md_disks{state="failed", job!="node_storage"} > 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host RAID disk failure (instance {{ $labels.instance }})
+          description: "At least one device in RAID array on {{ $labels.instance }} failed. Array {{ $labels.md_device }} needs attention and possibly a disk swap\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P2
+
+      - alert: HostRaidDiskFailureStorage
+        expr: node_md_disks{state="failed", job="node_storage"} > 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: Host RAID disk failure (instance {{ $labels.instance }})
+          description: "At least one device in RAID array on {{ $labels.instance }} failed. Array {{ $labels.md_device }} needs attention and possibly a disk swap\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P1
+
+      - alert: HostKernelVersionDeviations
+        expr: count(sum(label_replace(node_uname_info, "kernel", "$1", "release", "([0-9]+.[0-9]+.[0-9]+).*")) by (kernel)) > 1
+        for: 6h
+        labels:
+          severity: warning
+        annotations:
+          summary: Host kernel version deviations (instance {{ $labels.instance }})
+          description: "Different kernel versions are running\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P4
+
+      - alert: HostOomKillDetected
+        expr: increase(node_vmstat_oom_kill{job!="node_compute"}[1m]) > 0
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host OOM kill detected (instance {{ $labels.instance }})
+          description: "OOM kill detected\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P2
+
+      - alert: HostOomKillDetectedCompute
+        expr: increase(node_vmstat_oom_kill{job="node_compute"}[1m]) > 0
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host OOM kill detected (instance {{ $labels.instance }})
+          description: "OOM kill detected\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P4
+
+      - alert: HostEdacCorrectableErrorsDetected
+        expr: increase(node_edac_correctable_errors_total[1m]) > 0
+        for: 0m
+        labels:
+          severity: info
+        annotations:
+          summary: Host EDAC Correctable Errors detected (instance {{ $labels.instance }})
+          description: "Host {{ $labels.instance }} has had {{ printf \"%.0f\" $value }} correctable memory errors reported by EDAC in the last 5 minutes.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P3
+
+      - alert: HostEdacUncorrectableErrorsDetected
+        expr: node_edac_uncorrectable_errors_total > 0
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host EDAC Uncorrectable Errors detected (instance {{ $labels.instance }})
+          description: "Host {{ $labels.instance }} has had {{ printf \"%.0f\" $value }} uncorrectable memory errors reported by EDAC in the last 5 minutes.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P2
+
+      - alert: HostNetworkReceiveErrors
+        expr: rate(node_network_receive_errs_total[2m]) / rate(node_network_receive_packets_total[2m]) > 0.01
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host Network Receive Errors (instance {{ $labels.instance }})
+          description: "Host {{ $labels.instance }} interface {{ $labels.device }} has encountered {{ printf \"%.0f\" $value }} receive errors in the last five minutes.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P3
+
+      - alert: HostNetworkTransmitErrors
+        expr: rate(node_network_transmit_errs_total[2m]) / rate(node_network_transmit_packets_total[2m]) > 0.01
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host Network Transmit Errors (instance {{ $labels.instance }})
+          description: "Host {{ $labels.instance }} interface {{ $labels.device }} has encountered {{ printf \"%.0f\" $value }} transmit errors in the last five minutes.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P3
+
+      - alert: HostNetworkInterfaceSaturated
+        expr: (rate(node_network_receive_bytes_total{device!~"^tap.*"}[1m]) + rate(node_network_transmit_bytes_total{device!~"^tap.*"}[1m])) / node_network_speed_bytes{device!~"^tap.*"} > 0.8
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host Network Interface Saturated (instance {{ $labels.instance }})
+          description: "The network interface \"{{ $labels.interface }}\" on \"{{ $labels.instance }}\" is getting overloaded.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P5
+
+      - alert: HostConntrackLimit
+        expr: node_nf_conntrack_entries / node_nf_conntrack_entries_limit > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host conntrack limit (instance {{ $labels.instance }})
+          description: "The number of conntrack is approching limit\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P5
+
+      - alert: HostClockSkew
+        expr: (node_timex_offset_seconds > 0.05 and deriv(node_timex_offset_seconds[5m]) >= 0) or (node_timex_offset_seconds < -0.05 and deriv(node_timex_offset_seconds[5m]) <= 0)
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host clock skew (instance {{ $labels.instance }})
+          description: "Clock skew detected. Clock is out of sync.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P4
+
+      - alert: HostClockNotSynchronising
+        expr: min_over_time(node_timex_sync_status[1m]) == 0 and node_timex_maxerror_seconds >= 16
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host clock not synchronising (instance {{ $labels.instance }})
+          description: "Clock not synchronising.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          priority: P3
+
+      - alert: ZombieProcesses
+        expr: node_processes_state{state="Z"} > 5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "(instance {{ $labels.instance }}) has Zombie processes"
+          description: "(instance {{ $labels.instance }}) has Zombie processes"
+          priority: P3
+
+  - name: prometheus_rules
+    rules:
+      - alert: Watchdog
+        annotations:
+          description: |
+            This is an alert meant to ensure that the entire alerting pipeline is functional.
+            If this alert is firing, then the alertmanager is not able to reach opsgenie.
+          summary: An alert that should always be firing to certify that Alertmanager is working properly.
+          priority: P1
+        expr: vector(1)
+        for: 2m
+        labels:
+          severity: critical

@@ -1,0 +1,104 @@
+---
+- name: Create nodeexporter account to run node_exporter
+  ansible.builtin.user:
+    name: nodeexporter
+    shell: /sbin/nologin
+    home: /var/lib/node_exporter
+    uid: "{{ prometheus_exporter_uid }}"
+  tags:
+    - prometheus_node_exporter
+
+- name: Extract node_exporter downloaded tarball
+  unarchive:
+    src: "{{node_exporter_link}}/v{{ node_exporter_version  }}/node_exporter-{{ node_exporter_version  }}.linux-amd64.tar.gz"
+    dest: "{{ node_exporter_executable_path }}"
+    owner: nodeexporter
+    group: nodeexporter
+    remote_src: yes
+    validate_certs: no
+  tags:
+    - prometheus_node_exporter
+
+- name: Create systemd service file
+  ansible.builtin.template:
+    src: node_exporter.service.j2
+    dest: /etc/systemd/system/node_exporter.service
+  notify:
+    - restart node exporter           
+  tags:
+    - prometheus_node_exporter
+
+- name: Enable the systemd service file
+  ansible.builtin.systemd_service:
+    name: node_exporter
+    state: started
+    enabled: true
+  tags:
+    - prometheus_node_exporter
+
+- name: Create textfile_collector directory
+  ansible.builtin.file:
+    path: /var/lib/node_exporter/textfile_collector
+    state: directory
+    mode: 0755
+  tags:
+    - prometheus_node_exporter
+      
+- name: Start the systemd service file if this is not a chroot
+  ansible.builtin.systemd_service:
+    name: node_exporter
+    state: started
+    enabled: true
+  when: not ansible_is_chroot
+  tags:
+    - prometheus_node_exporter
+
+- name: Verify that smartmontools is installed
+  ansible.builtin.package:
+    name: smartmontools
+    state: present
+  tags:
+    - smartmontools
+
+- name: Copy shell scripts
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/var/lib/node_exporter/{{ item }}"
+    mode: 0755
+  loop:
+    - smartmon.sh
+    - fstab.sh
+  tags:
+    - smartmontools
+    - fstab
+
+- name: Verify cron is installed
+  package:
+    name: cronie
+    state: present
+  when: ansible_os_family == 'RedHat'
+  tags:
+    - smartmontools
+
+- name: Verify cron is installed
+  apt:
+    name: cron
+    state: present
+  when: ansible_os_family == 'Debian'
+  tags:
+    - smartmontools
+
+- name: Crontab the smartmon shell script file
+  cron:
+    name: "run smartmon.sh to node_exporter collector"
+    special_time: hourly
+    job: "/var/lib/node_exporter/smartmon.sh > /var/lib/node_exporter/textfile_collector/smart_status.prom 2>&1"
+  tags:
+    - smartmontools
+
+- name: Crontab the fstab shell script file
+  cron:
+    name: "run fstab.sh to node_exporter collector"
+    job: "/var/lib/node_exporter/fstab.sh > /var/lib/node_exporter/textfile_collector/fstab_status.prom 2>&1"
+  tags:
+    - fstab
