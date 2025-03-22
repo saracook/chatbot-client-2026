@@ -8,8 +8,3 @@
           then
             rm -rf /mnt/slurm-temp/*
           fi
-          for CID in $(crictl ps -a -q -s Exited)
-          do
-            crictl rm $CID
-          done
-          crictl rmi --prune
