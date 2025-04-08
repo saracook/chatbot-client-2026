@@ -1,0 +1,57 @@
+# ./users/lizzyg/kustomization.yaml
+namespace: lizzyg
+
+resources:
+- ../../base/user
+- ../../base/configmaps
+
+
+patches:
+- target:
+    kind: Namespace
+    name: default
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: lizzyg
+- target:
+    kind: PersistentVolume
+    name: cephfs-static-home
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cephfs-static-home-lizzyg
+    - op: replace
+      path: /spec/csi/volumeHandle
+      value: cephfs-static-home-lizzyg
+- target:
+    kind: PersistentVolume
+    name: cephfs-static-pi
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cephfs-static-pi-lizzyg
+    - op: replace
+      path: /spec/csi/volumeHandle
+      value: cephfs-static-pi-lizzyg
+- target:
+    kind: PersistentVolumeClaim
+    name: cephfs-static-home
+  patch: |-
+    - op: replace
+      path: /spec/volumeName
+      value: cephfs-static-home-lizzyg
+- target:
+    kind: PersistentVolumeClaim
+    name: cephfs-static-pi
+  patch: |-
+    - op: replace
+      path: /spec/volumeName
+      value: cephfs-static-pi-lizzyg
+- target:
+    kind: Service
+    name: jupyter
+  patch: |-
+    - op: replace
+      path: /spec/selector/hub.jupyter.org~1username
+      value: lizzyg

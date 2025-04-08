@@ -1,0 +1,243 @@
+apiVersion: v1
+data:
+  acct_gather.conf: |
+    #EnergyIPMIFrequency=30
+    #EnergyIPMICalcAdjustment=yes
+  allowed_devices.conf: |
+    /dev/null
+    /dev/urandom
+    /dev/zero
+    /dev/sda*
+    /dev/cpu/*/*
+    /dev/pts/*
+    /dev/tty*
+  cgroup.conf: |
+    # general
+    CgroupAutomount=yes
+
+    # task/cgroup plugin
+    TaskAffinity=yes        # require hwloc
+    ConstrainCores=yes
+    ConstrainRAMSpace=yes
+    ConstrainSwapSpace=yes
+    ConstrainKmemSpace=no
+
+    # prevent jobs from using swap space
+    AllowedRAMSpace=100     # in %
+    AllowedSwapSpace=0      # in %
+    MinRAMSpace=30
+
+    # constraint devices    # prevent using non-allocated gres devices
+    ConstrainDevices=yes
+    AllowedDevicesFile=/etc/slurm/allowed_devices.conf
+  gres.conf: |
+    #
+    # 2 GPUs nodes - seems not to work with processor affinity
+    #
+
+    # NB: CORE ids are _logical_ core ids, as reported w/ lstopo -l
+
+    # 32c - 2x PCI GPUs
+    Nodename=secure-gpu-[1,2] name=gpu    file=/dev/nvidia0 COREs=0-15
+    Nodename=secure-gpu-[1,2] name=gpu    file=/dev/nvidia1 COREs=16-31
+
+    # 20c - 4x PCI GPUs
+    Nodename=secure-gpu-[3-8] name=gpu    file=/dev/nvidia0 COREs=0-19
+    Nodename=secure-gpu-[3-8] name=gpu    file=/dev/nvidia1 COREs=0-19
+    Nodename=secure-gpu-[3-8] name=gpu    file=/dev/nvidia2 COREs=0-19
+    Nodename=secure-gpu-[3-8] name=gpu    file=/dev/nvidia3 COREs=0-19
+
+    # 24c - 8x PCI GPUs
+    Nodename=secure-gpu-12 name=gpu    file=/dev/nvidia0 COREs=0-2
+    Nodename=secure-gpu-12 name=gpu    file=/dev/nvidia1 COREs=3-5
+    Nodename=secure-gpu-12 name=gpu    file=/dev/nvidia2 COREs=6-8
+    Nodename=secure-gpu-12 name=gpu    file=/dev/nvidia3 COREs=9-11
+    Nodename=secure-gpu-12 name=gpu    file=/dev/nvidia4 COREs=12-14
+    Nodename=secure-gpu-12 name=gpu    file=/dev/nvidia5 COREs=15-17
+    Nodename=secure-gpu-12 name=gpu    file=/dev/nvidia6 COREs=18-20
+    Nodename=secure-gpu-12 name=gpu    file=/dev/nvidia7 COREs=21-23
+
+    # 56c - 4x PCI GPUs
+    Nodename=secure-gpu-9 name=gpu   file=/dev/nvidia0 COREs=0-13
+    Nodename=secure-gpu-9 name=gpu   file=/dev/nvidia1 COREs=14-27
+    Nodename=secure-gpu-9 name=gpu   file=/dev/nvidia2 COREs=28-41
+    Nodename=secure-gpu-9 name=gpu   file=/dev/nvidia3 COREs=42-55
+    Nodename=secure-gpu-10 name=gpu   file=/dev/nvidia0 COREs=0-13
+    Nodename=secure-gpu-10 name=gpu   file=/dev/nvidia1 COREs=14-27
+    Nodename=secure-gpu-10 name=gpu   file=/dev/nvidia2 COREs=28-41
+    Nodename=secure-gpu-10 name=gpu   file=/dev/nvidia3 COREs=42-55
+    Nodename=secure-gpu-11 name=gpu   file=/dev/nvidia0 COREs=0-13
+    Nodename=secure-gpu-11 name=gpu   file=/dev/nvidia1 COREs=14-27
+    Nodename=secure-gpu-11 name=gpu   file=/dev/nvidia2 COREs=28-41
+    Nodename=secure-gpu-11 name=gpu   file=/dev/nvidia3 COREs=42-55
+    Nodename=secure-gpu-15 name=gpu   file=/dev/nvidia0 COREs=0-13
+    Nodename=secure-gpu-15 name=gpu   file=/dev/nvidia1 COREs=14-27
+    Nodename=secure-gpu-15 name=gpu   file=/dev/nvidia2 COREs=28-41
+    Nodename=secure-gpu-15 name=gpu   file=/dev/nvidia3 COREs=42-55
+    Nodename=secure-gpu-16 name=gpu   file=/dev/nvidia0 COREs=0-13
+    Nodename=secure-gpu-16 name=gpu   file=/dev/nvidia1 COREs=14-27
+    Nodename=secure-gpu-16 name=gpu   file=/dev/nvidia2 COREs=28-41
+    Nodename=secure-gpu-16 name=gpu   file=/dev/nvidia3 COREs=42-55
+    Nodename=secure-gpu-17 name=gpu   file=/dev/nvidia0 COREs=0-13
+    Nodename=secure-gpu-17 name=gpu   file=/dev/nvidia1 COREs=14-27
+    Nodename=secure-gpu-17 name=gpu   file=/dev/nvidia2 COREs=28-41
+    Nodename=secure-gpu-17 name=gpu   file=/dev/nvidia3 COREs=42-55
+    Nodename=secure-gpu-18 name=gpu   file=/dev/nvidia0 COREs=0-13
+    Nodename=secure-gpu-18 name=gpu   file=/dev/nvidia1 COREs=14-27
+    Nodename=secure-gpu-18 name=gpu   file=/dev/nvidia2 COREs=28-41
+    Nodename=secure-gpu-18 name=gpu   file=/dev/nvidia3 COREs=42-55
+    Nodename=secure-gpu-19 name=gpu   file=/dev/nvidia0 COREs=0-13
+    Nodename=secure-gpu-19 name=gpu   file=/dev/nvidia1 COREs=14-27
+    Nodename=secure-gpu-19 name=gpu   file=/dev/nvidia2 COREs=28-41
+    Nodename=secure-gpu-19 name=gpu   file=/dev/nvidia3 COREs=42-55
+    Nodename=secure-gpu-20 name=gpu   file=/dev/nvidia0 COREs=0-13
+    Nodename=secure-gpu-20 name=gpu   file=/dev/nvidia1 COREs=14-27
+    Nodename=secure-gpu-20 name=gpu   file=/dev/nvidia2 COREs=28-41
+    Nodename=secure-gpu-20 name=gpu   file=/dev/nvidia3 COREs=42-55
+
+    # 56c - 8x PCI GPUs
+    Nodename=secure-gpu-13 name=gpu   file=/dev/nvidia0 COREs=0-6
+    Nodename=secure-gpu-13 name=gpu   file=/dev/nvidia1 COREs=7-13
+    Nodename=secure-gpu-13 name=gpu   file=/dev/nvidia2 COREs=14-20
+    Nodename=secure-gpu-13 name=gpu   file=/dev/nvidia3 COREs=21-27
+    Nodename=secure-gpu-13 name=gpu   file=/dev/nvidia4 COREs=28-34
+    Nodename=secure-gpu-13 name=gpu   file=/dev/nvidia5 COREs=35-41
+    Nodename=secure-gpu-13 name=gpu   file=/dev/nvidia6 COREs=42-48
+    Nodename=secure-gpu-13 name=gpu   file=/dev/nvidia7 COREs=49-55
+
+    # 112c - 8x PCI GPUs
+    Nodename=secure-gpu-14 name=gpu   file=/dev/nvidia0 COREs=0-13
+    Nodename=secure-gpu-14 name=gpu   file=/dev/nvidia1 COREs=14-27
+    Nodename=secure-gpu-14 name=gpu   file=/dev/nvidia2 COREs=28-41
+    Nodename=secure-gpu-14 name=gpu   file=/dev/nvidia3 COREs=42-55
+    Nodename=secure-gpu-14 name=gpu   file=/dev/nvidia4 COREs=56-69
+    Nodename=secure-gpu-14 name=gpu   file=/dev/nvidia5 COREs=70-83
+    Nodename=secure-gpu-14 name=gpu   file=/dev/nvidia6 COREs=84-97
+    Nodename=secure-gpu-14 name=gpu   file=/dev/nvidia7 COREs=98-111
+
+  slurm.conf: |
+    ClusterName=carina
+    ControlMachine=slurmcontroller
+    ControlAddr=10.152.183.156
+    SlurmUser=slurm
+    SlurmctldPort=6817
+    SlurmdPort=6818
+    AuthType=auth/munge
+    StateSaveLocation=/var/lib/slurmd
+    SlurmdSpoolDir=/var/spool/slurmd
+    SwitchType=switch/none
+    SlurmctldPidFile=/var/run/slurmd/slurmctld.pid
+    SlurmdPidFile=/var/run/slurmd/slurmd.pid
+    MailDomain=stanford.edu
+    #MailProg=/usr/bin/s-nail
+    SrunPortRange=60001-63000
+
+    #tracking and plugins
+    ProctrackType=proctrack/cgroup
+    TaskPlugin=task/cgroup
+    TopologyPlugin=topology/tree
+
+    # MPI
+    #
+    MpiDefault=pmi2
+
+    # Resources and limits
+    #
+    MinJobAge=10
+    MaxJobCount=50000
+    GresTypes=gpu
+    PropagateResourceLimitsExcept=MEMLOCK,NOFILE,NPROC,AS,CPU
+    PrivateData=reservations,usage,users,accounts
+
+    CacheGroups=0
+    ReturnToService=1
+    ResumeProgram=true
+    SlurmctldTimeout=300
+    SlurmdTimeout=300
+    InactiveLimit=0
+    KillWait=30
+    Waittime=0
+    TmpFS=/local-scratch
+
+    #Scheduling
+    #
+    SchedulerType=sched/backfill
+    SelectType=select/cons_res
+    SelectTypeParameters=CR_Core_Memory
+    FastSchedule=1
+    SchedulerParameters=default_queue_depth=5000,partition_job_depth=2000,bf_continue,bf_yield_interval=1000000,bf_yield_sleep=750000,bf_busy_nodes,bf_interval=120,bf_max_time=240,bf_window=10080,bf_job_part_count_reserve=10,bf_max_job_test=10000,bf_max_job_array_resv=10,bf_max_job_user_part=100,bf_resolution=1800,bf_min_prio_reserve=3000,kill_invalid_depend,nohold_on_prolog_fail,pack_serial_at_end,preempt_youngest_first,reduce_completing_frag,batch_sched_delay=20,sched_min_interval=1000000,build_queue_timeout=5000000,jobs_per_user_per_hour=2000,max_rpc_cnt=256
+
+    # FairShare
+    #
+    PriorityType=priority/multifactor
+    PriorityDecayHalfLife=7-0
+    PriorityMaxAge=14-0
+    PriorityWeightAge=1000
+    PriorityWeightFairshare=10000
+    PriorityWeightJobSize=50000000
+    PriorityWeightPartition=10000
+    PriorityWeightQOS=1000000
+    PriorityWeightTRES=CPU=5000,Mem=10000,GRES/gpu=25000
+    PriorityFlags=SMALL_RELATIVE_TO_TIME,FAIR_TREE,CALCULATE_RUNNING
+    FairShareDampeningFactor=5
+
+    # Preemption
+    #
+    PreemptMode=requeue
+    PreemptType=preempt/partition_prio
+
+    SlurmctldDebug=3
+    SlurmctldLogFile=/var/log/slurm/slurmctld.log
+    SlurmdDebug=3
+    SlurmdLogFile=/var/log/slurm/slurmd.log
+
+    #Accounting
+    #
+    JobCompType=jobcomp/none
+    JobCompLoc=/var/log/slurm/jobcomp.log
+    JobAcctGatherType=jobacct_gather/cgroup
+    JobAcctGatherFrequency=30
+    AccountingStorageType=accounting_storage/slurmdbd
+    JobAcctGatherParams=UsePss
+    AccountingStorageEnforce=QOS,limits,safe
+    AccountingStorageTRES=gres/gpu
+    EnforcePartLimits=ANY
+    AcctGatherNodeFreq=300
+    AccountingStorageHost=slurmcontroller
+    AccountingStoragePort=6819
+    AccountingStorageLoc=slurm_acct_db
+
+    #Node and Partition Descriptions
+    #
+    NodeName=secure-[2-3,6,11,15] RealMemory=370000 SocketsPerBoard=2 CoresPerSocket=16 ThreadsPerCore=1  Feature="CPU_GEN:SKX,CPU_SKU:6130,CPU_FRQ:2.10GHz,CLOUD" State=CLOUD
+    NodeName=secure-17 RealMemory=190735 SocketsPerBoard=2 CoresPerSocket=28 ThreadsPerCore=1  Feature="CPU_GEN:SKX,CPU_SKU:6330,CPU_FRQ:2.0GHz,CLOUD" State=CLOUD
+    NodeName=secure-gpu-[1-2] Gres=gpu:2 RealMemory=370000 SocketsPerBoard=2 CoresPerSocket=16 ThreadsPerCore=1  Feature="CPU_GEN:SKX,CPU_SKU:6130,CPU_FRQ:2.10GHz,GPU_GEN:PSC,GPU_BRD:TESLA,GPU_SKU:P100_PCIE,GPU_MEM:16GB,GPU_CC:6.0,CLOUD" State=CLOUD
+    NodeName=secure-gpu-[3-7] Gres=gpu:4 RealMemory=250000 SocketsPerBoard=2 CoresPerSocket=10 ThreadsPerCore=1 Feature="CPU_GEN:SKX,CPU_SKU:4114,CPU_FRQ:2.2GHz,GPU_GEN:PSC,GPU_BRD:TESLA,GPU_SKU:V100_PCIE,GPU_MEM:32GB,GPU_CC:7.0,CLOUD" State=CLOUD
+    NodeName=secure-gpu-9 Gres=gpu:4 RealMemory=450000 SocketsPerBoard=2 CoresPerSocket=28 ThreadsPerCore=1 Feature="CPU_GEN:SKX,CPU_SKU:6330,CPU_FRQ:2.0GHz,GPU_GEN:PSC,GPU_BRD:TESLA,GPU_SKU:A100_PCIE,GPU_MEM:80GB,GPU_CC:7.0,CLOUD" State=CLOUD
+    NodeName=secure-gpu-10 Gres=gpu:4 RealMemory=450000 SocketsPerBoard=2 CoresPerSocket=28 ThreadsPerCore=1 Feature="CPU_GEN:SKX,CPU_SKU:6330,CPU_FRQ:2.0GHz,GPU_GEN:PSC,GPU_BRD:TESLA,GPU_SKU:A100_PCIE,GPU_MEM:40GB,GPU_CC:7.0,CLOUD" State=CLOUD
+    NodeName=secure-gpu-11 Gres=gpu:4 RealMemory=450000 SocketsPerBoard=2 CoresPerSocket=28 ThreadsPerCore=1 Feature="CPU_GEN:SKX,CPU_SKU:6330,CPU_FRQ:2.0GHz,GPU_GEN:PSC,GPU_BRD:TESLA,GPU_SKU:A100_PCIE,GPU_MEM:40GB,GPU_CC:7.0,CLOUD" State=CLOUD
+    NodeName=secure-gpu-12 Gres=gpu:8 RealMemory=1450000 SocketsPerBoard=2 CoresPerSocket=12 ThreadsPerCore=1 Feature="CPU_GEN:SKX,CPU_SKU:6226,CPU_FRQ:2.7GHz,GPU_GEN:PSC,GPU_BRD:TESLA,GPU_SKU:V100_PCIE,GPU_MEM:40GB,GPU_CC:7.0,CLOUD" State=CLOUD
+    NodeName=secure-gpu-13 Gres=gpu:8 RealMemory=700000 SocketsPerBoard=2 CoresPerSocket=28 ThreadsPerCore=1 Feature="CPU_GEN:SKX,CPU_SKU:6258,CPU_FRQ:2.7GHz,GPU_GEN:PSC,GPU_BRD:TESLA,GPU_SKU:V100_PCIE,GPU_MEM:40GB,GPU_CC:7.0,CLOUD" State=CLOUD
+    NodeName=secure-gpu-14 Gres=gpu:8 RealMemory=940000 SocketsPerBoard=2 CoresPerSocket=56 ThreadsPerCore=1 Feature="CPU_GEN:SKX,CPU_SKU:8480,CPU_FRQ:3.0GHz,GPU_GEN:PSC,GPU_BRD:TESLA,GPU_SKU:H100_PCIE,GPU_MEM:80GB,GPU_CC:7.0,CLOUD" State=CLOUD
+    NodeName=secure-gpu-[15-20] Gres=gpu:4 RealMemory=250000 SocketsPerBoard=2 CoresPerSocket=28 ThreadsPerCore=1 Feature="CPU_GEN:SKX,CPU_SKU:6330,CPU_FRQ:2.0GHz,GPU_GEN:PSC,GPU_BRD:TESLA,GPU_SKU:A100_PCIE,GPU_MEM:40GB,GPU_CC:7.0,CLOUD" State=CLOUD TmpDisk=14000000
+    PartitionName=normal Default=yes Nodes=secure-[2-3,6] Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
+    PartitionName=long Nodes=secure-[11,15] Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=5-00:00:00 DefaultTime=0-02:00:00
+    PartitionName=gpu Nodes=secure-gpu-[1-6,15-18] Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=3 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
+    PartitionName=gpu-long Nodes=secure-gpu-[7,19-20] Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=5-00:00:00 DefaultTime=0-02:00:00
+    PartitionName=nigam-a100 Nodes=secure-gpu-9 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
+    PartitionName=boussard-a100 Nodes=secure-gpu-10 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
+    PartitionName=ogevaert-a100 Nodes=secure-gpu-11 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=7-00:00:00 DefaultTime=0-02:00:00
+    PartitionName=studdert-compute Nodes=secure-17 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=7-00:00:00 DefaultTime=0-02:00:00
+    PartitionName=nigam-v100 Nodes=secure-gpu-12 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
+    PartitionName=mrivas-v100 Nodes=secure-gpu-13 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
+    PartitionName=nigam-h100 Nodes=secure-gpu-14 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
+  topology.conf: |
+    #
+    # Ethernet network topology for secure
+
+    SwitchName=secure-sw Nodes=secure-gpu-[1-7],secure-gpu-[9-20],secure-[2-3,6,11,15],secure-17
+kind: ConfigMap
+metadata:
+  annotations:
+    configmanagement.gke.io/cluster-selector: slurm
+  name: slurm-node-conf

@@ -1,0 +1,57 @@
+# ./users/siamak/kustomization.yaml
+namespace: siamak
+
+resources:
+- ../../base/user
+- ../../base/configmaps
+
+
+patches:
+- target:
+    kind: Namespace
+    name: default
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: siamak
+- target:
+    kind: PersistentVolume
+    name: cephfs-static-home
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cephfs-static-home-siamak
+    - op: replace
+      path: /spec/csi/volumeHandle
+      value: cephfs-static-home-siamak
+- target:
+    kind: PersistentVolume
+    name: cephfs-static-pi
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cephfs-static-pi-siamak
+    - op: replace
+      path: /spec/csi/volumeHandle
+      value: cephfs-static-pi-siamak
+- target:
+    kind: PersistentVolumeClaim
+    name: cephfs-static-home
+  patch: |-
+    - op: replace
+      path: /spec/volumeName
+      value: cephfs-static-home-siamak
+- target:
+    kind: PersistentVolumeClaim
+    name: cephfs-static-pi
+  patch: |-
+    - op: replace
+      path: /spec/volumeName
+      value: cephfs-static-pi-siamak
+- target:
+    kind: Service
+    name: jupyter
+  patch: |-
+    - op: replace
+      path: /spec/selector/hub.jupyter.org~1username
+      value: siamak

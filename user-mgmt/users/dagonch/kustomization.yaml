@@ -1,0 +1,57 @@
+# ./users/dagonch/kustomization.yaml
+namespace: dagonch
+
+resources:
+- ../../base/user
+- ../../base/configmaps
+
+
+patches:
+- target:
+    kind: Namespace
+    name: default
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: dagonch
+- target:
+    kind: PersistentVolume
+    name: cephfs-static-home
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cephfs-static-home-dagonch
+    - op: replace
+      path: /spec/csi/volumeHandle
+      value: cephfs-static-home-dagonch
+- target:
+    kind: PersistentVolume
+    name: cephfs-static-pi
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cephfs-static-pi-dagonch
+    - op: replace
+      path: /spec/csi/volumeHandle
+      value: cephfs-static-pi-dagonch
+- target:
+    kind: PersistentVolumeClaim
+    name: cephfs-static-home
+  patch: |-
+    - op: replace
+      path: /spec/volumeName
+      value: cephfs-static-home-dagonch
+- target:
+    kind: PersistentVolumeClaim
+    name: cephfs-static-pi
+  patch: |-
+    - op: replace
+      path: /spec/volumeName
+      value: cephfs-static-pi-dagonch
+- target:
+    kind: Service
+    name: jupyter
+  patch: |-
+    - op: replace
+      path: /spec/selector/hub.jupyter.org~1username
+      value: dagonch

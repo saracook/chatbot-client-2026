@@ -1,0 +1,57 @@
+# ./users/tusharm/kustomization.yaml
+namespace: tusharm
+
+resources:
+- ../../base/user
+- ../../base/configmaps
+
+
+patches:
+- target:
+    kind: Namespace
+    name: default
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: tusharm
+- target:
+    kind: PersistentVolume
+    name: cephfs-static-home
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cephfs-static-home-tusharm
+    - op: replace
+      path: /spec/csi/volumeHandle
+      value: cephfs-static-home-tusharm
+- target:
+    kind: PersistentVolume
+    name: cephfs-static-pi
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cephfs-static-pi-tusharm
+    - op: replace
+      path: /spec/csi/volumeHandle
+      value: cephfs-static-pi-tusharm
+- target:
+    kind: PersistentVolumeClaim
+    name: cephfs-static-home
+  patch: |-
+    - op: replace
+      path: /spec/volumeName
+      value: cephfs-static-home-tusharm
+- target:
+    kind: PersistentVolumeClaim
+    name: cephfs-static-pi
+  patch: |-
+    - op: replace
+      path: /spec/volumeName
+      value: cephfs-static-pi-tusharm
+- target:
+    kind: Service
+    name: jupyter
+  patch: |-
+    - op: replace
+      path: /spec/selector/hub.jupyter.org~1username
+      value: tusharm

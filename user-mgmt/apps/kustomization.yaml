@@ -1,0 +1,4 @@
+# ./apps/kustomization.yaml
+resources:
+- jupyter
+- slurm

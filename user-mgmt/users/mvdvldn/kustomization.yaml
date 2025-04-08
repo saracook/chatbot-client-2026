@@ -1,0 +1,57 @@
+# ./users/mvdvldn/kustomization.yaml
+namespace: mvdvldn
+
+resources:
+- ../../base/user
+- ../../base/configmaps
+
+
+patches:
+- target:
+    kind: Namespace
+    name: default
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: mvdvldn
+- target:
+    kind: PersistentVolume
+    name: cephfs-static-home
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cephfs-static-home-mvdvldn
+    - op: replace
+      path: /spec/csi/volumeHandle
+      value: cephfs-static-home-mvdvldn
+- target:
+    kind: PersistentVolume
+    name: cephfs-static-pi
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cephfs-static-pi-mvdvldn
+    - op: replace
+      path: /spec/csi/volumeHandle
+      value: cephfs-static-pi-mvdvldn
+- target:
+    kind: PersistentVolumeClaim
+    name: cephfs-static-home
+  patch: |-
+    - op: replace
+      path: /spec/volumeName
+      value: cephfs-static-home-mvdvldn
+- target:
+    kind: PersistentVolumeClaim
+    name: cephfs-static-pi
+  patch: |-
+    - op: replace
+      path: /spec/volumeName
+      value: cephfs-static-pi-mvdvldn
+- target:
+    kind: Service
+    name: jupyter
+  patch: |-
+    - op: replace
+      path: /spec/selector/hub.jupyter.org~1username
+      value: mvdvldn

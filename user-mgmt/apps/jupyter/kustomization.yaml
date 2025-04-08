@@ -1,0 +1,18 @@
+# ./apps/jupyter/kustomization.yaml
+namespace: jupyter
+
+resources:
+- ../../base/configmaps
+
+
+patches:
+- target:
+    kind: Namespace
+    name: default
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: jupyter
+    - op: replace
+      path: metadata/annotations/configmanagement.gke.io~1cluster-selector
+      value: jupyterhub

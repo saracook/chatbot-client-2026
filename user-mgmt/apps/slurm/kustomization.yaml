@@ -1,0 +1,17 @@
+# ./apps/slurm/kustomization.yaml
+namespace: slurm
+
+resources:
+- ../../base/configmaps
+
+patches:
+- target:
+    kind: Namespace
+    name: default
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: slurm
+    - op: replace
+      path: metadata/annotations/configmanagement.gke.io~1cluster-selector
+      value: slurm
