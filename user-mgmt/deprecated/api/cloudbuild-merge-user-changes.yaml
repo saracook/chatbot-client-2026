@@ -1,0 +1,29 @@
+steps: 
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  id: 'clone-acm-cloud-source-repo'
+  entrypoint: 'gcloud'
+  args:
+  - 'source'
+  - 'repos'
+  - 'clone'
+  - '${REPO_NAME}'
+  - '/workspace/${REPO_NAME}'
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  id: 'merge-user-changes'
+  dir: '${REPO_NAME}'
+  entrypoint: 'bash'
+  args:
+  - '-eEuo'
+  - 'pipefail'
+  - '-c'
+  - |-
+    git config --global user.email "${PROJECT_NUMBER}@@cloudbuild.gserviceaccount.com"
+    git config --global user.name "Cloud Build Service Account"
+    git config pull.rebase false
+
+    git remote set-url origin https://source.developers.google.com/p/${PROJECT_ID}/r/${REPO_NAME}
+    git checkout -b main
+    git pull origin main
+    git pull origin ${_JOB_BRANCH} --commit
+    git push origin main
