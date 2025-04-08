@@ -1,0 +1,29 @@
+kind: Cluster
+apiVersion: clusterregistry.k8s.io/v1alpha1
+metadata:
+  name: carina-dev
+  labels:
+    environment: production
+    location: srcf
+    istio: enabled
+    ceph: enabled
+    jupyterhub: enabled
+#    jupyterhub-proxy: enabled
+    jupyterhub-istio-proxy: enabled
+    slurm: enabled
+#    velero-gcp: enabled
+---
+kind: Cluster
+apiVersion: clusterregistry.k8s.io/v1alpha1
+metadata:
+  name: carina-prod
+  labels:
+    environment: production
+    location: srcf
+    istio: enabled
+    ceph: enabled
+    jupyterhub: enabled
+#    jupyterhub-proxy: enabled
+    jupyterhub-istio-proxy: enabled
+    slurm: enabled
+#    velero-gcp: enabled

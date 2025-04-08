@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: slurm-mysql
+  name: slurm-mysql
+  namespace: slurm
+  annotations:
+    configmanagement.gke.io/cluster-selector: slurm
+spec:
+  clusterIP: 10.152.183.83
+  clusterIPs:
+  - 10.152.183.83
+  ports:
+  - name: mysql
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    service: slurm-mysql
+  type: ClusterIP

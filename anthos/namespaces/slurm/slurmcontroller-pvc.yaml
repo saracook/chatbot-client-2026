@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: slurm-jobdir
+  namespace: slurm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: csi-rbd-sc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: var-lib-slurm
+  namespace: slurm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: csi-rbd-sc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: var-log-slurm
+  namespace: slurm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: csi-rbd-sc

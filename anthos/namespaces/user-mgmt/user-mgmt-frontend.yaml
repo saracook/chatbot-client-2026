@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-mgmt-frontend
+  namespace: user-mgmt
+  labels:
+    app: user-mgmt-frontend
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: user-mgmt-frontend
+  template:
+    metadata:
+      labels:
+        app: user-mgmt-frontend
+    spec:
+      containers:
+      - name: user-mgmt-frontend
+        image: us-docker.pkg.dev/srcc-nero-prod/docker-repo/user-mgmt-frontend:latest
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: artifact-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-mgmt-frontend
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: user-mgmt-frontend
+  type: LoadBalancer

@@ -1,0 +1,14 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: hub-db-dir-usercluster
+  namespace: jupyter
+  labels:
+    component: jupyter
+spec:
+  storageClassName: csi-rbd-sc  
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "10Gi"

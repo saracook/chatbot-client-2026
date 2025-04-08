@@ -1,0 +1,35 @@
+apiVersion: v1
+data:
+    #  proxy.sh: |
+    #!/bin/bash
+    # if [ -f ~/.srcc/proxy/passwd ]; then
+    #        CURRENTPROXY="$USER:`cat ~/.srcc/proxy/passwd`@proxy.compute.stanford.edu"
+    #        export http_proxy=http://$CURRENTPROXY:3128
+    #        export https_proxy=http://$CURRENTPROXY:3128
+    #        export HTTP_PROXY=http://$CURRENTPROXY:3128
+    #        export HTTPS_PROXY=http://$CURRENTPROXY:3128
+    #        export CLOUDSDK_PROXY_USERNAME=$USER
+    #        export CLOUDSDK_PROXY_PASSWORD=`cat ~/.srcc/proxy/passwd`
+    #        if [ ! -f ~/.srcc/proxy/google_sdk_setup ]; then
+    #                module load google
+    #                gcloud config set proxy/type http  >/dev/null 2>/dev/null
+    #                gcloud config set proxy/address proxy.compute.stanford.edu  >/dev/null 2>/dev/null
+    #                gcloud config set proxy/port 3128  >/dev/null 2>/dev/null
+    #                module unload google
+    #                touch ~/.srcc/proxy/google_sdk_setup
+    #        fi
+    #        if [ ! -f ~/.srcc/proxy/git_setup ]; then
+    #                module load google
+    #                git config --global http.proxy http://$CURRENTPROXY:3128
+    #                git config --global https.proxy http://$CURRENTPROXY:3128
+    #                touch ~/.srcc/proxy/git_setup
+    #        fi
+    # fi
+    # export LMOD_PACKAGE_PATH=/usr/share/lmod/lmod/modulefiles
+    #srcc.sh: "#!/bin/bash\nif [ -f /mnt/srcc/proxy.sh ]; then\n\tsource /mnt/srcc/proxy.sh\nfi\n"
+kind: ConfigMap
+metadata:
+  annotations:
+    configmanagement.gke.io/cluster-selector: slurm
+  name: srcc.sh
+  namespace: slurm

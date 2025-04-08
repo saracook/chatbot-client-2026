@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    configmanagement.gke.io/cluster-selector: jupyterhub
+  name: gke-system
+  labels:
+    jupyter: req

@@ -1,0 +1,33 @@
+---
+# Source: gpu-operator/charts/node-feature-discovery/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: gpu-operator-node-feature-discovery
+  labels:
+    helm.sh/chart: node-feature-discovery-0.10.1
+    app.kubernetes.io/name: node-feature-discovery
+    app.kubernetes.io/instance: gpu-operator
+    app.kubernetes.io/version: "v0.10.1"
+    app.kubernetes.io/managed-by: Helm
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  # when using command line flag --resource-labels to create extended resources
+  # you will need to uncomment "- nodes/status"
+  # - nodes/status
+  verbs:
+  - get
+  - patch
+  - update
+  - list
+- apiGroups:
+  - nfd.k8s-sigs.io
+  resources:
+  - nodefeaturerules
+  verbs:
+  - get
+  - list
+  - watch

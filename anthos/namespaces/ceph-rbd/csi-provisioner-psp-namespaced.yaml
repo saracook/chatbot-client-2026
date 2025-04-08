@@ -1,0 +1,32 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  # replace with non-default namespace name
+  namespace: ceph-rbd
+  name: rbd-csi-provisioner-psp
+  annotations:
+    configmanagement.gke.io/cluster-selector: selector-ceph
+rules:
+  - apiGroups: ['policy']
+    resources: ['podsecuritypolicies']
+    verbs: ['use']
+    resourceNames: ['rbd-csi-provisioner-psp']
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rbd-csi-provisioner-psp
+  # replace with non-default namespace name
+  namespace: ceph-rbd
+  annotations:
+    configmanagement.gke.io/cluster-selector: selector-ceph
+subjects:
+  - kind: ServiceAccount
+    name: rbd-csi-provisioner
+    # replace with non-default namespace name
+    namespace: ceph-rbd
+roleRef:
+  kind: Role
+  name: rbd-csi-provisioner-psp
+  apiGroup: rbac.authorization.k8s.io

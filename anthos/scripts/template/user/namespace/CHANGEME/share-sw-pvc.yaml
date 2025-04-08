@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+  name: share-sw
+  #namespace: CHANGEME
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+    requests:
+      storage: 500G
+  volumeMode: Filesystem
+  volumeName: static-share-sw-CHANGEME

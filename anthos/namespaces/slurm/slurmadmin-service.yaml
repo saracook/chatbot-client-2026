@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: slurmadmin
+  name: slurmadmin
+  namespace: slurm
+  annotations:
+    configmanagement.gke.io/cluster-selector: slurm
+spec:
+  clusterIP: 10.152.208.75
+  clusterIPs:
+  - 10.152.208.75
+  loadBalancerIP: 10.112.1.233
+  externalTrafficPolicy: Cluster
+  ports:
+  - nodePort: 32562
+    port: 22
+    protocol: TCP
+    targetPort: 22
+  selector:
+    networkservice: slurmadmin
+  sessionAffinity: None
+  type: LoadBalancer

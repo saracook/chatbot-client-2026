@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cephfs
+  labels:
+    istio-injection: disabled
+  annotations:
+    configmanagement.gke.io/cluster-selector: selector-ceph

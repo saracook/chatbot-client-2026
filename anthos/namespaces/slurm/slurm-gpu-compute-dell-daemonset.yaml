@@ -1,0 +1,155 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  annotations:
+  labels:
+    name: slurm-gpu-compute-dell
+    networkaccess: slurm
+    service: slurm
+  name: slurm-gpu-compute-dell
+  namespace: slurm
+spec:
+  selector:
+    matchLabels:
+      name: slurm-gpu-compute-dell
+  template:
+    metadata:
+      labels:
+        name: slurm-gpu-compute-dell
+        service: slurm
+    spec:
+      containers:
+      - args:
+        - /usr/local/bin/docker-entrypoint.sh
+        - slurmd
+        command:
+        - /usr/bin/tini
+        image: us-docker.pkg.dev/srcc-nero-prod/docker-repo/jupyter-20.04:production
+        imagePullPolicy: Always
+        name: slurmd
+        ports:
+        - containerPort: 6818
+          protocol: TCP
+        resources:
+          limits:
+            cpu: "20"
+            memory: 250200Mi
+            nvidia.com/gpu: "4"
+          requests:
+            cpu: "18"
+            memory: 190000Mi
+        securityContext:
+          privileged: true
+          procMount: Default
+          runAsUser: 0
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/run/munge
+          name: run-munge
+        - mountPath: /tmp
+          name: temp
+        - mountPath: /dev/shm
+          name: dshm
+        - mountPath: /usr/share/lmod/lmod/modulefiles
+          name: modulefiles
+          readOnly: true
+        - mountPath: /home
+          name: home
+        - mountPath: /share/pi
+          name: share
+          subPath: pi
+        - mountPath: /share/data
+          name: share
+          subPath: data
+        - mountPath: /share/sw
+          name: sw-share
+          subPath: share/sw  
+          readOnly: true
+        - mountPath: /sys/fs/cgroup
+          name: cgroup
+        - mountPath: /root/hostname
+          name: localhost-name
+          readOnly: true
+        - mountPath: /root/hosts
+          name: host-mappings
+          readOnly: true
+        - mountPath: /etc/slurm-llnl
+          name: etc-slurm
+          readOnly: true
+        - mountPath: /var/lib/extrausers
+          name: extra-users
+          readOnly: true
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "1"
+        - name: single-request-reopen
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+      - name: artifact-registry
+      nodeSelector:
+        type: slurm-gpu-compute-dell
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        runAsUser: 0
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 10
+      tolerations:
+      - key: node.kubernetes.io/disk-pressure
+        operator: Exists
+      - effect: NoSchedule
+        key: nvidia.com/gpu
+        operator: Equal
+        value: present
+      volumes:
+      - hostPath:
+          path: /mnt/slurm-temp
+          type: Directory
+        name: temp
+      - hostPath:
+          path: /mnt/srcc/modulefiles
+          type: Directory
+        name: modulefiles
+      - name: home
+        persistentVolumeClaim:
+          claimName: cephfs-static-home
+      - name: share
+        persistentVolumeClaim:
+          claimName: cephfs-static-pi
+      - name: sw-share
+        nfs:
+          server: 10.152.14.101
+          path: /
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 100Gi
+      - hostPath:
+          path: /sys/fs/cgroup
+          type: Directory
+        name: cgroup
+      - configMap:
+          defaultMode: 365
+          name: slurm-node-conf
+        name: etc-slurm
+      - configMap:
+          defaultMode: 420
+          name: host-mappings
+        name: host-mappings
+      - hostPath:
+          path: /etc/hostname
+          type: File
+        name: localhost-name
+      - configMap:
+          defaultMode: 365
+          name: extrausers
+        name: extra-users
+      - hostPath:
+          path: /mnt/srcc/munge
+          type: Directory
+        name: run-munge
+  updateStrategy:
+    type: OnDelete

@@ -1,0 +1,297 @@
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: https-allowed-egress
+  namespace: istio-system
+spec:
+  hosts:
+  - "api.wandb.ai"
+  - "download.pytorch.org"
+#added to test r-qtl
+  - "rqtl.org"
+#need s3 for various things, most recently keras
+#but want to leave off day to day
+#.s3.amazonaws.com
+#.amazonaws.com
+#for mayo clinic data
+  - "*.mayo.edu"
+  - "mayo.edu"
+  - "www.mayo.edu"
+  - "www.mayoclinic.org"
+  - "kms-a.akamaihd.net"
+  - "cdnapisec.kaltura.com"
+  - "cdnsecakmi.kaltura.com"
+  - "cfvod.kaltura.com"
+#nlptransformermodels
+  - "cdn.huggingface.co"
+  - "models.huggingface.co.s3.amazonaws.com"
+#h2o for R
+  - "h2o-release.s3.amazonaws.com"
+#singularity, ugh
+  - "*.sylabs.io"
+#flywheel
+  - "lucascenter.flywheel.io"
+#scc public datasets"
+  - "dev.socrata.com"
+  - "data.sccgov.org"
+#pandoc compiling stuff
+  - "*.hackage.haskell.org"
+#docker hub stuffffff - i guess enabled ugh
+  - "*.docker.io"
+  - "*.docker.com"
+#random software installs
+#.kitware.com
+#.itk.org
+#pypi direct for packages
+  - "pypi.python.org"
+  - "*.pypi.org"
+  - "pypi.org"
+  - "*.pythonhosted.org"
+#for jupyterlab/npm
+#microsoft open r
+#DSSG data downloads
+  - "westcentralus.api.cognitive.microsoft.com"
+  - "upload.wikimedia.org"
+  - "api.planet.com"
+  - "link.planet.com"
+  - "data.connectedafrica.net"
+#bazel build birror
+  - "mirror.bazel.build"
+#for census data
+  - "*.census.gov"
+  - "utslogin.nlm.nih.gov"
+  - "uts-ws.nlm.nih.gov"
+#per uv https://srcc.uservoice.com/admin/tickets/43478
+  - "*.mridata.org"
+  - "mridata-assets.s3.amazonaws.com"
+  - "mran.microsoft.com"
+  - "igraph.org"
+  - "*.npmjs.org"
+  - "*.yarnpkg.com"
+#for selbyh
+  - "*.cancerimagingarchive.net"
+#dl.google.com
+  - "*.google.com"
+#may just need registry.npmjs.org
+#binstar is used for anaconda update
+  - "binstar-cio-packages-prod.s3.amazonaws.com"
+  - "binstar-static-prod.s3.amazonaws.com"
+  - "conda.io"
+  - "conda.anaconda.org"
+  - "repo.anaconda.com"
+  - "anaconda.org"
+  - "repo.continuum.io"
+#ius repo for updated stuff; especially git
+  - "*.iuscommunity.org"
+  - "*.ius.io"
+  - "*.duosecurity.com"
+  - "api-531b0865.duosecurity.com"
+  - "*.stanford.edu"
+  - "nero-mirror.stanford.edu"
+  - "code.stanford.edu"
+  - "phs.stanford.edu"
+  - "redivis.com"
+  - "web.stanford.edu"
+  - "www.stanford.edu"
+  - "weblogin.stanford.edu"
+  - "idp.stanford.edu"
+  - "*.redivis.com"
+  - "*.optum.com"
+#for AMC ancestry project
+  - "*.ancestry.com"
+  - "*.ancestrycdn.com"
+  - "*.familysearch.org"
+  - "edge.fscdn.org"
+#UKbiobank data
+  - "biota.osc.os.ac.uk"
+  - "biota.osc.ox.ac.uk"
+  - "biota.osc.ox.uk"
+  - "bbams.ndph.ox.ac.uk"
+  - "biota.ndph.ox.ac.uk"
+  - "chest.ndph.ox.ac.uk"
+  - "biobank.ndph.ox.ac.uk"
+#for czhang6 optum
+  - "*.healthtechnologygroup.com"
+#google
+  - "dl.google.com"
+  - "*.cloud.google.com"
+  - "*.googleapis.com"
+#for stanford webmail and azure portal authentication
+  - "*.outlook.com"
+  - "*.office365.com"
+  - "*.office.com"
+  - "*.microsoftonline-p.com"
+  - "*.aadcdn.microsoftonline-p.com"
+  - "*.microsoftonline.com"
+  - "login.microsoftonline.com"
+  - "*.office.net"
+  - "*.microsoft.com"
+  - "*.msftidentity.com"
+  - "*.msidentity.com"
+  - "*.msauth.net"
+  - "outlook-1.cdn.office.net"
+  - "aadcdn.msauth.net"
+  - "aadcdn.msftauth.net"
+  - "*.aadcdn.msftauth.net"
+  - "*.aadcdn.msftauthimages.net"
+  - "*.aadcdn.msauthimages.net"
+  - "ccscdn.msauth.net"
+  - "ccscdn.msftauth.net"
+  - "*.logincdn.msftauth.net"
+  - "login.live.com"
+  - "assets.adobedtm.com"
+  - "*.googleusercontent.com"
+  - "*.gstatic.com"
+  - "detectportal.firefox.com"
+  - "*.stattransfer.com"
+  - "*.stat-transfer.com"
+  - "www.stattransfer.com"
+  - "*.typekit.net"
+  - "www.googletagmanager.com"
+  - "www.googletagservices.com"
+  - "*.rstudio.com"
+  - "cran.rstudio.com"
+  - "redivis.imgix.net"
+  - "rdvs.imgix.net"
+  - "*.dhsprogram.com"
+#for arcgis
+  - "*.arcgis.com"
+  - "*.arcgisonline.com"
+  - "*.esri.com"
+  - "*.stata.com"
+#stata ado package
+  - "*.repec.org"
+#for traj for stata
+  - "*.andrew.cmu.edu"
+#for llamsam
+  - "*.bitbucket.org"
+  - "*.pushbullet.com"
+  - "*.atlassian.com"
+#end for llamsam
+  - "*.msftncsi.com"
+  - "*.gvt1.com"
+  - "*.google-analytics.com"
+  - "*.noaa.gov"
+  - "*.githubusercontent.com"
+  - "*.github.com"
+  - "github.com"
+  - "*.gitlab.com"
+  - "assets.gitlab-static.net"
+  - "*.sas.com"
+  - "chrome-devtools-frontend.appspot.com"
+#friday 2017.10.20
+  - "*.rstudio.org"
+#o365 crap
+  - "*.live.com"
+#jquery
+  - "code.jquery.com"
+#for Ivan Mejia - imejia@stanford.edu
+  - "*.childmortality.org"
+  - "*.un.org"
+# end imejia
+#for maptile stata stuff
+#.michaelstepner.com
+# end maptile
+#medicine box
+  - "app.box.com"
+  - "sso.services.box.net"
+  - "stanfordmedicine.app.box.com"
+  - "stanfordmedicine.box.com"
+  - "api.box.com"
+  - "cdn01.boxcdn.net"
+  - "edit.boxlocalhost.com"
+  - "stanfordmedicine.account.box.com"
+  - "upload.box.com"
+  - "dl.boxcloud.com"
+#regular box, leave commented out
+#stanford.app.box.com
+#random cdn stuff for websites
+  - "cdn.optimizely.com"
+  - "cdnjs.cloudflare.com"
+  - "maxcdn.bootstrapcdn.com"
+#crl entries for certs
+  - "*.letsencrypt.org"
+  - "g2.symcb.com"
+  - "sv.symcd.com"
+  - "s1.symcb.com"
+  - "s2.symcb.com"
+  - "sv.symcb.com"
+  - "gn.symcd.com"
+  - "g2.symcd.com"
+  - "cdp1.public-trust.com"
+  - "crl.usertrust.com"
+  - "crl.verisign.com"
+  - "s1.symb.com"
+  - "g1.symcb.com"
+  - "crl.incommon-rsa.org"
+  - "cdp1.public-trust.cotarfieldtech.com"
+  - "gn.symcb.com"
+#end crl
+#start OCSP links
+  - "ocsp.usertrust.com"
+  - "ocsp.msocsp.com"
+  - "ocsp.omniroot.com"
+  - "ocsp.starfieldtech.com"
+  - "ocsp.digicert.com"
+  - "ocsp.verisign.com"
+  - "ocsp2.globalsign.com"
+  - "ocsp.comodoca.com"
+  - "ocsp.digicert.com"
+  - "ocsp.entrust.net"
+  - "ocsp.godaddy.com"
+  - "ocsp.netsolssl.com"
+  - "ocsp.pki.goog"
+  - "ocsp.sca1b.amazontrust.com"
+  - "ocsp.trustwave.com"
+  - "ocsp2.globalsign.com"
+  - "ocsp2.globalsign.com"
+#end ocsp
+#for stata/ssc
+  - "fmwww.bc.edu"
+  - "*.stata-journal.com"
+#R from Texas
+#cran.revolutionanalytics.com
+#R from Oregon
+  - "ftp.osuosl.org"
+#R from berkeley
+  - "cran.cnr.berkeley.edu"
+#needed for R car
+  - "ab-initio.mit.edu"
+  - "www.stats.ox.ac.uk"
+#for wiseR
+  - "*.bioconductor.org"
+#allow epel and beyond
+#for R packages, specifically lubridate"
+  - "cran.rstudio.com"
+  - "www.ibspan.waw.pl"
+  - "raw.githubusercontent.com"
+  - "www.mini.pw.edu.pl"
+  - "*.r-project.org"
+  - "cran.r-project.org"
+  - "www.stats.ox.ac.uk"
+  - "*.revolutionanalytics.com"
+#major data vendor
+  - "*.optum.com"
+#anaconda support
+  - "*.msys2.org"
+#for Conda packages
+  - "*.datahub.io"
+#mozilla
+  - "*.mozilla.com"
+  - "*.mozilla.net"
+#for mchen6
+  - "crn.cancer.gov"
+#for tex
+  - "api2.miktex.org"
+  - "*.mirror.koddos.net"
+#Globus
+  - "srcc-globus-dtn01.stanford.edu"
+#for dhcs and azure FD#88894
+  - "*.etransfer.dhcs.ca.gov"
+  - "*.portal.azure.com"
+  location: MESH_EXTERNAL
+  ports:
+  - name: https
+    number: 443
+    protocol: HTTPS
+  resolution: NONE

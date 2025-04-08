@@ -1,0 +1,20 @@
+---
+# Source: gpu-operator/charts/node-feature-discovery/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: gpu-operator-node-feature-discovery
+  labels:
+    helm.sh/chart: node-feature-discovery-0.10.1
+    app.kubernetes.io/name: node-feature-discovery
+    app.kubernetes.io/instance: gpu-operator
+    app.kubernetes.io/version: "v0.10.1"
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: gpu-operator-node-feature-discovery
+subjects:
+- kind: ServiceAccount
+  name: gpu-operator-node-feature-discovery
+  namespace: gpu-operator

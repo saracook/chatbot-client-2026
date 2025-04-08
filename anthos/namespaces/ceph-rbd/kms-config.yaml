@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+data:
+  config.json: |-
+    []
+metadata:
+  namespace: ceph-rbd
+  name: ceph-csi-encryption-kms-config
+  annotations:
+    configmanagement.gke.io/cluster-selector: selector-ceph

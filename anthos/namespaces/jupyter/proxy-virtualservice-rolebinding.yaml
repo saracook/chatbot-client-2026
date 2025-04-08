@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: hub-cluster-namespace
+  annotations:
+    configmanagement.gke.io/cluster-selector: jupyterhub
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: proxy-virtualservices-role
+subjects:
+- kind: ServiceAccount
+  name: proxy
+  namespace: jupyter

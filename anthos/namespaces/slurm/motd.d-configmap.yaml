@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  annotations:
+    configmanagement.gke.io/cluster-selector: slurm
+  name: motd.d
+  namespace: slurm
+data:
+  99-system: |
+    #!/bin/bash
+    printf "Welcome to 
+             *  .  . *       *    .        .        .   *    ..
+           .    *        .   .       .      .        .            *
+              *.   *        *    *     .     *      *        *    .
+          .  .  *   .  ____ ____  ____ _ ____   ____  *   .   *  *
+           *   .  *   / ___) _  |/ ___) |  _ \ / _  |.    *    .
+          *  .   . * ( (__( ( | | |   | | | | ( ( | |  *   *   .   *
+           .    .   . \____)_||_|_|   |_|_| |_|\_||_|  .   *   .  *
+             *  .  . *       *    .        .        .   *    ..
+           .    *        .   .       .      .        .            *
+              *.   *        *    *   .     *      *        *   
+     ***********************************************************************
+       System is designed for high risk data; you still must comply with all
+                applicable Stanford policies for high risk data.
+     ***********************************************************************
+      This system is for authorized users only and users must comply with all
+      Stanford computing, network and research policies. All activity may be
+      recorded for security and monitoring purposes. For more information, see
+      https://doresearch.stanford.edu/policies/research-policy-handbook and
+      https://adminguide.stanford.edu/chapters/computing/computer-and-network-usage/computer-and-network-usage-policy
+     ***********************************************************************
+       -- Office Hours: Wednesdays from 3-4:00 pm on Zoom
+       -- Maintenance Day: 4th Tuesday of the Month
+       -- Documentation: carinadocs.stanford.edu
+       -- Join #carina-users on Stanford Slack
+       -- Support: email srcc-support@stanford.edu
+     ***********************************************************************"

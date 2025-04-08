@@ -1,0 +1,166 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    configmanagement.gke.io/cluster-selector: slurm
+  labels:
+    networkaccess: slurm
+  name: slurmlogin-backups
+  namespace: slurm
+spec:
+  progressDeadlineSeconds: 600
+  selector:
+    matchLabels:
+      name: slurmlogin-backups
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        seccomp.security.alpha.kubernetes.io/pod: 'runtime/default'
+      creationTimestamp: null
+      labels:
+        name: slurmlogin-backups
+    spec:
+      containers:
+      - args:
+        - /usr/local/bin/docker-entrypoint.sh
+        - sshd
+        command:
+        - /usr/bin/tini
+        image: us-docker.pkg.dev/srcc-nero-prod/docker-repo/jupyter-20.04:production
+        imagePullPolicy: Always
+        name: sshd
+        ports:
+        - containerPort: 22
+          protocol: TCP
+        resources:
+          limits:
+            cpu: "32"
+            memory: 370000Mi
+          requests:
+            cpu: 4
+            memory: 2048Mi
+        securityContext:
+          privileged: true #need to be true
+          procMount: Default
+          runAsGroup: 0
+          runAsUser: 0
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/security/pam_duo.conf
+          name: carina-login-duo
+          readOnly: true
+          subPath: pam_duo.conf
+        - mountPath: /usr/share/lmod/lmod/modulefiles
+          name: modulefiles
+          readOnly: true
+        - mountPath: /tmp
+          name: temp
+        - mountPath: /mnt/srcc
+          name: srcc
+        - mountPath: /etc/update-motd.d
+          name: motd
+        - mountPath: /home
+          name: home
+        - mountPath: /share/pi
+          name: pi-share
+          subPath: pi
+        - mountPath: /share/data
+          name: pi-share
+          subPath: data
+        - mountPath: /etc/slurm-llnl
+          name: etc-slurm
+        - mountPath: /var/run/munge
+          name: run-munge
+        - mountPath: /var/lib/extrausers
+          name: extra-users
+          readOnly: true
+        - mountPath: /etc/ssh
+          name: sshd
+        - mountPath: /var/log
+          name: log
+        - mountPath: /mnt/srcc/nfs/home-backup
+          name: home-backup
+        - mountPath: /mnt/srcc/nfs/pi-backup
+          name: pi-backup
+      tolerations:
+      - effect: NoSchedule
+        key: backups.stanford.edu/login
+        operator: Equal
+        value: "true"
+      hostAliases:
+      - hostnames:
+        - backups.carina.stanford.edu
+        ip: 127.0.0.1
+      hostname: backups
+      #nodeSelector:
+        #srcc.stanford.edu/munged: "true"
+      imagePullSecrets:
+      - name: artifact-registry
+      volumes:
+      - hostPath:
+          path: /mnt/srcc/modulefiles
+          type: Directory
+        name: modulefiles
+      - name: home-backup
+        nfs:
+          server: 10.112.1.18
+          path: /z/carina-home
+      - name: pi-backup
+        nfs:
+          server: 10.112.1.14
+          path: /z/carina-pi
+      - configMap:
+          defaultMode: 365
+          name: srcc.sh
+        name: srcc
+      - configMap:
+          defaultMode: 365
+          name: motd.d
+        name: motd
+      - emptyDir: {}
+        name: temp
+      - name: home
+        persistentVolumeClaim:
+          claimName: cephfs-static-home
+      - name: pi-share
+        persistentVolumeClaim:
+          claimName: cephfs-static-pi
+      - name: carina-login-duo
+        secret:
+          defaultMode: 384
+          secretName: carina-login-duo
+      - name: munge-key
+        secret:
+          defaultMode: 420
+          secretName: munge-key
+      - configMap:
+          defaultMode: 365
+          name: extrausers
+        name: extra-users
+      - configMap:
+          defaultMode: 365
+          name: slurm-node-conf
+        name: etc-slurm
+      - configMap:
+          defaultMode: 384
+          name: sshd-rw
+        name: sshd
+      - hostPath:
+          path: /mnt/srcc/munge
+          type: Directory
+        name: run-munge
+      - emptyDir: {}
+        name: log
+      - configMap:
+          defaultMode: 365
+          name: rsyslog
+        name: rsyslog
+      - configMap:
+          defaultMode: 365
+          name: logrotate
+        name: logrotate
