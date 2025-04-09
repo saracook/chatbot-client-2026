@@ -143,9 +143,9 @@ data:
     c.KubeSpawner.hub_connect_port = int(os.environ['HUB_SERVICE_PORT'])
     c.JupyterHub.hub_connect_ip = 'hub.jupyter.svc.cluster.local'
     c.JupyterHub.hub_connect_url = 'http://hub.jupyter.svc.cluster.local:8081'
-    c.KubeSpawner.mem_limit = '16G'
+    c.KubeSpawner.mem_limit = '32G'
     c.KubeSpawner.mem_guarantee = '1G'
-    c.KubeSpawner.cpu_limit = 4
+    c.KubeSpawner.cpu_limit = 8
     c.KubeSpawner.cpu_guarantee = 1
     auth_type = 'google'
     email_domain = 'local'
