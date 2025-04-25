@@ -11,6 +11,19 @@ data:
     
     AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
     
+    c.JupyterHub.template_vars = {
+        'announcement_login': '''***********************************************************************<br/>
+      System is designed for high risk data; you still must comply with all<br/>
+               applicable Stanford policies for high risk data.<br/>
+    ***********************************************************************<br/>
+     This system is for authorized users only and users must comply with all<br/>
+     Stanford computing, network and research policies. All activity may be<br/>
+     recorded for security and monitoring purposes. For more information, see<br/>
+     https://doresearch.stanford.edu/policies/research-policy-handbook and<br/>
+     https://adminguide.stanford.edu/chapters/computing/computer-and-network-usage/computer-and-network-usage-policy<br/>
+    ***********************************************************************'''
+    }
+    
     c.JupyterHub.spawner_class = 'kubespawner.KubeSpawner'
     c.ConfigurableHTTPProxy.api_url = 'http://proxy-api.jupyter.svc.cluster.local:8001'
     c.ConfigurableHTTPProxy.should_start = False
