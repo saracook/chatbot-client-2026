@@ -33,7 +33,7 @@ data:
     c.JupyterHub.port = 8081
     c.JupyterHub.hub_ip = '0.0.0.0'
     c.KubeSpawner.start_timeout = 300
-    c.KubeSpawner.http_timeout = 60
+    c.KubeSpawner.http_timeout = 120
     # todo: using image built 20250218 (fd#81627) but only for jupyter
     #       current production image 268b9bb used everywhere else.
     c.KubeSpawner.image = 'us-docker.pkg.dev/srcc-nero-prod/docker-repo/jupyter-20.04:9c7e558'
