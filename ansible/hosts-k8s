@@ -1,3 +1,8 @@
+[cp]
+cp-b16-1-4-1
+cp-b16-3-4-1
+cp-b16-5-4-1
+
 [k8s:children]
 cpu
 gpu
