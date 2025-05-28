@@ -173,6 +173,7 @@ spec:
   - "*.google-analytics.com"
   - "*.noaa.gov"
   - "*.githubusercontent.com"
+  - "*.githubassets.com"
   - "*.github.com"
   - "github.com"
   - "*.gitlab.com"
