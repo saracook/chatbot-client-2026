@@ -41,6 +41,7 @@ do
 done
 
 find $path -maxdepth $folder_depth -mindepth $folder_depth -type d  | sed "s~$path_just_above_volume/~~g" | sort -R  >> $list
+find $path -maxdepth $folder_depth -mindepth $folder_depth -type f  | sed  "s~$path_just_above_volume/~~g"| sort -R  >> $list
 
 rm -f $workDir/batches/*
 
