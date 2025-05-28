@@ -21,7 +21,7 @@ workdirRoot=/z/backup-scripts
 folder_depth=3
 
 # how many sequntial rsync jobs per batch job
-split_count=80
+split_count=2000
 ############################ END Items to change per folder to migrate
 
 workDir="$workdirRoot/$path_above_volume/$volume"
@@ -40,6 +40,7 @@ do
 done
 
 find $path -maxdepth $folder_depth -mindepth $folder_depth -type d | sed "s~$path_just_above_volume/~~g" | sort -R >> $list
+find $path -maxdepth $folder_depth -mindepth $folder_depth -type f  | sed  "s~$path_just_above_volume/~~g"| sort -R  >> $list
 
 rm -f $workDir/batches/*
 
