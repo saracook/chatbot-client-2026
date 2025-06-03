@@ -1,4 +1,3 @@
-5:30
 #!/bin/bash
 # Clean logs over one week
 find /z/backup-scripts/8a38c8df-cfcd-4d8c-bee5-ad121dcc50b3/pi/logs -type f -mtime +7 -exec rm {} \;
