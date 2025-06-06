@@ -59,10 +59,14 @@ user_exists()
 
 user_in_group()
 {
-  local USR GRP
+  local USR GRP U
   USR="$1"
   GRP="$2"
-  grep "^$GRP:" $GROUP | grep -q $USR
+  for U in $( grep "^$GRP:" $GROUP | cut -d: -f4- | sed 's~,~ ~g' )
+  do
+    [ "$U" = "$USR" ] && return 0
+  done
+  return 1
 }
 
 next_pi_gid()
