@@ -290,6 +290,8 @@ spec:
 #for dhcs and azure FD#88894
   - "*.etransfer.dhcs.ca.gov"
   - "*.portal.azure.com"
+# FD#92269
+  - "sedftm.nysed.gov"
   location: MESH_EXTERNAL
   ports:
   - name: https
