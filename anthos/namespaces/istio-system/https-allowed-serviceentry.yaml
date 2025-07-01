@@ -292,6 +292,8 @@ spec:
   - "*.portal.azure.com"
 # FD#92269
   - "sedftm.nysed.gov"
+# FD#91916
+  - "tdmize.github.io"
   location: MESH_EXTERNAL
   ports:
   - name: https
