@@ -294,6 +294,8 @@ spec:
   - "sedftm.nysed.gov"
 # FD#91916
   - "tdmize.github.io"
+# FD#92318 - to be revoked on 8/3/25
+  - "rxnav.nlm.nih.gov"
   location: MESH_EXTERNAL
   ports:
   - name: https
