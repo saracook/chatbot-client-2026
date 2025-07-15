@@ -296,6 +296,8 @@ spec:
   - "tdmize.github.io"
 # FD#92318 - to be revoked on 8/3/25
   - "rxnav.nlm.nih.gov"
+# FD#92733 - access thru Sept 2025    
+  - "code.usgs.gov"
   location: MESH_EXTERNAL
   ports:
   - name: https
