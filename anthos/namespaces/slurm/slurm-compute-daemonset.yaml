@@ -51,8 +51,8 @@ spec:
         - mountPath: /usr/share/lmod/lmod/modulefiles
           name: modulefiles
           readOnly: true
-        - mountPath: /home
-          name: home
+        #- mountPath: /home
+        #  name: home
         - mountPath: /share/pi
           name: share
           subPath: pi
@@ -112,9 +112,9 @@ spec:
           path: /mnt/srcc/modulefiles
           type: Directory
         name: modulefiles
-      - name: home
-        persistentVolumeClaim:
-          claimName: cephfs-static-home
+      #- name: home
+      #  persistentVolumeClaim:
+      #    claimName: cephfs-static-home
       - name: share
         persistentVolumeClaim:
           claimName: cephfs-static-pi

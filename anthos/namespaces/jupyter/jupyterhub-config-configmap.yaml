@@ -53,12 +53,6 @@ data:
         c.KubeSpawner.storage_capacity = '10Gi'
         c.KubeSpawner.volumes = [
             {
-                'name': 'home',
-                'persistentVolumeClaim': {
-                    'claimName': 'cephfs-static-home'
-                }
-            },
-            {
                 'name': 'modulefiles',
                 'hostPath': {
                     'path': '/mnt/srcc/modulefiles',
@@ -140,10 +134,6 @@ data:
                 'mountPath': '/share/data',
                 'name': 'share-pi',
                 'subPath': 'data'
-            },
-            {
-                'mountPath': '/home',
-                'name': 'home'
             },
             {
                 'mountPath': '/share/sw',

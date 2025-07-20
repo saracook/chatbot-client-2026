@@ -9,7 +9,7 @@ metadata:
   namespace: slurm
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       networkservice: slurmlogin-grusky-avp
@@ -65,8 +65,8 @@ spec:
           name: srcc
         - mountPath: /etc/update-motd.d
           name: motd
-        - mountPath: /home
-          name: home
+        #- mountPath: /home
+        #  name: home
         - mountPath: /share/pi
           name: pi-share
           subPath: pi
@@ -124,9 +124,9 @@ spec:
         name: motd
       - emptyDir: {}
         name: temp
-      - name: home
-        persistentVolumeClaim:
-          claimName: cephfs-static-home
+      #- name: home
+      #  persistentVolumeClaim:
+      #    claimName: cephfs-static-home
       - name: pi-share
         persistentVolumeClaim:
           claimName: cephfs-static-pi
