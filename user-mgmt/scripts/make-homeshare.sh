@@ -15,29 +15,29 @@ slurmlogin=`kubectl -n slurm get pod --selector networkservice=slurmlogin --fiel
 echo "Using $slurmlogin as slurmlogin"
 
 echo "Copying skel and creating $user home directory"
-kubectl -n slurm exec -it $slurmlogin -- cp -R /etc/skel /home/"$user"
+kubectl -n slurm exec -it $slurmlogin -- cp -R /etc/skel /share/pi/home/"$user"
 sleep 1
 echo "...done!"
 
 echo "Setting chmod 770 for $user home directory"
-kubectl -n slurm exec -it $slurmlogin -- chmod -R 770 /home/"$user"
+kubectl -n slurm exec -it $slurmlogin -- chmod -R 770 /share/pi/home/"$user"
 sleep 1
 echo "...done!"
 
 echo "Setting chown for $user home directory"
-kubectl -n slurm exec -it $slurmlogin -- chown -R "$user":"$user" /home/"$user"
+kubectl -n slurm exec -it $slurmlogin -- chown -R "$user":"$user" /share/pi/home/"$user"
 
 echo "...done!"
 
 echo "Setting 25GiB quota for $user home directory"
 
-kubectl -n slurm exec -it $slurmlogin -- setfattr -n ceph.quota.max_bytes -v 26843545600 /home/"$user"
+kubectl -n slurm exec -it $slurmlogin -- setfattr -n ceph.quota.max_bytes -v 26843545600 /share/pi/home/"$user"
 
 echo "...done!"
 
 echo "SUCCESS: $user home directory and quota created"
 echo "Results:"
 
-kubectl -n slurm exec -it $slurmlogin -- ls -alth /home/ | grep $user
+kubectl -n slurm exec -it $slurmlogin -- ls -alth /share/pi/home/ | grep $user
 sleep 1
 kubectl -n slurm exec -it $slurmlogin -- getfattr -n ceph.quota.max_bytes home/"$user"

@@ -29,7 +29,7 @@ data:
 
     # The DHOME variable specifies the directory containing users' home
     # directories.
-    DHOME=/home
+    DHOME=/share/pi/home
 
     # If GROUPHOMES is "yes", then the home directories will be created as
     # /home/groupname/user.
