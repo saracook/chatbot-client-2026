@@ -9,7 +9,7 @@ metadata:
   namespace: slurm
 spec:
   progressDeadlineSeconds: 600
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       networkservice: slurmlogin-grusky-avp
