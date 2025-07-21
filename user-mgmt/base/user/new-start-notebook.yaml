@@ -1,3 +1,5 @@
+# this is not used. /usr/local/bin/new-start-notebook.sh in the image is
+# used instead. see the script in repository stanford-rc/nero-jupyter .
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -16,7 +18,8 @@ data:
     #make sure home is set correctly
     export HOME=/share/pi/home/$JUPYTERHUB_USER
 
-    cd $HOME
+    #cd $HOME
+    cd /share/pi/home/$JUPYTERHUB_USER
     echo "start-notebook.sh running"
 
     if [[ ! -z "${JUPYTERHUB_API_TOKEN}" ]]; then
