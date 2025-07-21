@@ -36,7 +36,7 @@ data:
     c.KubeSpawner.http_timeout = 120
     # todo: using image built 20250218 (fd#81627) but only for jupyter
     #       current production image 268b9bb used everywhere else.
-    c.KubeSpawner.image = 'us-docker.pkg.dev/srcc-nero-prod/docker-repo/jupyter-20.04:9c7e558'
+    c.KubeSpawner.image = 'us-docker.pkg.dev/srcc-nero-prod/docker-repo/jupyter-20.04:ba3c28e'
     c.KubeSpawner.image_pull_secrets = [{"name": "artifact-registry"}]
     c.KubeSpawner.pod_connect_ip = 'jupyter.{username}.svc.cluster.local'
     c.KubeSpawner.automount_service_account_token = True
