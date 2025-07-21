@@ -1,8 +1,8 @@
 # ./base/user/kustomization.yaml
 resources:
 - namespace.yaml
-- cephfs-static-home-pvc.yaml
-- cephfs-static-home.yaml
+#- cephfs-static-home-pvc.yaml
+#- cephfs-static-home.yaml
 - cephfs-static-pi-pvc.yaml
 - cephfs-static-pi.yaml
 - default-sidecar-policy.yaml
