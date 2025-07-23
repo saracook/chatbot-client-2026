@@ -9,6 +9,7 @@ spec:
   selector:
     matchLabels:
       deploy: velero
+  replicas: 0
   strategy: {}
   template:
     metadata:
