@@ -77,7 +77,10 @@ data:
             },
             {
                 'name': 'munge-run',
-                'emptyDir': {}
+                'hostPath': {
+                    'path': '/mnt/srcc/munge',
+                    'type': 'Directory'
+                }
             },
             {
                 'name': 'slurm-node-conf',
@@ -122,7 +125,7 @@ data:
                 'name': 'munge-key'
             },
             {
-                'mountPath': '/etc/slurm',
+                'mountPath': '/etc/slurm-llnl',
                 'name': 'slurm-node-conf'
             },
             {
