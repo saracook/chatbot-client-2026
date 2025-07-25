@@ -209,7 +209,7 @@ data:
 
     #Node and Partition Descriptions
     #
-    NodeName=secure-[2-3,6,11,15] RealMemory=370000 SocketsPerBoard=2 CoresPerSocket=16 ThreadsPerCore=1  Feature="CPU_GEN:SKX,CPU_SKU:6130,CPU_FRQ:2.10GHz,CLOUD" State=CLOUD
+    NodeName=secure-[2-3,6] RealMemory=370000 SocketsPerBoard=2 CoresPerSocket=16 ThreadsPerCore=1  Feature="CPU_GEN:SKX,CPU_SKU:6130,CPU_FRQ:2.10GHz,CLOUD" State=CLOUD
     NodeName=secure-17 RealMemory=190735 SocketsPerBoard=2 CoresPerSocket=28 ThreadsPerCore=1  Feature="CPU_GEN:SKX,CPU_SKU:6330,CPU_FRQ:2.0GHz,CLOUD" State=CLOUD
     NodeName=secure-gpu-[1-2] Gres=gpu:2 RealMemory=370000 SocketsPerBoard=2 CoresPerSocket=16 ThreadsPerCore=1  Feature="CPU_GEN:SKX,CPU_SKU:6130,CPU_FRQ:2.10GHz,GPU_GEN:PSC,GPU_BRD:TESLA,GPU_SKU:P100_PCIE,GPU_MEM:16GB,GPU_CC:6.0,CLOUD" State=CLOUD
     NodeName=secure-gpu-[3-7] Gres=gpu:4 RealMemory=250000 SocketsPerBoard=2 CoresPerSocket=10 ThreadsPerCore=1 Feature="CPU_GEN:SKX,CPU_SKU:4114,CPU_FRQ:2.2GHz,GPU_GEN:PSC,GPU_BRD:TESLA,GPU_SKU:V100_PCIE,GPU_MEM:32GB,GPU_CC:7.0,CLOUD" State=CLOUD
@@ -221,7 +221,8 @@ data:
     NodeName=secure-gpu-14 Gres=gpu:8 RealMemory=940000 SocketsPerBoard=2 CoresPerSocket=56 ThreadsPerCore=1 Feature="CPU_GEN:SKX,CPU_SKU:8480,CPU_FRQ:3.0GHz,GPU_GEN:PSC,GPU_BRD:TESLA,GPU_SKU:H100_PCIE,GPU_MEM:80GB,GPU_CC:7.0,CLOUD" State=CLOUD
     NodeName=secure-gpu-[15-20] Gres=gpu:4 RealMemory=250000 SocketsPerBoard=2 CoresPerSocket=28 ThreadsPerCore=1 Feature="CPU_GEN:SKX,CPU_SKU:6330,CPU_FRQ:2.0GHz,GPU_GEN:PSC,GPU_BRD:TESLA,GPU_SKU:A100_PCIE,GPU_MEM:40GB,GPU_CC:7.0,CLOUD" State=CLOUD TmpDisk=14000000
     PartitionName=normal Default=yes Nodes=secure-[2-3,6] Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
-    PartitionName=long Nodes=secure-[11,15] Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=5-00:00:00 DefaultTime=0-02:00:00
+    #PartitionName=long Nodes=secure-15 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=5-00:00:00 DefaultTime=0-02:00:00
+    PartitionName=long Nodes=""
     PartitionName=gpu Nodes=secure-gpu-[1-6,15-18] Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=3 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
     PartitionName=gpu-long Nodes=secure-gpu-[7,19-20] Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=5-00:00:00 DefaultTime=0-02:00:00
     PartitionName=nigam-a100 Nodes=secure-gpu-9 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
@@ -230,12 +231,12 @@ data:
     PartitionName=studdert-compute Nodes=secure-17 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=7-00:00:00 DefaultTime=0-02:00:00
     PartitionName=nigam-v100 Nodes=secure-gpu-12 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
     PartitionName=mrivas-v100 Nodes=secure-gpu-13 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
-    PartitionName=nigam-h100 Nodes=secure-gpu-14 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
+    PartitionName=nigam-h100 Nodes=secure-gpu-14 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=7-00:00:00 DefaultTime=0-02:00:00
   topology.conf: |
     #
     # Ethernet network topology for secure
 
-    SwitchName=secure-sw Nodes=secure-gpu-[1-7],secure-gpu-[9-20],secure-[2-3,6,11,15],secure-17
+    SwitchName=secure-sw Nodes=secure-gpu-[1-7],secure-gpu-[9-20],secure-[2-3,6],secure-17
 kind: ConfigMap
 metadata:
   annotations:
