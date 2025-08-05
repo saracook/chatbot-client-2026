@@ -7,6 +7,7 @@ spec:
   hosts:
   # for stata/ssc
   - "fmwww.bc.edu"
+  - "bioconductor.org"
   location: MESH_EXTERNAL
   ports:
   - name: http
