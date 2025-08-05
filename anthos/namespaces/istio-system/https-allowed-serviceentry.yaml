@@ -260,6 +260,7 @@ spec:
   - "ab-initio.mit.edu"
   - "www.stats.ox.ac.uk"
 #for wiseR
+  - "bioconductor.org"
   - "*.bioconductor.org"
 #allow epel and beyond
 #for R packages, specifically lubridate"
