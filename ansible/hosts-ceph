@@ -13,6 +13,9 @@ nvme
 gp
 hc
 
+[storage:vars]
+ansible_python_interpreter=/usr/bin/python3
+
 [nvme]
 nvme-b15-6
 nvme-b15-5
