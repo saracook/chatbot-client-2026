@@ -1,3 +1,6 @@
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+
 [infra]
 infra-b14-37
 infra-b16-11
@@ -12,9 +15,6 @@ mon-b15-20
 nvme
 gp
 hc
-
-[storage:vars]
-ansible_python_interpreter=/usr/bin/python3
 
 [nvme]
 nvme-b15-6
