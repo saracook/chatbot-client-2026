@@ -1,4 +1,5 @@
-ansible_python_interpreter
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
 
 [cp]
 cp-b16-1-4-1
@@ -8,9 +9,6 @@ cp-b16-5-4-1
 [k8s:children]
 cpu
 gpu
-
-[k8s:vars]
-ansible_python_interpreter=/usr/bin/python3
 
 [cpu]
 kn-b13-studdert
@@ -31,7 +29,7 @@ kn-b13-gpu-2
 kn-b13-gpu-boussard
 kn-b13-gpu-nigam
 kn-b13-gpu-ogevaert
-#kn-b14-gpu-mrivas
+kn-b14-gpu-mrivas
 kn-b14-gpu2-nigam
 kn-b16-9-1
 kn-b16-9-2
