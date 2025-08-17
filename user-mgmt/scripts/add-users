@@ -152,9 +152,9 @@ then
   GECOS="$( get_gecos $PISUNETID )"
   if [ -n "$GECOS" ]
   then
-    echo "$PISUNETID:x:$PIUSRGID:$PIUSRGID:$GECOS,,,:/share/pi/home/$PISUNETID:/bin/bash" >> $PASSWD
+    echo "$PISUNETID:x:$PIUSRGID:$PIUSRGID:$GECOS,,,:/home/$PISUNETID:/bin/bash" >> $PASSWD
   else
-    echo "$PISUNETID:x:$PIUSRGID:$PIUSRGID:$PISUNETID,,,:/share/pi/home/$PISUNETID:/bin/bash" >> $PASSWD
+    echo "$PISUNETID:x:$PIUSRGID:$PIUSRGID:$PISUNETID,,,:/home/$PISUNETID:/bin/bash" >> $PASSWD
   fi
   echo "$PISUNETID:*:17734:0:99999:7:::" >> $SHADOW
   echo "- $PISUNETID" >> $DIR/users/kustomization.yaml
@@ -203,9 +203,9 @@ then
       GECOS="$( get_gecos $SUNETID )"
       if [ -n "$GECOS" ]
       then
-        echo "$SUNETID:x:$USRGID:$USRGID:$GECOS,,,:/share/pi/home/$SUNETID:/bin/bash" >> $PASSWD
+        echo "$SUNETID:x:$USRGID:$USRGID:$GECOS,,,:/home/$SUNETID:/bin/bash" >> $PASSWD
       else
-        echo "$SUNETID:x:$USRGID:$USRGID:$SUNETID,,,:/share/pi/home/$SUNETID:/bin/bash" >> $PASSWD
+        echo "$SUNETID:x:$USRGID:$USRGID:$SUNETID,,,:/home/$SUNETID:/bin/bash" >> $PASSWD
       fi
       echo "$SUNETID:*:17734:0:99999:7:::" >> $SHADOW
       echo "- $SUNETID" >> $DIR/users/kustomization.yaml
