@@ -299,6 +299,8 @@ spec:
   - "rxnav.nlm.nih.gov"
 # FD#92733 - access thru Sept 2025    
   - "code.usgs.gov"
+# FD#93795
+  - "nbdc-datashare.lassoinformatics.com"
   location: MESH_EXTERNAL
   ports:
   - name: https
