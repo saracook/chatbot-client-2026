@@ -1,6 +1,6 @@
 - import_playbook: c2-check-env.yml
 
-- name: check for pxe_client extra variable
+- name: check for pxe_clients extra variable
   hosts: localhost
   gather_facts: no
   tasks:
@@ -8,27 +8,29 @@
       fail:
         msg: "{{ msg }}"
       vars:
-        msg: extra variable pxe_client is not defined or its value is not in host group c2_pxe_client
-      when: pxe_client is not defined or pxe_client not in groups['c2_pxe_client']
+        msg: extra variable pxe_clients is not defined, is null/empty, or is not a subset of host group c2_pxe_client
+      when: pxe_clients is not defined or pxe_clients is none or pxe_clients | length == 0 or pxe_clients is not subset(groups['c2_pxe_client'])
+    - debug:
+        var: pxe_clients
 
-- name: configure pxe client {{ pxe_client }} to pxe boot
+- name: configure pxe clients {{ pxe_clients }} to net boot
   hosts: c2_pxe_server
   become: yes
   gather_facts: no
   tasks:
-    - name: set pxe client {{ pxe_client }} to pxe boot
+    - name: configure pxe clients {{ pxe_clients }} to net boot
       ansible.builtin.include_role:
         name: c2-pxe-config
       vars:
-        pxe_clients: ["{{ pxe_client }}"]
+        pxe_clients: "{{ pxe_clients }}"
         pxe_mode: netinstall
 
-- name: set pxe client {{ pxe_client }} to pxe boot and auto-install
-  hosts: "{{ pxe_client }}"
+- name: set pxe clients {{ pxe_clients }} to pxe boot once and restart for auto-install
+  hosts: "{{ pxe_clients }}"
   connection: local
   gather_facts: no
   tasks:
-    - name: set pxe client {{ pxe_client }} to pxe boot once
+    - name: set pxe client {{ inventory_hostname }} to pxe boot once and restart for auto-install
       ansible.builtin.include_role:
         name: dellemc.openmanage.idrac_boot
       vars:
@@ -42,7 +44,7 @@
         validate_certs: false
     # todo: reset_type in idrac_boot role above won't power system
     #       on if it's powered off, so ensure it's powered on here.
-    - name: power on pxe client {{ pxe_client }} for auto-install
+    - name: ensure that pxe client {{ inventory_hostname }} is powered on for auto-install
       ansible.builtin.include_role:
         name: dellemc.openmanage.idrac_server_powerstate
       vars:
@@ -52,7 +54,7 @@
         username: "{{ idrac_username }}"
         validate_certs: false
     # this assumes that poweroff is indicated in kickstart file
-    - name: wait until system is powered off after auto-install
+    - name: wait until pxe client {{ inventory_hostname }} is powered off after auto-install
       ansible.builtin.shell:
         cmd: |
           sshpass \
@@ -70,23 +72,23 @@
       retries: 60
       delay: 10
 
-- name: configure pxe client {{ pxe_client }} to local boot
+- name: configure pxe clients {{ pxe_clients }} to local boot
   hosts: c2_pxe_server
   become: yes
   gather_facts: no
   tasks:
-    - name: set pxe client {{ pxe_client }} to local boot
+    - name: configure pxe clients {{ pxe_clients }} to local boot
       ansible.builtin.include_role:
         name: c2-pxe-config
       vars:
-        pxe_clients: ["{{ pxe_client }}"]
+        pxe_clients: "{{ pxe_clients }}"
 
-- name: power on pxe client {{ pxe_client }} and wait for ssh
-  hosts: "{{ pxe_client }}"
+- name: power on pxe clients {{ pxe_clients }} and wait for ssh
+  hosts: "{{ pxe_clients }}"
   connection: local
   gather_facts: no
   tasks:
-    - name: power on pxe client {{ pxe_client }} after auto-install
+    - name: power on pxe client {{ inventory_hostname }} after auto-install
       ansible.builtin.include_role:
         name: dellemc.openmanage.idrac_server_powerstate
       vars:
@@ -95,7 +97,7 @@
         reset_type: "On"
         username: "{{ idrac_username }}"
         validate_certs: false
-    - name: wait for ssh to be available on pxe client {{ pxe_client }}
+    - name: wait for ssh to be available on pxe client {{ inventory_hostname }}
       ansible.builtin.wait_for:
         host: "{{ ansible_host }}"
         port: 22
@@ -103,9 +105,9 @@
         delay: 60
         timeout: 600
 
-- name: ping pxe client {{ pxe_client }}
-  hosts: "{{ pxe_client }}"
+- name: ping pxe clients {{ pxe_clients }}
+  hosts: "{{ pxe_clients }}"
   gather_facts: no
   tasks:
-    - name: ping pxe client {{ pxe_client }}
+    - name: ping pxe client {{ inventory_hostname }}
       ansible.builtin.ping:
