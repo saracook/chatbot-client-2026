@@ -1,6 +1,7 @@
 - name: create directory {{ host_dir }}
-  shell:
-    cmd: mkdir -p {{ host_dir }}
+  file:
+    path: "{{ host_dir }}"
+    state: directory
 
 - name: install kickstart.cfg
   template:
