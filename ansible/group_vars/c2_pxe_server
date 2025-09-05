@@ -1,0 +1,2 @@
+nginx_ip: "{{ ansible_host }}"
+nginx_port: 8000

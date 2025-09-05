@@ -1,0 +1,44 @@
+- name: install packages
+  ansible.builtin.dnf:
+    name:
+      ## packages to maintain parity with ubuntu
+      - device-mapper-multipath
+      # package polkit installed as dependency of udisks2
+      - udisks2
+      - upower
+      ## misc packages
+      - bind-utils
+      # repo: epel
+      #- netcat
+      - nmap
+      # repo: appstream
+      - nmap-ncat
+      - traceroute
+      - which
+    state: present
+    update_cache: yes
+
+- name: install /etc/multipath.conf
+  ansible.builtin.copy:
+    content: |
+      defaults {
+          user_friendly_names yes
+      }
+    dest: /etc/multipath.conf
+
+- name: install /etc/multipath/bindings
+  ansible.builtin.command:
+    cmd: touch /etc/multipath/bindings
+    creates: /etc/multipath/bindings
+
+- name: start/enable services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}.service"
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  loop:
+    - multipathd
+    - polkit
+    - udisks2
+    - upower

@@ -1,0 +1,22 @@
+user root root;
+pid /run/nginx.pid;
+worker_processes {{ nginx_worker_processes }};
+error_log /var/log/nginx/error.log;
+events {
+  worker_connections {{ nginx_worker_connections }};
+}
+http {
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+  sendfile on;
+  tcp_nopush on;
+  server {
+    listen {{ nginx_port }};
+    location / {
+      root /srv;
+      autoindex on;
+      autoindex_format json;
+    }
+  }
+  access_log /var/log/nginx/access.log;
+}

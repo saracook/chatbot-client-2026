@@ -1,0 +1,4 @@
+ansible_host: 10.112.12.5
+mac_address_1: "e0:9d:73:8c:da:ee"
+mac_address_2: "e0:9d:73:8c:da:ef"
+idrac_ip: 10.112.12.36

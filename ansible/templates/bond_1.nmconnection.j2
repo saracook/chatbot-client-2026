@@ -1,0 +1,23 @@
+[connection]
+id={{ bond_1 }}
+uuid=54317911-f840-516b-a10d-82cb4c1f075c
+type=bond
+interface-name={{ bond_1 }}
+
+[bond]
+mode={{ bond_mode }}
+{% if bond_mode == '802.3ad' %}
+xmit_hash_policy={{ bond_xmit_hash_policy }}
+{% endif %}
+miimon={{ bond_miimon }}
+
+[ethernet]
+mtu={{ network_mtu }}
+
+[ipv4]
+method=manual
+may-fail=false
+address1={{ hostip }}/{{ network_prefix }}
+gateway={{ network_gateway }}
+dns={{ network_dns | join(';') }};
+dns-search={{ domain }};

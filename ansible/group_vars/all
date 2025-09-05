@@ -1,0 +1,23 @@
+ansible_python_interpreter: /usr/bin/python3
+# todo: provide this via the environment
+ansible_ssh_private_key_file: "{{ playbook_dir }}/ansible.pem"
+ansible_ssh_public_key_file: "{{ playbook_dir }}/ansible.pub"
+domain: stanford.edu
+timezone: America/Los_Angeles
+locale: en_US.UTF-8
+network_vlan: 3038
+network_addr: 10.112.12.0
+network_prefix: 22
+network_cidr: "{{ network_addr }}/{{ network_prefix }}"
+network_mask: "{{ network_cidr | ansible.utils.ipaddr('netmask') }}"
+network_gateway: "{{ network_cidr | ansible.utils.next_nth_usable(1) }}"
+network_dns: [171.64.1.234, 171.67.1.234]
+network_mtu: 9000
+distro: rocky
+distro_version: 10.0
+ansible_user: rocky
+default_user: rocky
+default_user_gecos: Rocky Linux
+default_user_groups: [adm, systemd-journal]
+# todo: provide this via the environment
+default_password: "{{ lookup('env', 'DEFAULT_PASSWORD') }}"

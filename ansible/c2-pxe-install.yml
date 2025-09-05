@@ -1,0 +1,106 @@
+- name: check for pxe_client extra variable
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: "{{ msg }}"
+      fail:
+        msg: "{{ msg }}"
+      vars:
+        msg: extra variable pxe_client is not defined or its value is not in host group c2_pxe_client
+      when: pxe_client is not defined or pxe_client not in groups['c2_pxe_client']
+
+- name: configure pxe client {{ pxe_client }} to pxe boot
+  hosts: c2_pxe_server
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: set pxe client {{ pxe_client }} to pxe boot
+      ansible.builtin.include_role:
+        name: c2-pxe-config
+      vars:
+        pxe_clients: ["{{ pxe_client }}"]
+        pxe_mode: netinstall
+
+- name: set pxe client {{ pxe_client }} to pxe boot and auto-install
+  hosts: "{{ pxe_client }}"
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: set pxe client {{ pxe_client }} to pxe boot once
+      ansible.builtin.include_role:
+        name: dellemc.openmanage.idrac_boot
+      vars:
+        boot_source_override_enabled: once
+        boot_source_override_mode: uefi
+        boot_source_override_target: pxe
+        hostname: "{{ idrac_ip }}"
+        password: "{{ idrac_password }}"
+        reset_type: force_restart
+        username: "{{ idrac_username }}"
+        validate_certs: false
+    # todo: reset_type in idrac_boot role above won't power system
+    #       on if it's powered off, so ensure it's powered on here.
+    - name: power on pxe client {{ pxe_client }} for auto-install
+      ansible.builtin.include_role:
+        name: dellemc.openmanage.idrac_server_powerstate
+      vars:
+        hostname: "{{ idrac_ip }}"
+        password: "{{ idrac_password }}"
+        reset_type: "On"
+        username: "{{ idrac_username }}"
+        validate_certs: false
+    # this assumes that poweroff is indicated in kickstart file
+    - name: wait until system is powered off after auto-install
+      ansible.builtin.shell:
+        cmd: |
+          sshpass \
+          -p {{ idrac_password }} \
+          ssh \
+          -l {{ idrac_username }} \
+          {{ idrac_ip }} \
+          racadm getsysinfo -s | grep 'Power Status' | awk '{print $NF}'
+      register: pwrstat
+      until: pwrstat.stdout == 'OFF'
+      # retry for 10 minutes
+      retries: 60
+      delay: 10
+
+- name: configure pxe client {{ pxe_client }} to local boot
+  hosts: c2_pxe_server
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: set pxe client {{ pxe_client }} to local boot
+      ansible.builtin.include_role:
+        name: c2-pxe-config
+      vars:
+        pxe_clients: ["{{ pxe_client }}"]
+
+- name: power on pxe client {{ pxe_client }} and wait for ssh
+  hosts: "{{ pxe_client }}"
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: power on pxe client {{ pxe_client }} after auto-install
+      ansible.builtin.include_role:
+        name: dellemc.openmanage.idrac_server_powerstate
+      vars:
+        hostname: "{{ idrac_ip }}"
+        password: "{{ idrac_password }}"
+        reset_type: "On"
+        username: "{{ idrac_username }}"
+        validate_certs: false
+    - name: wait for ssh to be available on pxe client {{ pxe_client }}
+      ansible.builtin.wait_for:
+        host: "{{ ansible_host }}"
+        port: 22
+        # retry for 10 minutes
+        delay: 60
+        timeout: 600
+
+- name: ping pxe client {{ pxe_client }}
+  hosts: "{{ pxe_client }}"
+  gather_facts: no
+  tasks:
+    - name: ping pxe client {{ pxe_client }}
+      ansible.builtin.ping:

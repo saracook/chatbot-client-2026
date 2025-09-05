@@ -1,0 +1,14 @@
+set default=0
+set timeout=10
+{% if pxe_mode is defined and pxe_mode == 'netinstall' %}
+menuentry  'Install Rocky Linux {{ distro_version }}' --class fedora --class gnu-linux --class gnu --class os {
+  linuxefi {{ iso_pxe_linux }} ip=dhcp console=ttyS0,115200n8 console=tty0 inst.ks=http://{{ nginx_ip }}:{{ nginx_port }}/{{ hostname }}/kickstart.cfg ds=nocloud;s=http://{{ nginx_ip }}:{{ nginx_port }}/{{ hostname }}/
+  initrdefi {{ iso_pxe_initrd }}
+}
+{% else %}
+menuentry 'Boot from local disk' {
+    insmod chain
+    search --set=root --file /EFI/rocky/grubx64.efi
+    chainloader /EFI/rocky/grubx64.efi
+}
+{% endif %}

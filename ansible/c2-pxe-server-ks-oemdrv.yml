@@ -1,0 +1,6 @@
+- name: generate kickstart oemdrv
+  hosts: c2_pxe_server
+  connection: local
+  gather_facts: no
+  roles:
+    - name: c2-pxe-server-ks-oemdrv

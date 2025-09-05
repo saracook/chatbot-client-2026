@@ -1,0 +1,5 @@
+iso_url: "http://dl.rockylinux.org/pub/rocky/{{ distro_version }}/isos/x86_64/Rocky-{{ distro_version }}-x86_64-dvd1.iso"
+iso_sha256: 678ea3e1eea6f5d6c220c46fab34f5e0add260e7b64f0139ee3b9f7b7ca7d2f3
+pxelinux_base_dir: /usr/share/syslinux
+syslinux_base_dir: /usr/share/syslinux
+grubefi_base_dir: /boot/efi/EFI/rocky

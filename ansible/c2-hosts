@@ -1,0 +1,20 @@
+all:
+  children:
+    c2_dell_r6625:
+      hosts:
+        c2-infra-01:
+        c2-infra-02:
+        c2-infra-03:
+        c2-infra-04:
+        c2-infra-05:
+        c2-infra-06:
+    c2_pxe_server:
+      hosts:
+        c2-infra-01:
+    c2_pxe_client:
+      hosts:
+        c2-infra-02:
+        c2-infra-03:
+        c2-infra-04:
+        c2-infra-05:
+        c2-infra-06:

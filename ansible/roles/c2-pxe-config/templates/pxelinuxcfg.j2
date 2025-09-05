@@ -1,0 +1,11 @@
+{% if pxe_mode is defined and pxe_mode == 'netinstall' %}
+DEFAULT {{ hostname }}
+LABEL {{ hostname }}
+  KERNEL {{ iso_pxe_linux }}
+  INITRD {{ iso_pxe_initrd }}
+  APPEND ip=dhcp console=ttyS0,115200n8 console=tty0 inst.ks=http://{{ nginx_ip }}:{{ nginx_port }}/{{ hostname }}/kickstart.cfg ds=nocloud;s=http://{{ nginx_ip }}:{{ nginx_port }}/{{ hostname }}/ ---
+{% else %}
+DEFAULT localboot
+LABEL localboot
+  LOCALBOOT 0
+{% endif %}

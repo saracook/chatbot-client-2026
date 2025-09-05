@@ -1,0 +1,18 @@
+# 512 CPU cores (2 sockets, 128 cores-per-socket, 2 threads-per-core)
+# 1TiB RAM
+boot_disk_bytes: 480036519936
+swapfile_gb: 8
+nginx_worker_processes: 32
+nginx_worker_connections: 1024
+# todo: provide these via the environment
+idrac_username: "{{ lookup('env', 'IDRAC_USERNAME') }}"
+idrac_password: "{{ lookup('env', 'IDRAC_PASSWORD') }}"
+nic_1: ens1f0np0
+nic_2: ens1f1np1
+bond_1: bond0
+bond_mode: balance-rr
+# todo: bond_mode 802.3ad requires lacp port channel on switch
+#bond_mode: 802.3ad
+# todo: bond_xmit_hash_policy only used when bond_mode is 802.3ad
+bond_xmit_hash_policy: layer2
+bond_miimon: 100

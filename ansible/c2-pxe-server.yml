@@ -1,0 +1,8 @@
+- name: configure pxe server
+  hosts: c2_pxe_server
+  become: yes
+  roles:
+    - name: c2-base-os
+      tags: c2-base-os
+    - name: c2-pxe-server
+      tags: c2-pxe-server

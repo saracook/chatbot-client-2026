@@ -1,0 +1,76 @@
+- name: create directory /srv/pxelinux.cfg
+  ansible.builtin.file:
+    path: /srv/pxelinux.cfg
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: install /srv/pxelinux.cfg/{{ filename }}
+  ansible.builtin.template:
+    src: pxelinuxcfg.j2
+    dest: /srv/pxelinux.cfg/{{ filename }}
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] }}"
+  loop_control:
+    loop_var: client
+  vars:
+    filename: "01-{{ ( hostvars[client]['mac_address_1'] if 'mac_address_1' in hostvars[client] else hostvars[client]['mac_address_2'] ) | replace(':','-') }}"
+    hostname: "{{ client }}"
+
+- name: install /srv/{{ filename }}
+  ansible.builtin.template:
+    src: grub.cfg.j2
+    dest: /srv/{{ filename }}
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] }}"
+  loop_control:
+    loop_var: client
+  vars:
+    filename: "grub.cfg-01-{{ ( hostvars[client]['mac_address_1'] if 'mac_address_1' in hostvars[client] else hostvars[client]['mac_address_2'] ) | replace(':','-') }}"
+    hostname: "{{ client }}"
+
+- name: create directory /srv/{{ client }}
+  ansible.builtin.file:
+    path: /srv/{{ client }}
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop: "{{ pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] }}"
+  loop_control:
+    loop_var: client
+
+- name: install client cloudinit config files
+  template:
+    src: "{{ client[1] }}.j2"
+    dest: "/srv/{{ client[0] }}/{{ client[1] }}"
+  loop: "{{ ( pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] ) | product(cloudinit_config_files) | list }}"
+  loop_control:
+    loop_var: client
+  vars:
+    hostname: "{{ client[0] }}"
+    boot_disk_bytes: "{{ hostvars[client[0]]['boot_disk_bytes'] }}"
+    swapfile_gb: "{{ hostvars[client[0]]['swapfile_gb'] }}"
+    mac_address_1: "{{ hostvars[client[0]]['mac_address_1'] }}"
+    mac_address_2: "{{ hostvars[client[0]]['mac_address_2'] }}"
+    nic_1: "{{ hostvars[client[0]]['nic_1'] }}"
+    nic_2: "{{ hostvars[client[0]]['nic_2'] }}"
+    bond_1: "{{ hostvars[client[0]]['bond_1'] }}"
+    bond_mode: "{{ hostvars[client[0]]['bond_mode'] }}"
+    bond_xmit_hash_policy: "{{ hostvars[client[0]]['bond_xmit_hash_policy'] }}"
+    bond_miimon: "{{ hostvars[client[0]]['bond_miimon'] }}"
+    hostip: "{{ hostvars[client[0]]['ansible_host'] }}"
+    ks_mode: url
+
+- name: generate client cloudinit config urls
+  debug:
+    msg: "http://{{ nginx_ip }}:{{ nginx_port }}/{{ client[0] }}/{{ client[1] }}"
+  loop: "{{ ( pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] ) | product(cloudinit_config_files) | list }}"
+  loop_control:
+    loop_var: client
+  throttle: 1
