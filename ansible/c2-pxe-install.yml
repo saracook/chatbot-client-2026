@@ -42,8 +42,8 @@
         reset_type: force_restart
         username: "{{ idrac_username }}"
         validate_certs: false
-    # todo: reset_type in idrac_boot role above won't power system
-    #       on if it's powered off, so ensure it's powered on here.
+    # reset_type in idrac_boot role above won't power system
+    # on if it's powered off, so ensure it's powered on here.
     - name: ensure that pxe client {{ inventory_hostname }} is powered on for auto-install
       ansible.builtin.include_role:
         name: dellemc.openmanage.idrac_server_powerstate
@@ -53,6 +53,23 @@
         reset_type: "On"
         username: "{{ idrac_username }}"
         validate_certs: false
+    - name: wait until pxe client {{ inventory_hostname }} is powered on for auto-install
+      ansible.builtin.shell:
+        cmd: |
+          sshpass \
+          -p "$IDRAC_PASSWORD" \
+          ssh \
+          -l "$IDRAC_USERNAME" \
+          {{ idrac_ip }} \
+          racadm getsysinfo -s | grep 'Power Status' | awk '{print $NF}'
+      environment:
+        IDRAC_PASSWORD: "{{ idrac_password }}"
+        IDRAC_USERNAME: "{{ idrac_username }}"
+      register: pwrstat
+      until: pwrstat.stdout == 'ON'
+      # retry for 3 minutes
+      retries: 18
+      delay: 10
     # this assumes that poweroff is indicated in kickstart file
     - name: wait until pxe client {{ inventory_hostname }} is powered off after auto-install
       ansible.builtin.shell:
