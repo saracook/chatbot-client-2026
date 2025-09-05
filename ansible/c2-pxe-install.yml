@@ -54,11 +54,14 @@
       ansible.builtin.shell:
         cmd: |
           sshpass \
-          -p {{ idrac_password }} \
+          -p "$IDRAC_PASSWORD" \
           ssh \
-          -l {{ idrac_username }} \
+          -l "$IDRAC_USERNAME" \
           {{ idrac_ip }} \
           racadm getsysinfo -s | grep 'Power Status' | awk '{print $NF}'
+      environment:
+        IDRAC_PASSWORD: "{{ idrac_password }}"
+        IDRAC_USERNAME: "{{ idrac_username }}"
       register: pwrstat
       until: pwrstat.stdout == 'OFF'
       # retry for 10 minutes
