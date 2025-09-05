@@ -1,0 +1,14 @@
+- name: check for required secrets environment variables
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: check for required secrets environment variables
+      fail:
+        msg: required secret environment variable {{ item }} is not set!
+      when: lookup('env', item) | default('', true) | length == 0
+      loop:
+        - DEFAULT_PASSWORD
+        - IDRAC_PASSWORD
+        - IDRAC_USERNAME
+      tags:
+        - always
