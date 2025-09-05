@@ -114,6 +114,23 @@
         reset_type: "On"
         username: "{{ idrac_username }}"
         validate_certs: false
+    - name: wait until pxe client {{ inventory_hostname }} is powered on after auto-install
+      ansible.builtin.shell:
+        cmd: |
+          sshpass \
+          -p "$IDRAC_PASSWORD" \
+          ssh \
+          -l "$IDRAC_USERNAME" \
+          {{ idrac_ip }} \
+          racadm getsysinfo -s | grep 'Power Status' | awk '{print $NF}'
+      environment:
+        IDRAC_PASSWORD: "{{ idrac_password }}"
+        IDRAC_USERNAME: "{{ idrac_username }}"
+      register: pwrstat
+      until: pwrstat.stdout == 'ON'
+      # retry for 3 minutes
+      retries: 18
+      delay: 10
     - name: wait for ssh to be available on pxe client {{ inventory_hostname }}
       ansible.builtin.wait_for:
         host: "{{ ansible_host }}"
