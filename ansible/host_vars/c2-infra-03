@@ -1,5 +1,4 @@
 ansible_host: 10.112.12.4
-# todo: link 1 is down
-#mac_address_1: "e0:9d:73:95:50:f8"
+mac_address_1: "e0:9d:73:95:50:f8"
 mac_address_2: "e0:9d:73:95:50:f9"
 idrac_ip: 10.112.12.35

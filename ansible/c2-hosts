@@ -8,16 +8,28 @@ all:
         c2-infra-04:
         c2-infra-05:
         c2-infra-06:
-    c2_pxe_server:
+    c2_dell_xe7745:
       hosts:
-        c2-infra-01:
+        c2-comp-01:
+        c2-comp-02:
+        c2-comp-03:
+        c2-comp-04:
+        c2-comp-05:
     c2_pxe_client:
       hosts:
+        c2-comp-01:
+        c2-comp-02:
+        c2-comp-03:
+        c2-comp-04:
+        c2-comp-05:
         c2-infra-02:
         c2-infra-03:
         c2-infra-04:
         c2-infra-05:
         c2-infra-06:
+    c2_pxe_server:
+      hosts:
+        c2-infra-01:
   vars:
     ansible_python_interpreter: /usr/bin/python3
     # todo: provide this via the environment

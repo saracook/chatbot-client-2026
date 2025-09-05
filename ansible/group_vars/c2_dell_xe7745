@@ -1,13 +1,13 @@
 # 512 CPU cores (2 sockets, 128 cores-per-socket, 2 threads-per-core)
-# 1TiB RAM
+# 1.5TiB RAM
 boot_disk_bytes: 480036519936
 swapfile_gb: 8
 nginx_worker_processes: 32
 nginx_worker_connections: 1024
 idrac_username: "{{ lookup('env', 'IDRAC_USERNAME') }}"
 idrac_password: "{{ lookup('env', 'IDRAC_PASSWORD') }}"
-nic_1: ens1f0np0
-nic_2: ens1f1np1
+nic_1: ens9f0np0
+nic_2: ens9f1np1
 bond_1: bond0
 bond_mode: 802.3ad
 #bond_mode: balance-rr
