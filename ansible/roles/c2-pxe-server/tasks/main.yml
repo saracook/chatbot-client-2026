@@ -10,13 +10,6 @@
     state: present
     update_cache: yes
 
-- name: start and enable dnsmasq
-  ansible.builtin.systemd_service:
-    name: dnsmasq.service
-    state: started
-    enabled: yes
-    daemon_reload: yes
-
 - name: install /etc/NetworkManager/NetworkManager.conf
   ansible.builtin.template:
     src: NetworkManager.conf.j2
@@ -64,6 +57,7 @@
   ansible.builtin.systemd_service:
     name: dnsmasq.service
     state: restarted
+    enabled: yes
     daemon_reload: yes
   when: dnsmasqconf is changed
 
