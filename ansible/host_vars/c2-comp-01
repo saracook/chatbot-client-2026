@@ -4,3 +4,4 @@ mac_address_2: "b8:e9:24:e6:3c:73"
 idrac_ip: 10.112.12.39
 idrac_mac: "6c:3c:8c:92:37:5c"
 service_tag: 1CDCZ84
+rack_location: srcf b3 u29-32
