@@ -5,3 +5,6 @@ idrac_ip: 10.112.12.35
 idrac_mac: "a8:3c:a5:54:65:71"
 service_tag: 8S2HZ84
 rack_location: srcf b3 u35
+switch_eth_port_1: 1/1/13
+switch_eth_port_2: 1/1/14
+switch_port_channel: 4
