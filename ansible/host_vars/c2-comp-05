@@ -2,3 +2,5 @@ ansible_host: 10.112.12.13
 mac_address_1: "b8:e9:24:e6:37:3e"
 mac_address_2: "b8:e9:24:e6:37:3f"
 idrac_ip: 10.112.12.43
+idrac_mac: "6c:3c:8c:92:37:94"
+service_tag: 3CDCZ84
