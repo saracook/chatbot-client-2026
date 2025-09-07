@@ -6,7 +6,7 @@ no-resolv
 {% for ns in network_dns %}
 server={{ ns }}
 {% endfor %}
-dhcp-range={{ network_addr }},static,{{ network_mask }},infinite
+dhcp-range={{ network_addr }},static,{{ network_mask }},30m
 # option 3 = gateway
 dhcp-option=3,{{ network_gateway }}
 # option 6 = dns
