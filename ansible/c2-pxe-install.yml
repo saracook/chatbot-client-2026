@@ -30,7 +30,7 @@
   connection: local
   gather_facts: no
   tasks:
-    - name: set pxe client {{ inventory_hostname }} to pxe boot once and restart for auto-install
+    - name: set pxe clients {{ pxe_clients }} to pxe boot once and restart for auto-install
       ansible.builtin.include_role:
         name: dellemc.openmanage.idrac_boot
       vars:
@@ -44,7 +44,7 @@
         validate_certs: false
     # reset_type in idrac_boot role above won't power system
     # on if it's powered off, so ensure it's powered on here.
-    - name: ensure that pxe client {{ inventory_hostname }} is powered on for auto-install
+    - name: ensure that pxe clients {{ pxe_clients }} are powered on for auto-install
       ansible.builtin.include_role:
         name: dellemc.openmanage.idrac_server_powerstate
       vars:
@@ -53,7 +53,7 @@
         reset_type: "On"
         username: "{{ idrac_username }}"
         validate_certs: false
-    - name: wait until pxe client {{ inventory_hostname }} is powered on for auto-install
+    - name: wait until pxe clients {{ pxe_clients }} are powered on for auto-install
       ansible.builtin.shell:
         cmd: |
           sshpass \
@@ -71,7 +71,7 @@
       retries: 18
       delay: 10
     # this assumes that poweroff is indicated in kickstart file
-    - name: wait until pxe client {{ inventory_hostname }} is powered off after auto-install
+    - name: wait until pxe clients {{ pxe_clients }} are powered off after auto-install
       ansible.builtin.shell:
         cmd: |
           sshpass \
@@ -105,7 +105,7 @@
   connection: local
   gather_facts: no
   tasks:
-    - name: power on pxe client {{ inventory_hostname }} after auto-install
+    - name: power on pxe clients {{ pxe_clients }} after auto-install
       ansible.builtin.include_role:
         name: dellemc.openmanage.idrac_server_powerstate
       vars:
@@ -114,7 +114,7 @@
         reset_type: "On"
         username: "{{ idrac_username }}"
         validate_certs: false
-    - name: wait until pxe client {{ inventory_hostname }} is powered on after auto-install
+    - name: wait until pxe clients {{ pxe_clients }} are powered on after auto-install
       ansible.builtin.shell:
         cmd: |
           sshpass \
@@ -131,7 +131,7 @@
       # retry for 3 minutes
       retries: 18
       delay: 10
-    - name: wait for ssh to be available on pxe client {{ inventory_hostname }}
+    - name: wait for ssh to be available on pxe clients {{ pxe_clients }}
       ansible.builtin.wait_for:
         host: "{{ ansible_host }}"
         port: 22
