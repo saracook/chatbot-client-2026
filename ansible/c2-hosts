@@ -38,6 +38,7 @@ all:
     domain: stanford.edu
     timezone: America/Los_Angeles
     locale: en_US.UTF-8
+    ntp_server: time.stanford.edu
     network_vlan: 3038
     network_addr: 10.112.12.0
     network_prefix: 22
