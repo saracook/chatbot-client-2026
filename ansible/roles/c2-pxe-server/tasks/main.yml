@@ -26,16 +26,6 @@
     daemon_reload: yes
   when: nmconf is changed
 
-# todo: verify this is still needed
-#- name: add hostname to /etc/hosts
-#  ansible.builtin.lineinfile:
-#    path: /etc/hosts
-#    regexp: '^127.0.0.1 localhost.*$'
-#    line: '127.0.0.1 localhost {{ inventory_hostname }}'
-#    owner: root
-#    group: root
-#    mode: '0644'
-
 - name: install /etc/resolv.conf
   ansible.builtin.template:
     src: resolv.conf.j2
@@ -52,6 +42,7 @@
     group: root
     mode: '0644'
   register: dnsmasqconf
+  tags: dnsmasq
 
 - name: restart dnsmasq
   ansible.builtin.systemd_service:
@@ -60,6 +51,7 @@
     enabled: yes
     daemon_reload: yes
   when: dnsmasqconf is changed
+  tags: dnsmasq
 
 - name: install /srv/pxelinux.0
   ansible.builtin.copy:
@@ -150,7 +142,3 @@
     enabled: yes
     daemon_reload: yes
   when: nginxconf is changed
-
-- name: sync to disk
-  command: sync
-  changed_when: false
