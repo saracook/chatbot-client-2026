@@ -1,5 +1,12 @@
 all:
   children:
+    c2_compute_node:
+      hosts:
+        c2-comp-01:
+        c2-comp-02:
+        c2-comp-03:
+        c2-comp-04:
+        c2-comp-05:
     c2_dell_r6625:
       hosts:
         c2-infra-01:
@@ -15,6 +22,14 @@ all:
         c2-comp-03:
         c2-comp-04:
         c2-comp-05:
+    c2_infra_node:
+      hosts:
+        c2-infra-01:
+        c2-infra-02:
+        c2-infra-03:
+        c2-infra-04:
+        c2-infra-05:
+        c2-infra-06:
     c2_pxe_client:
       hosts:
         c2-comp-01:
