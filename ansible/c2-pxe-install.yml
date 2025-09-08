@@ -29,7 +29,7 @@
         pxe_clients: "{{ pxe_clients }}"
         pxe_mode: netinstall
 
-- name: power cycle pxe clients {{ pxe_clients }} for auto-install
+- name: power cycle pxe clients {{ pxe_clients }} and set to pxe boot for auto-install
   hosts: "{{ pxe_clients }}"
   connection: local
   gather_facts: no
@@ -60,9 +60,19 @@
         IDRAC_USERNAME: "{{ idrac_username }}"
       register: pwrstat
       until: pwrstat.stdout == 'OFF'
-      # retry for 10 minutes
-      retries: 60
+      # retry for 3 minutes
+      retries: 18
       delay: 10
+    - name: set pxe clients {{ pxe_clients }} to pxe boot for auto-install
+      ansible.builtin.shell:
+        cmd: |
+          cat <<EOF | sshpass -p "$IDRAC_PASSWORD" ssh -l "$IDRAC_USERNAME" {{ idrac_ip }}
+          racadm set iDRAC.ServerBoot.BootOnce Enabled
+          racadm set iDRAC.ServerBoot.FirstBootDevice PXE
+          EOF
+      environment:
+        IDRAC_PASSWORD: "{{ idrac_password }}"
+        IDRAC_USERNAME: "{{ idrac_username }}"
     - name: power on pxe clients {{ pxe_clients }} for auto-install
       ansible.builtin.shell:
         cmd: |
