@@ -4,7 +4,7 @@ mac_address_2: "e0:9d:73:8c:db:37"
 idrac_ip: 10.112.12.34
 idrac_mac: "a8:3c:a5:54:66:37"
 service_tag: 6S2HZ84
-rack_location: srcf b3 u34
+rack_location: SRCF B3 U34
 switch_eth_port_1: 1/1/11
 switch_eth_port_2: 1/1/12
 switch_port_channel: 3

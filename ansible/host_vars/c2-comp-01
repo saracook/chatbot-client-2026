@@ -4,7 +4,7 @@ mac_address_2: "b8:e9:24:e6:3c:73"
 idrac_ip: 10.112.12.39
 idrac_mac: "6c:3c:8c:92:37:5c"
 service_tag: 1CDCZ84
-rack_location: srcf b3 u29-32
+rack_location: SRCF B3 U29-32
 # todo: verify switch port to nic port mapping
 switch_eth_port_1: 1/1/37
 switch_eth_port_2: 1/1/38
