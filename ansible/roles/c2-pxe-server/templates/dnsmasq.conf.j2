@@ -13,12 +13,13 @@ dhcp-option=3,{{ network_gateway }}
 dhcp-option=6,{{ network_dns | join(',') }}
 #dhcp-boot=pxelinux.0
 dhcp-boot=grubx64.efi
-domain={{ domain }},{{ network_cidr }},local
+# todo: revisit these later for private subnets
+#domain={{ domain }},{{ network_cidr }},local
 #domain={{ domain }}
 #dhcp-fqdn
-domain-needed
+#domain-needed
 #bogus-priv
-address=/{{ inventory_hostname }}.{{ domain }}/{{ ansible_host }}
+#address=/{{ inventory_hostname }}.{{ domain }}/{{ ansible_host }}
 {% for client in groups['c2_pxe_client'] %}
 {% if 'mac_address_1' in hostvars[client] %}
 dhcp-host={{ hostvars[client]['mac_address_1'] }},{{ hostvars[client]['ansible_host'] }},{{ client }}
