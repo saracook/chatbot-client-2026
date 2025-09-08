@@ -1,3 +1,7 @@
+# assumptions:
+# - bios boot order configured as pxe -> hdd
+# - kickstart file specifies poweroff not reboot
+
 - import_playbook: c2-check-env.yml
 
 - name: check for pxe_clients extra variable
@@ -25,34 +29,24 @@
         pxe_clients: "{{ pxe_clients }}"
         pxe_mode: netinstall
 
-- name: set pxe clients {{ pxe_clients }} to pxe boot once and restart for auto-install
+- name: power cycle pxe clients {{ pxe_clients }} for auto-install
   hosts: "{{ pxe_clients }}"
   connection: local
   gather_facts: no
   tasks:
-    - name: set pxe clients {{ pxe_clients }} to pxe boot once and restart for auto-install
-      ansible.builtin.include_role:
-        name: dellemc.openmanage.idrac_boot
-      vars:
-        boot_source_override_enabled: once
-        boot_source_override_mode: uefi
-        boot_source_override_target: pxe
-        hostname: "{{ idrac_ip }}"
-        password: "{{ idrac_password }}"
-        reset_type: force_restart
-        username: "{{ idrac_username }}"
-        validate_certs: false
-    # reset_type in idrac_boot role above won't power system
-    # on if it's powered off, so ensure it's powered on here.
-    - name: ensure that pxe clients {{ pxe_clients }} are powered on for auto-install
-      ansible.builtin.include_role:
-        name: dellemc.openmanage.idrac_server_powerstate
-      vars:
-        hostname: "{{ idrac_ip }}"
-        password: "{{ idrac_password }}"
-        reset_type: "On"
-        username: "{{ idrac_username }}"
-        validate_certs: false
+    # powercycle action ensures powered on even if powered off
+    - name: power on pxe clients {{ pxe_clients }} for auto-install
+      ansible.builtin.shell:
+        cmd: |
+          sshpass \
+          -p "$IDRAC_PASSWORD" \
+          ssh \
+          -l "$IDRAC_USERNAME" \
+          {{ idrac_ip }} \
+          racadm serveraction powercycle
+      environment:
+        IDRAC_PASSWORD: "{{ idrac_password }}"
+        IDRAC_USERNAME: "{{ idrac_username }}"
     - name: wait until pxe clients {{ pxe_clients }} are powered on for auto-install
       ansible.builtin.shell:
         cmd: |
@@ -70,7 +64,6 @@
       # retry for 3 minutes
       retries: 18
       delay: 10
-    # this assumes that poweroff is indicated in kickstart file
     - name: wait until pxe clients {{ pxe_clients }} are powered off after auto-install
       ansible.builtin.shell:
         cmd: |
@@ -106,14 +99,17 @@
   gather_facts: no
   tasks:
     - name: power on pxe clients {{ pxe_clients }} after auto-install
-      ansible.builtin.include_role:
-        name: dellemc.openmanage.idrac_server_powerstate
-      vars:
-        hostname: "{{ idrac_ip }}"
-        password: "{{ idrac_password }}"
-        reset_type: "On"
-        username: "{{ idrac_username }}"
-        validate_certs: false
+      ansible.builtin.shell:
+        cmd: |
+          sshpass \
+          -p "$IDRAC_PASSWORD" \
+          ssh \
+          -l "$IDRAC_USERNAME" \
+          {{ idrac_ip }} \
+          racadm serveraction powerup
+      environment:
+        IDRAC_PASSWORD: "{{ idrac_password }}"
+        IDRAC_USERNAME: "{{ idrac_username }}"
     - name: wait until pxe clients {{ pxe_clients }} are powered on after auto-install
       ansible.builtin.shell:
         cmd: |
