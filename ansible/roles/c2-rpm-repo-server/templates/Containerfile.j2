@@ -1,0 +1,15 @@
+FROM {{ slurm_rpm_builder_base_container_image }}
+
+ENV SLURM_VERSION="{{ slurm_version }}"
+
+RUN dnf -y install dnf-plugins-core \
+    && \
+    dnf config-manager --set-enabled crb \
+    && \
+    dnf -y install {{ slurm_rpm_builder_container_packages }}
+
+COPY entrypoint /usr/local/bin/entrypoint
+
+WORKDIR /pwd
+
+ENTRYPOINT ["/usr/local/bin/entrypoint"]

@@ -45,6 +45,9 @@ all:
     c2_pxe_server:
       hosts:
         c2-infra-01:
+    c2_rpm_repo_server:
+      hosts:
+        c2-infra-01:
   vars:
     ansible_python_interpreter: /usr/bin/python3
     # todo: provide this via the environment
@@ -64,8 +67,12 @@ all:
     network_mtu: 9000
     distro: rocky
     distro_version: 10.0
+    distro_container_name: docker.io/rockylinux/rockylinux
+    distro_container_tag: "{{ distro_version }}"
+    distro_container_image: "{{ distro_container_name }}:{{ distro_container_tag }}"
     ansible_user: rocky
     default_user: rocky
     default_user_gecos: Rocky Linux
     default_user_groups: [adm, systemd-journal]
     default_password: "{{ lookup('env', 'DEFAULT_PASSWORD') }}"
+    slurm_version: 25.05.3

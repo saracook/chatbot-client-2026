@@ -1,0 +1,82 @@
+- name: install packages
+  ansible.builtin.dnf:
+    name:
+      - createrepo_c
+    state: present
+    update_cache: yes
+
+- name: create directory {{ slurm_rpm_builder_container_context_dir }}/tmp
+  file:
+    path: "{{ slurm_rpm_builder_container_context_dir }}/tmp"
+    state: directory
+
+- name: install containerfile
+  template:
+    src: Containerfile.j2
+    dest: "{{ slurm_rpm_builder_container_context_dir }}/Containerfile"
+
+- name: install entrypoint script
+  template:
+    src: entrypoint.j2
+    dest: "{{ slurm_rpm_builder_container_context_dir }}/entrypoint"
+    mode: '00755'
+
+- name: build container image
+  containers.podman.podman_image:
+    name: "{{ slurm_rpm_builder_container_name }}"
+    tag: "{{ slurm_rpm_builder_container_tag }}"
+    path: "{{ slurm_rpm_builder_container_context_dir }}"
+    build:
+      cache: no
+      force_rm: yes
+      format: oci
+
+- name: tag image as latest
+  containers.podman.podman_tag:
+    image: "{{ slurm_rpm_builder_container_image }}"
+    target_names:
+      - "{{ slurm_rpm_builder_container_name }}:latest"
+
+- name: prune images
+  containers.podman.podman_prune:
+    system: true
+
+- name: stat {{ slurm_rpm }}
+  ansible.builtin.stat:
+    path: "/srv/rpm/{{ slurm_rpm }}"
+  register: statslurmrpm
+
+- name: build slurm rpm packages
+  containers.podman.podman_container:
+    name: "{{ slurm_rpm_builder_container_name | basename }}"
+    image: "{{ slurm_rpm_builder_container_image }}"
+    state: started
+    detach: no
+    volumes:
+      - "{{ slurm_rpm_builder_container_context_dir }}/tmp:/pwd"
+    rm: yes
+  when: not statslurmrpm.stat.exists
+
+- name: sync to flush slurm rpms to disk
+  command: sync
+  changed_when: false
+  when: not statslurmrpm.stat.exists
+
+- name: install slurm rpm packages and update repo metadata
+  ansible.builtin.shell:
+    cmd: |
+      set -e
+      mkdir -p /srv/rpm
+      rm -fv /srv/rpm/slurm-*.rpm
+      mv -fv {{ slurm_rpm_builder_container_context_dir }}/tmp/slurm-*.rpm /srv/rpm
+      createrepo /srv/rpm
+  when: not statslurmrpm.stat.exists
+
+- name: install readme.txt
+  copy:
+    content: |
+      podman build --file Containerfile --no-cache --tag {{ slurm_rpm_builder_container_image }} .
+      podman tag {{ slurm_rpm_builder_container_image }} {{ slurm_rpm_builder_container_name }}:latest
+      podman image prune -f
+      podman run --interactive --name {{ slurm_rpm_builder_container_name | basename }} --rm --tty --volume $(pwd)/tmp:/pwd {{ slurm_rpm_builder_container_name }}:latest
+    dest: "{{ slurm_rpm_builder_container_context_dir }}/readme.txt"
