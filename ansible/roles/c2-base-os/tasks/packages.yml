@@ -13,6 +13,7 @@
       - nmap
       # repo: appstream
       - nmap-ncat
+      - podman
       - traceroute
       - which
     state: present
