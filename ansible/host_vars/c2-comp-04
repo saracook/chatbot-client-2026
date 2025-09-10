@@ -5,7 +5,7 @@ idrac_ip: 10.112.12.42
 idrac_mac: "6c:3c:8c:92:38:48"
 service_tag: 2CDCZ84
 rack_location: SRCF B4 U9-12
-# todo: swap cables to be 1->25 and 2->26
+# todo: swap cables
 switch_eth_port_1: 1/1/26
 switch_eth_port_2: 1/1/25
 switch_port_channel: 11
