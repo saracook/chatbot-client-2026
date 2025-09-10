@@ -1,7 +1,3 @@
-# assumptions:
-# - bios boot order configured as pxe -> hdd
-# - kickstart file specifies poweroff not reboot
-
 - import_playbook: c2-check-env.yml
 
 - name: check for pxe_clients extra variable
