@@ -50,9 +50,8 @@ all:
         c2-infra-01:
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    # todo: provide this via the environment
-    ansible_ssh_private_key_file: "{{ playbook_dir }}/ansible.pem"
-    ansible_ssh_public_key_file: "{{ playbook_dir }}/ansible.pub"
+    ansible_ssh_private_key_file: /dev/shm/ansible.pem
+    ansible_ssh_public_key_file: /dev/shm/ansible.pub
     domain: stanford.edu
     timezone: America/Los_Angeles
     locale: en_US.UTF-8

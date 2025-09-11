@@ -7,8 +7,22 @@
         msg: required secret environment variable {{ item }} is not set!
       when: lookup('env', item) | default('', true) | length == 0
       loop:
+        - ANSIBLE_SSH_PRIVATE_KEY
+        - ANSIBLE_SSH_PUBLIC_KEY
         - DEFAULT_PASSWORD
         - IDRAC_PASSWORD
         - IDRAC_USERNAME
       tags:
         - always
+    - name: install {{ ansible_ssh_private_key_file }}
+      copy:
+        content: |
+          {{ lookup('env', 'ANSIBLE_SSH_PRIVATE_KEY') }}
+        dest: "{{ ansible_ssh_private_key_file }}"
+        mode: '00600'
+    - name: install {{ ansible_ssh_public_key_file }}
+      copy:
+        content: |
+          {{ lookup('env', 'ANSIBLE_SSH_PUBLIC_KEY') }}
+        dest: "{{ ansible_ssh_public_key_file }}"
+        mode: '00600'
