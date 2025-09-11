@@ -1,22 +1,13 @@
 [connection]
-id={{ nic_2 }}
-uuid=2685ec2b-1c26-583d-a660-0ab24201fef3
+id={{ bond_1 }}-{{ nic_2 }}
+uuid=d886260b-f48f-410e-8b9a-b94d58646483
 type=ethernet
-{% if mac_address_2 is defined and mac_address_1 is defined %}
-slave-type=bond
-master=54317911-f840-516b-a10d-82cb4c1f075c
-{% endif %}
+controller={{ bond_1 }}
+interface-name={{ nic_2 }}
+port-type=bond
 
 [ethernet]
 mtu={{ network_mtu }}
 mac-address={{ mac_address_2 | upper }}
 
-{% if mac_address_2 is defined and mac_address_1 is not defined %}
-[ipv4]
-method=manual
-may-fail=false
-address1={{ hostip }}/{{ network_prefix }}
-gateway={{ network_gateway }}
-dns={{ network_dns | join(';') }};
-dns-search={{ domain }};
-{% endif %}
+[bond-port]

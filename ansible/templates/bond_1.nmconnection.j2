@@ -1,8 +1,13 @@
 [connection]
 id={{ bond_1 }}
-uuid=54317911-f840-516b-a10d-82cb4c1f075c
+uuid=1a480442-8afd-4cae-96ff-55e117e3b9d2
 type=bond
+controller={{ bridge_1 }}
 interface-name={{ bond_1 }}
+port-type=bridge
+
+[ethernet]
+mtu={{ network_mtu }}
 
 [bond]
 mode={{ bond_mode }}
@@ -11,13 +16,4 @@ xmit_hash_policy={{ bond_xmit_hash_policy }}
 {% endif %}
 miimon={{ bond_miimon }}
 
-[ethernet]
-mtu={{ network_mtu }}
-
-[ipv4]
-method=manual
-may-fail=false
-address1={{ hostip }}/{{ network_prefix }}
-gateway={{ network_gateway }}
-dns={{ network_dns | join(';') }};
-dns-search={{ domain }};
+[bridge-port]

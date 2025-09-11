@@ -13,3 +13,4 @@ bond_mode: 802.3ad
 #bond_mode: balance-rr
 bond_xmit_hash_policy: layer2
 bond_miimon: 100
+bridge_1: br0

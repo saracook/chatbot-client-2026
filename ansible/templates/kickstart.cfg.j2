@@ -65,19 +65,20 @@ network:
 EOF
 rm -f /etc/NetworkManager/system-connections/*
 {% if mac_address_1 is defined %}
-cat <<EOF > /etc/NetworkManager/system-connections/{{ nic_1 }}.nmconnection
-{% include "nic_1.nmconnection.j2" %}
+cat <<EOF > /etc/NetworkManager/system-connections/{{ bond_1 }}-{{ nic_1 }}.nmconnection
+{% include "nic_1.nmconnection.j2" +%}
 EOF
 {% endif %}
 {% if mac_address_2 is defined %}
-cat <<EOF > /etc/NetworkManager/system-connections/{{ nic_2 }}.nmconnection
-{% include "nic_2.nmconnection.j2" %}
+cat <<EOF > /etc/NetworkManager/system-connections/{{ bond_1 }}-{{ nic_2 }}.nmconnection
+{% include "nic_2.nmconnection.j2" +%}
 EOF
 {% endif %}
-{% if mac_address_1 is defined and mac_address_2 is defined %}
 cat <<EOF > /etc/NetworkManager/system-connections/{{ bond_1 }}.nmconnection
 {% include "bond_1.nmconnection.j2" +%}
 EOF
-{% endif %}
+cat <<EOF > /etc/NetworkManager/system-connections/{{ bridge_1 }}.nmconnection
+{% include "bridge_1.nmconnection.j2" +%}
+EOF
 chmod 600 /etc/NetworkManager/system-connections/*
 %end
