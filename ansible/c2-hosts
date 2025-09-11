@@ -76,3 +76,7 @@ all:
     default_user_groups: [adm, systemd-journal]
     default_password: "{{ lookup('env', 'DEFAULT_PASSWORD') }}"
     slurm_version: 25.05.3
+    nginx_ip: "{{ hostvars[groups['c2_pxe_server'][0]]['ansible_host'] }}"
+    nginx_port: 8000
+    rpm_repo_ip: "{{ hostvars[groups['c2_rpm_repo_server'][0]]['ansible_host'] }}"
+    rpm_repo_port: 8000

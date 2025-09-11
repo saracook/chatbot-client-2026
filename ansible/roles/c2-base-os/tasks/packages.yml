@@ -1,3 +1,15 @@
+# rocky*.repo files contained in package rocky-repos
+- name: install /etc/yum.repos.d/rocky*.repo
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: /etc/yum.repos.d/{{ item }}
+  loop:
+    - c2-local.repo
+    - rocky-addons.repo
+    - rocky-devel.repo
+    - rocky-extras.repo
+    - rocky.repo
+
 - name: install packages
   ansible.builtin.dnf:
     name:
