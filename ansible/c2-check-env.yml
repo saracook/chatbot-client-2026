@@ -25,4 +25,4 @@
         content: |
           {{ lookup('env', 'ANSIBLE_SSH_PUBLIC_KEY') }}
         dest: "{{ ansible_ssh_public_key_file }}"
-        mode: '00600'
+        mode: '00644'
