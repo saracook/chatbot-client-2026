@@ -17,9 +17,10 @@
     hostip: "{{ ansible_host }}"
     filename: /etc/NetworkManager/system-connections/{{ hostvars[inventory_hostname][item] }}.nmconnection
   loop:
-    - bond_1
     - nic_1
     - nic_2
+    - bond_1
+    - bridge_1
   register: nmscfiles
 
 # 'nmcli connection reload' is not sufficient if the bond mode changes
