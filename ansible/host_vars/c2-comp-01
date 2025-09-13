@@ -5,6 +5,6 @@ idrac_ip: 10.112.12.39
 idrac_mac: "6c:3c:8c:92:37:5c"
 service_tag: 1CDCZ84
 rack_location: SRCF B3 U29-32
-switch_eth_port_1: 1/1/29
-switch_eth_port_2: 1/1/30
+switch_eth_port_1: 1/1/21
+switch_eth_port_2: 1/1/22
 switch_port_channel: 8

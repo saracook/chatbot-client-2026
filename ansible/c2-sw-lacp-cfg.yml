@@ -1,0 +1,12 @@
+- name: generate dell os10 switch config commands for lacp port channels
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    dest: "{{ playbook_dir }}/c2-sw-lacp-cfg.txt"
+    src: "{{ dest | basename }}.j2"
+  tasks:
+    - name: install {{ dest }}
+      ansible.builtin.template:
+        src: "{{ src }}"
+        dest: "{{ dest }}"

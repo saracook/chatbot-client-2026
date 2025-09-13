@@ -1,0 +1,35 @@
+{% for host in groups['all'] %}
+{% if host not in groups['c2_kvm_guest'] %}
+
+# begin host {{ host }}
+configure terminal
+no interface port-channel {{ hostvars[host]['switch_port_channel'] }}
+end
+configure terminal
+interface port-channel {{ hostvars[host]['switch_port_channel'] }}
+end
+configure terminal
+interface range ethernet {{ hostvars[host]['switch_eth_port_1'] }}-{{ hostvars[host]['switch_eth_port_2'] }}
+channel-group {{ hostvars[host]['switch_port_channel'] }} mode active
+end
+configure terminal
+interface port-channel {{ hostvars[host]['switch_port_channel'] }}
+switchport mode trunk
+switchport access vlan {{ network_access_vlan }}
+switchport trunk allowed vlan {{ network_trunk_vlans | join(',') }}
+lacp individual
+description "{{ host }} lacp {{ hostvars[host]['bond_1'] }}"
+end
+configure terminal
+interface ethernet {{ hostvars[host]['switch_eth_port_1'] }}
+description "{{ host }} ethernet {{ hostvars[host]['nic_1'] }}"
+end
+configure terminal
+interface ethernet {{ hostvars[host]['switch_eth_port_2'] }}
+description "{{ host }} ethernet {{ hostvars[host]['nic_2'] }}"
+end
+write memory
+# end host {{ host }}
+
+{% endif %}
+{% endfor %}
