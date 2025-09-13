@@ -2,7 +2,7 @@ set default=0
 set timeout=10
 {% if pxe_mode is defined and pxe_mode == 'netinstall' %}
 menuentry  'Install Rocky Linux {{ distro_version }}' --class fedora --class gnu-linux --class gnu --class os {
-  linuxefi {{ iso_pxe_linux }} ip=dhcp {{ 'net.ifnames=0 biosdevname=0' if hostname in groups['c2_kvm_guest'] else '' }} {{ 'console=tty0 console=ttyS0,115200n8' if hostname in groups['c2_kvm_guest'] else 'console=ttyS0,115200n8 console=tty0' }} inst.ks=http://{{ nginx_ip }}:{{ nginx_port }}/{{ hostname }}/kickstart.cfg ds=nocloud;s=http://{{ nginx_ip }}:{{ nginx_port }}/{{ hostname }}/
+  linuxefi {{ iso_pxe_linux }} ip=dhcp {{ 'net.ifnames=0 biosdevname=0' if hostname in groups['c2_kvm_guest'] else '' }} console=ttyS0,115200n8 console=tty0 inst.ks=http://{{ nginx_ip }}:{{ nginx_port }}/{{ hostname }}/kickstart.cfg ds=nocloud;s=http://{{ nginx_ip }}:{{ nginx_port }}/{{ hostname }}/
   initrdefi {{ iso_pxe_initrd }}
 }
 {% else %}

@@ -3,7 +3,7 @@ DEFAULT {{ hostname }}
 LABEL {{ hostname }}
   KERNEL {{ iso_pxe_linux }}
   INITRD {{ iso_pxe_initrd }}
-  APPEND ip=dhcp {{ 'net.ifnames=0 biosdevname=0' if hostname in groups['c2_kvm_guest'] else '' }} {{ 'console=tty0 console=ttyS0,115200n8' if hostname in groups['c2_kvm_guest'] else 'console=ttyS0,115200n8 console=tty0' }} inst.ks=http://{{ nginx_ip }}:{{ nginx_port }}/{{ hostname }}/kickstart.cfg ds=nocloud;s=http://{{ nginx_ip }}:{{ nginx_port }}/{{ hostname }}/ ---
+  APPEND ip=dhcp {{ 'net.ifnames=0 biosdevname=0' if hostname in groups['c2_kvm_guest'] else '' }} console=ttyS0,115200n8 console=tty0 inst.ks=http://{{ nginx_ip }}:{{ nginx_port }}/{{ hostname }}/kickstart.cfg ds=nocloud;s=http://{{ nginx_ip }}:{{ nginx_port }}/{{ hostname }}/ ---
 {% else %}
 DEFAULT localboot
 LABEL localboot
