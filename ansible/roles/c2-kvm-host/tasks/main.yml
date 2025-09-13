@@ -96,12 +96,18 @@
     cmd: |
       mdadm --query --detail /dev/{{ md_1 }} >/dev/null 2>&1
   register: mdq
+  ignore_errors: true
   changed_when: false
 
 - name: create raid1 {{ md_1 }} with first two extra nvme disks
   ansible.builtin.shell:
     cmd: |
       set -e
+      # todo: stop only array contains specific disks
+      for MD in $(find /dev -mindepth 1 -maxdepth 1 -type b -name 'md*')
+      do
+        mdadm --stop --force $MD
+      done
       wipefs \
       --all \
       --force \
@@ -115,8 +121,18 @@
       --raid-devices 2 \
       /dev/disk/by-id/{{ nvme_disk_ids[0] }} \
       /dev/disk/by-id/{{ nvme_disk_ids[1] }}
+      wipefs \
+      --all \
+      --force \
+      /dev/{{ md_1 }}
       mdadm --detail --scan | tee /etc/mdadm.conf
   when: mdq.rc != 0
+
+- name: create lvm pv /dev/{{ md_1 }}
+  community.general.lvm_pv:
+    device: /dev/{{ md_1 }}
+    state: present
+    force: yes
 
 - name: create lvm vg /dev/{{ pool_1 }} with pv /dev/{{ md_1 }}
   community.general.lvg:
