@@ -81,12 +81,6 @@
     command: define
     xml: "{{ lookup('template', 'bridge_1.xml.j2') }}"
 
-#- name: install {{ bridge_1 }}.xml
-#  ansible.builtin.template:
-#    src: bridge_1.xml.j2
-#    dest: /etc/libvirt/qemu/networks/{{ bridge_1 }}.xml
-#    mode: '00600'
-
 - name: start network {{ bridge_1 }}
   community.libvirt.virt_net:
     name: "{{ bridge_1 }}"
