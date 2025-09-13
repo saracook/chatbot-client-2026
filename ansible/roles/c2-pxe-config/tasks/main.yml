@@ -6,7 +6,7 @@
     group: root
     mode: '0755'
 
-- name: install /srv/pxelinux.cfg/{{ filename }}
+- name: install /srv/pxelinux.cfg/01-*
   ansible.builtin.template:
     src: pxelinuxcfg.j2
     dest: /srv/pxelinux.cfg/{{ filename }}
@@ -20,7 +20,7 @@
     filename: "01-{{ ( hostvars[client]['mac_address_1'] if 'mac_address_1' in hostvars[client] else hostvars[client]['mac_address_2'] ) | replace(':','-') }}"
     hostname: "{{ client }}"
 
-- name: install /srv/{{ filename }}
+- name: install /srv/grub.cfg-01-*
   ansible.builtin.template:
     src: grub.cfg.j2
     dest: /srv/{{ filename }}
@@ -34,7 +34,7 @@
     filename: "grub.cfg-01-{{ ( hostvars[client]['mac_address_1'] if 'mac_address_1' in hostvars[client] else hostvars[client]['mac_address_2'] ) | replace(':','-') }}"
     hostname: "{{ client }}"
 
-- name: create directory /srv/{{ client }}
+- name: create host directories in /srv
   ansible.builtin.file:
     path: /srv/{{ client }}
     state: directory
