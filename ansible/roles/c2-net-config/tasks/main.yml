@@ -15,7 +15,9 @@
     mode: '00600'
   vars:
     hostip: "{{ ansible_host }}"
+    hostname: "{{ inventory_hostname }}"
     filename: /etc/NetworkManager/system-connections/{{ hostvars[inventory_hostname][item] }}.nmconnection
+  when: item in hostvars[inventory_hostname]
   loop:
     - nic_1
     - nic_2
