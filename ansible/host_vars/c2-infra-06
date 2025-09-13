@@ -8,3 +8,8 @@ rack_location: SRCF B3 U38
 switch_eth_port_1: 1/1/19
 switch_eth_port_2: 1/1/20
 switch_port_channel: 7
+nvme_disk_ids:
+  - nvme-eui.37374330584001040025384300000001
+  - nvme-eui.37374330584001120025384300000001
+  - nvme-eui.37374330584001170025384300000001
+  - nvme-eui.37374330584001220025384300000001

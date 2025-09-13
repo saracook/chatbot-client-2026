@@ -1,0 +1,10 @@
+vcpus: 2
+memory_gb: 8
+swapfile_gb: 2
+nic_1: eth0
+boot_disk_dev: vda
+boot_disk_gb: 32
+boot_disk_bytes: "{{ 32 * 1024 * 1024 * 1024 }}"
+data_disk_dev: vdb
+data_disk_gb: 64
+data_disk_bytes: "{{ 64 * 1024 * 1024 * 1024 }}"

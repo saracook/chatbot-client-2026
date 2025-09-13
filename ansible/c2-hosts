@@ -30,6 +30,12 @@ all:
         c2-infra-04:
         c2-infra-05:
         c2-infra-06:
+    c2_kvm_guest:
+      hosts:
+        c2-test-vm:
+    c2_kvm_host:
+      hosts:
+        c2-infra-02:
     c2_pxe_client:
       hosts:
         c2-comp-01:
@@ -42,6 +48,7 @@ all:
         c2-infra-04:
         c2-infra-05:
         c2-infra-06:
+        c2-test-vm:
     c2_pxe_server:
       hosts:
         c2-infra-01:

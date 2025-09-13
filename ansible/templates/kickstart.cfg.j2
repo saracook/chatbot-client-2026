@@ -1,7 +1,11 @@
 %pre --erroronfail --interpreter=/bin/bash
 BYTES="{{ boot_disk_bytes }}"
 DISK="$( lsblk -bdnr | grep " $BYTES " | awk '{print $1}' )"
+{% if hostname in groups['c2_kvm_guest'] %}
+DEV="/dev/$DISK"
+{% else %}
 DEV="$( find /dev/disk/by-id/nvme-eui.* -type l -lname "*/$DISK" | cut -d/ -f3- )"
+{% endif %}
 cat <<EOF > /tmp/boot-disk-part
 part /boot/efi --asprimary --fstype=efi --ondisk=$DEV --size=256
 part /boot --asprimary --fstype=xfs --ondisk=$DEV --size=512
@@ -64,6 +68,11 @@ network:
   config: disabled
 EOF
 rm -f /etc/NetworkManager/system-connections/*
+{% if hostname in groups['c2_kvm_guest'] %}
+cat <<EOF > /etc/NetworkManager/system-connections/{{ nic_1 }}.nmconnection
+{% include "nic_1.nmconnection.j2" +%}
+EOF
+{% else %}
 {% if mac_address_1 is defined %}
 cat <<EOF > /etc/NetworkManager/system-connections/{{ bond_1 }}-{{ nic_1 }}.nmconnection
 {% include "nic_1.nmconnection.j2" +%}
@@ -80,5 +89,6 @@ EOF
 cat <<EOF > /etc/NetworkManager/system-connections/{{ bridge_1 }}.nmconnection
 {% include "bridge_1.nmconnection.j2" +%}
 EOF
+{% endif %}
 chmod 600 /etc/NetworkManager/system-connections/*
 %end

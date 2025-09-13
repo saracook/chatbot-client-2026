@@ -1,0 +1,139 @@
+- name: install packages
+  ansible.builtin.dnf:
+    name:
+      - edk2-ovmf
+      - libvirt
+      - lvm2
+      - qemu-kvm
+      - virt-viewer
+      - xorg-x11-xauth
+    state: present
+    update_cache: yes
+
+- name: start/enable libvirtd service
+  ansible.builtin.systemd_service:
+    name: libvirtd.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: install /etc/libvirt/libvirtd.conf
+  ansible.builtin.copy:
+    content: |
+      unix_sock_group = "libvirt"
+      unix_sock_rw_perms = "0770"
+    dest: /etc/libvirt/libvirtd.conf
+  register: lbvrtdcnf
+
+- name: set uri_default in /etc/libvirt/libvirt.conf
+  ansible.builtin.lineinfile:
+    dest: /etc/libvirt/libvirt.conf
+    regexp: '^uri_default = '
+    line: 'uri_default = "qemu:///system"'
+  register: lbvrtcnf
+
+- name: allow remote access via policykit
+  ansible.builtin.template:
+    src: 50-libvirt-remote-access.pkla.j2
+    dest: /etc/polkit-1/localauthority/50-local.d/50-libvirt-remote-access.pkla
+  register: plcyktcnf
+
+- name: restart libvirtd service
+  ansible.builtin.systemd_service:
+    name: libvirtd.service
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  when: lbvrtdcnf is changed or lbvrtcnf is changed or plcyktcnf is changed
+
+- name: install /etc/profile.d/libvirt.sh
+  ansible.builtin.template:
+    src: libvirt.sh.j2
+    dest: /etc/profile.d/libvirt.sh
+
+- name: add user {{ default_user }} to groups kvm and libvirt
+  ansible.builtin.user:
+    name: "{{ default_user }}"
+    groups: [kvm, libvirt]
+    append: yes
+
+- name: stop network default
+  community.libvirt.virt_net:
+    name: default
+    state: inactive
+
+- name: disable network default
+  community.libvirt.virt_net:
+    name: default
+    autostart: no
+
+- name: create network {{ bridge_1 }}
+  community.libvirt.virt_net:
+    name: "{{ bridge_1 }}"
+    command: define
+    xml: "{{ lookup('template', 'bridge_1.xml.j2') }}"
+
+#- name: install {{ bridge_1 }}.xml
+#  ansible.builtin.template:
+#    src: bridge_1.xml.j2
+#    dest: /etc/libvirt/qemu/networks/{{ bridge_1 }}.xml
+#    mode: '00600'
+
+- name: start network {{ bridge_1 }}
+  community.libvirt.virt_net:
+    name: "{{ bridge_1 }}"
+    state: active
+
+- name: enable network {{ bridge_1 }}
+  community.libvirt.virt_net:
+    name: "{{ bridge_1 }}"
+    autostart: yes
+
+- name: check for existence of {{ md_1 }}
+  ansible.builtin.shell:
+    cmd: |
+      mdadm --query --detail /dev/{{ md_1 }} >/dev/null 2>&1
+  register: mdq
+  changed_when: false
+
+- name: create raid1 {{ md_1 }} with first two extra nvme disks
+  ansible.builtin.shell:
+    cmd: |
+      set -e
+      wipefs \
+      --all \
+      --force \
+      /dev/disk/by-id/{{ nvme_disk_ids[0] }} \
+      /dev/disk/by-id/{{ nvme_disk_ids[1] }}
+      mdadm \
+      --create \
+      --metadata 1.2 \
+      /dev/{{ md_1 }} \
+      --level 1 \
+      --raid-devices 2 \
+      /dev/disk/by-id/{{ nvme_disk_ids[0] }} \
+      /dev/disk/by-id/{{ nvme_disk_ids[1] }}
+      mdadm --detail --scan | tee /etc/mdadm.conf
+  when: mdq.rc != 0
+
+- name: create lvm vg /dev/{{ pool_1 }} with pv /dev/{{ md_1 }}
+  community.general.lvg:
+    vg: "{{ pool_1 }}"
+    pvs: /dev/{{ md_1 }}
+    # todo: set pesize here
+
+- name: create lvm storage pool {{ pool_1 }}
+  community.libvirt.virt_pool:
+    name: "{{ pool_1 }}"
+    command: define
+    xml: "{{ lookup('template', 'pool_1.xml.j2') }}"
+
+- name: start lvm storage pool {{ pool_1 }}
+  community.libvirt.virt_pool:
+    name: "{{ pool_1 }}"
+    state: active
+
+- name: enable lvm storage pool {{ pool_1 }}
+  community.libvirt.virt_pool:
+    name: "{{ pool_1 }}"
+    autostart: yes
