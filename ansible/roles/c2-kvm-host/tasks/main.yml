@@ -38,6 +38,14 @@
     dest: /etc/polkit-1/localauthority/50-local.d/50-libvirt-remote-access.pkla
   register: plcyktcnf
 
+- name: restart polkit service
+  ansible.builtin.systemd_service:
+    name: polkit.service
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  when: plcyktcnf is changed
+
 - name: restart libvirtd service
   ansible.builtin.systemd_service:
     name: libvirtd.service
