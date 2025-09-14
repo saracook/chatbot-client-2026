@@ -26,6 +26,7 @@
       # repo: appstream
       - nmap-ncat
       - podman
+      - tar
       - traceroute
       - which
     state: present

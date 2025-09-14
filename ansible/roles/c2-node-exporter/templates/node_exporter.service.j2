@@ -1,0 +1,13 @@
+[Unit]
+Description=Node Exporter
+After=network.target
+
+[Service]
+Type=simple
+User=node_exporter
+Group=node_exporter
+# todo: add collector and other options
+ExecStart=/usr/local/sbin/node_exporter
+
+[Install]
+WantedBy=multi-user.target
