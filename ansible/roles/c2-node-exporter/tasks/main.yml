@@ -9,8 +9,8 @@
     uid: "{{ node_exporter_uid }}"
     group: "{{ node_exporter_group }}"
     home: /nonexistent
-    shell: /usr/sbin/nologin
     create_home: no
+    shell: /usr/sbin/nologin
 
 - name: fetch node_exporter tarball
   ansible.builtin.get_url:
