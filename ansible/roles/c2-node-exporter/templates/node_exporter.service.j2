@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-User=node_exporter
-Group=node_exporter
+User={{ node_exporter_user }}
+Group={{ node_exporter_group }}
 # todo: add collector and other options
 ExecStart=/usr/local/sbin/node_exporter
 
