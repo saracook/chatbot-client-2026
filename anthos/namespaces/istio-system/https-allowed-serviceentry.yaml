@@ -300,7 +300,12 @@ spec:
 # FD#92733 - access thru Sept 2025    
   - "code.usgs.gov"
 # FD#93795
-  - "nbdc-datashare.lassoinformatics.com"
+  - "*.lassoinformatics.com"
+  - "*.login.gov"
+  - "*.nih.gov"
+  - "*.prod.website-files.com"
+  - "*.cloudfront.net"
+  - "hubspotonwebflow.com"
   location: MESH_EXTERNAL
   ports:
   - name: https
