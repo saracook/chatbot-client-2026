@@ -4,5 +4,7 @@
   hosts: c2_kvm_host
   become: yes
   roles:
+    - name: c2-base-os
+      tags: c2-base-os
     - name: c2-kvm-host
       tags: c2-kvm-host
