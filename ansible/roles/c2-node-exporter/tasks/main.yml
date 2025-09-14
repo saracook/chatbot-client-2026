@@ -8,6 +8,7 @@
     name: "{{ node_exporter_user }}"
     uid: "{{ node_exporter_uid }}"
     group: "{{ node_exporter_group }}"
+    home: /nonexistent
     shell: /usr/sbin/nologin
     create_home: no
 
