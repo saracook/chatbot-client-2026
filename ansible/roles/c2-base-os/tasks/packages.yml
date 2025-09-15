@@ -25,6 +25,7 @@
       - nmap
       # repo: appstream
       - nmap-ncat
+      - pciutils
       - podman
       - tar
       - traceroute
