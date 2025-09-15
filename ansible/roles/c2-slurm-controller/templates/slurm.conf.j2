@@ -39,9 +39,9 @@ GresTypes=gpu
 
 # COMPUTE NODES
 NodeName=DEFAULT State=UNKNOWN
-#NodeName=c2-test-vm CPUs=2 RealMemory=8045662208 Sockets=2 CoresPerSocket=1 ThreadsPerCore=1
-# todo: RealMemory here is ~95% of ansible_memtotal_mb which is 1546454
-NodeName=c2-comp-01 CPUs=512 RealMemory=1469131 Sockets=2 CoresPerSocket=128 ThreadsPerCore=2 Gres=gpu:8
+{% for node in groups['c2_compute_node'] %}
+NodeName={{ node }} CPUs={{ hostvars[node]['cpus'] }} RealMemory={{ hostvars[node]['real_memory_mb'] }} MemSpecLimit={{ hostvars[node]['mem_spec_limit_mb'] }} SocketsPerBoard={{ hostvars[node]['sockets_per_board'] }} CoresPerSocket={{ hostvars[node]['cores_per_socket'] }} ThreadsPerCore={{ hostvars[node]['threads_per_core'] }} {{ 'Gres=' ~ hostvars[node]['gres'] if node in groups['c2_gpu_node'] else '' }}
+{% endfor %}
 
 # PARTITIONS
 PartitionName=DEFAULT SelectTypeParameters=CR_Core_Memory

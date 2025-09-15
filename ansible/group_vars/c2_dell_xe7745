@@ -1,5 +1,6 @@
 # 512 CPU cores (2 sockets, 128 cores-per-socket, 2 threads-per-core)
 # 1.5TiB RAM
+# 8 x Nvidia L40S GPUs
 boot_disk_bytes: 480036519936
 swapfile_gb: 8
 nginx_worker_processes: 32
@@ -14,3 +15,22 @@ bond_mode: 802.3ad
 bond_xmit_hash_policy: layer2
 bond_miimon: 100
 bridge_1: br0
+
+# following used in slurm.conf compute node configuration:
+boards: 1
+sockets_per_board: 2
+cores_per_socket: 128
+threads_per_core: 2
+cpus: "{{ boards * sockets_per_board * cores_per_socket * threads_per_core }}"
+# corresponds to value in fact ansible_memtotal_mb .
+# this should match RealMemory in 'slurmd -C' output.
+mem_total_mb: 1546454
+# slurm.conf: RealMemory
+real_memory_mb: "{{ mem_total_mb }}"
+mem_spec_limit_gb: 8
+# slurm.conf: MemSpecLimit
+mem_spec_limit_mb: "{{ mem_spec_limit_gb * 1024 }}"
+# following are specific to gpu compute nodes
+gres_gpu_count: 8
+gres_gpu_type: nvidia_l40s
+gres: "gpu:{{ gres_gpu_type }}:{{ gres_gpu_count }}"

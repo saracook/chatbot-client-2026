@@ -1,4 +1,3 @@
-# todo: nogo!
-#AutoDetect=nvml
-
-NodeName=c2-comp-01 Name=gpu File=/dev/nvidia[0-7] Count=8
+{% for node in groups['c2_gpu_node'] %}
+NodeName={{ node }} Name=gpu File=/dev/nvidia[0-{{ hostvars[node]['gres_gpu_count'] - 1 }}] Count={{ hostvars[node]['gres_gpu_count'] }}
+{% endfor %}
