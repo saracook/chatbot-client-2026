@@ -17,6 +17,7 @@
     hostip: "{{ ansible_host }}"
     hostname: "{{ inventory_hostname }}"
     filename: /etc/NetworkManager/system-connections/{{ hostvars[inventory_hostname][item] }}.nmconnection
+  # todo: kvm guests only have nic_1 defined
   when: item in hostvars[inventory_hostname]
   loop:
     - nic_1
