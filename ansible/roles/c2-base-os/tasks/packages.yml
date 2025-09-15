@@ -1,4 +1,4 @@
-# rocky*.repo files contained in package rocky-repos
+# modified from rocky*.repo files in package rocky-repos
 - name: install /etc/yum.repos.d/rocky*.repo
   ansible.builtin.template:
     src: "{{ item }}.j2"
@@ -20,6 +20,7 @@
       - upower
       ## misc packages
       - bind-utils
+      - hwloc
       - nmap
       # repo: appstream
       - nmap-ncat
