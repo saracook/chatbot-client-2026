@@ -1,0 +1,8 @@
+#- import_tasks: slurmdbd.yml
+#  tags: slurmdbd
+
+- import_tasks: slurmctld.yml
+  tags: slurmctld
+
+#- import_tasks: slurmrestd.yml
+#  tags: slurmrestd

@@ -12,5 +12,6 @@
         - DEFAULT_PASSWORD
         - IDRAC_PASSWORD
         - IDRAC_USERNAME
+        - MUNGE_KEY_B64
       tags:
         - always

@@ -1,0 +1,48 @@
+ClusterName={{ slurm_cluster_name }}
+{% for host in groups['c2_slurm_controller'] %}
+SlurmctldHost={{ host }}({{ hostvars[host]['ansible_host'] }})
+{% endfor %}
+ProctrackType=proctrack/cgroup
+ReturnToService=1
+SlurmctldParameters=enable_configless
+SlurmctldPidFile=/var/run/slurmctld.pid
+SlurmctldPort=6817
+SlurmdPidFile=/var/run/slurmd.pid
+SlurmdPort=6818
+SlurmdSpoolDir=/var/spool/slurmd
+SlurmUser=slurm
+StateSaveLocation=/var/spool/slurmctld
+TaskPlugin=task/affinity,task/cgroup
+
+# TIMERS
+InactiveLimit=0
+KillWait=30
+MinJobAge=300
+SlurmctldTimeout=120
+SlurmdTimeout=300
+Waittime=0
+
+# SCHEDULING
+SchedulerType=sched/backfill
+SelectType=select/cons_tres
+
+# LOGGING AND ACCOUNTING
+JobCompType=jobcomp/none
+JobAcctGatherFrequency=30
+SlurmctldDebug=info
+SlurmctldLogFile=/var/log/slurmctld.log
+SlurmdDebug=info
+SlurmdLogFile=/var/log/slurmd.log
+
+# GRES
+GresTypes=gpu
+
+# COMPUTE NODES
+NodeName=DEFAULT State=UNKNOWN
+#NodeName=c2-test-vm CPUs=2 RealMemory=8045662208 Sockets=2 CoresPerSocket=1 ThreadsPerCore=1
+# todo: RealMemory here is ~95% of ansible_memtotal_mb which is 1546454
+NodeName=c2-comp-01 CPUs=512 RealMemory=1469131 Sockets=2 CoresPerSocket=128 ThreadsPerCore=2 Gres=gpu:8
+
+# PARTITIONS
+PartitionName=DEFAULT SelectTypeParameters=CR_Core_Memory
+PartitionName=dev Nodes=ALL Default=YES MaxTime=30 State=UP

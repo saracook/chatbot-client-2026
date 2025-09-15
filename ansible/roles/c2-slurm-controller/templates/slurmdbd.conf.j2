@@ -1,0 +1,28 @@
+SlurmUser=slurm
+PidFile=/run/slurmdbd/slurmdbd.pid
+MessageTimeout=60
+PrivateData=events,reservations,usage
+DebugLevelSyslog=INFO
+
+DbdHost=yen-slurm01
+#DbdBackupHost=yen-slurm02
+# todo: get this dynamically from slurm_database host group
+StorageHost=10.203.0.199
+#StorageBackupHost=yen-hn02
+StorageType=accounting_storage/mysql
+StorageLoc=slurm
+StorageUser=slurm
+StoragePass={{ lookup('pipe', 'wallet -s wallet.stanford.edu get file password/its-rc/yen/slurm-db-slurm-password') }}
+
+ArchiveDir=/zfs/admin/slurm/archive
+ArchiveEvents=yes
+ArchiveJobs=yes
+ArchiveResvs=yes
+ArchiveSteps=yes
+ArchiveSuspend=yes
+
+PurgeEventAfter=12months
+PurgeJobAfter=12months
+PurgeResvAfter=12months
+PurgeStepAfter=12months
+PurgeSuspendAfter=12months

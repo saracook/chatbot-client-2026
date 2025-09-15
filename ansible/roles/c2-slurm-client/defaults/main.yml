@@ -1,0 +1,4 @@
+slurm_user: slurm
+slurm_uid: 6000
+slurm_group: "{{ slurm_user }}"
+slurm_gid: "{{ slurm_uid }}"

@@ -1,0 +1,49 @@
+- name: install packages
+  ansible.builtin.dnf:
+    name:
+      - slurm-slurmdbd-{{ slurm_version }}
+    state: present
+    update_cache: yes
+    enablerepo: c2-local
+
+- name: create directory /etc/slurm
+  ansible.builtin.file:
+    path: /etc/slurm
+    state: directory
+    owner: "{{ slurm_user }}"
+    group: "{{ slurm_group }}"
+
+- name: install /etc/slurm/slurmdbd.conf
+  ansible.builtin.template:
+    src: slurmdbd.conf.j2
+    dest: /etc/slurm/slurmdbd.conf
+    owner: "{{ slurm_user }}"
+    group: "{{ slurm_group }}"
+    mode: '00600'
+  register: sdbdcnf
+
+#- name: install /etc/systemd/system/slurmdbd.service
+#  ansible.builtin.copy:
+#    src: slurmdbd.service.j2
+#    dest: /etc/systemd/system/slurmdbd.service
+#    owner: root
+#    group: root
+#    mode: '00644'
+#  register: sdbdsrv
+
+- name: install /etc/sysconfig/slurmdbd
+  ansible.builtin.copy:
+    src: etc/sysconfig/slurmdbd
+    dest: /etc/sysconfig/slurmdbd
+    owner: root
+    group: root
+    mode: '00644'
+  register: sdbdsc
+
+- name: start/restart and enable slurmdbd.service
+  ansible.builtin.systemd_service:
+    name: slurmdbd.service
+    #state: "{{ 'restarted' if sdbdcnf.changed or sdbdsrv.changed or sdbdsc.changed else 'started' }}"
+    state: "{{ 'restarted' if sdbdcnf.changed or sdbdsc.changed else 'started' }}"
+    enabled: yes
+    daemon_reload: yes

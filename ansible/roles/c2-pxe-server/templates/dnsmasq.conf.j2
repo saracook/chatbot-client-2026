@@ -4,7 +4,10 @@ no-resolv
 # todo: add leading domains to server to only send queries to this
 #       server for those domains.
 {% for ns in network_dns %}
+{# exclude dnsmasq itself when forwarding queries #}
+{% if ns != ansible_host %}
 server={{ ns }}
+{% endif %}
 {% endfor %}
 dhcp-range={{ network_addr }},static,{{ network_mask }},30m
 # option 3 = gateway
@@ -26,6 +29,12 @@ dhcp-host={{ hostvars[client]['mac_address_1'] }},{{ hostvars[client]['ansible_h
 {% elif 'mac_address_2' in hostvars[client] %}
 dhcp-host={{ hostvars[client]['mac_address_2'] }},{{ hostvars[client]['ansible_host'] }},{{ client }}
 {% endif %}
+{% endfor %}
+# srv records for slurm configless
+{% set scp = 0 %}
+{% for sc in groups['c2_slurm_controller'] %}
+srv-host=_slurmctld._tcp.{{ domain }},{{ hostvars[sc]['ansible_host'] }},6817,{{ scp }},0
+{% set scp = scp + 10 %}
 {% endfor %}
 enable-tftp
 tftp-mtu={{ network_mtu }}

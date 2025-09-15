@@ -1,0 +1,1 @@
+# only run role c2-slurm-client as dependency (see meta/main.yml)

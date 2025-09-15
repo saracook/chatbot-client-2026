@@ -1,0 +1,10 @@
+- import_playbook: c2-check-env.yml
+
+- name: configure slurm controller
+  hosts: c2_slurm_controller
+  become: yes
+  roles:
+    - name: c2-base-os
+      tags: c2-base-os
+    - name: c2-slurm-controller
+      tags: c2-slurm-controller
