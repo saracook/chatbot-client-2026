@@ -40,7 +40,7 @@ all:
       hosts:
         c2-login-01:
         c2-slurmctl-01:
-        c2-test-vm:
+        c2-testvm-01:
     c2_kvm_host:
       hosts:
         c2-infra-02:
@@ -61,7 +61,7 @@ all:
         c2-infra-06:
         c2-login-01:
         c2-slurmctl-01:
-        c2-test-vm:
+        c2-testvm-01:
     c2_pxe_server:
       hosts:
         c2-infra-01:

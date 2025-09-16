@@ -3,7 +3,7 @@
 # See the slurm.conf man page for more information.
 #
 ClusterName=c2
-SlurmctldHost=c2-test-vm
+SlurmctldHost=c2-testvm-01
 #SlurmctldHost=
 #
 #DisableRootJobs=NO
