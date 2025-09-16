@@ -1,3 +1,3 @@
 {% for node in groups['c2_gpu_node'] %}
-NodeName={{ node }} Name=gpu File=/dev/nvidia[0-{{ hostvars[node]['gres_gpu_count'] - 1 }}] Count={{ hostvars[node]['gres_gpu_count'] }}
+NodeName={{ node }} Name=gpu Type={{ hostvars[node]['gres_gpu_type'] }} File=/dev/nvidia[0-{{ hostvars[node]['gres_gpu_count'] - 1 }}] Count={{ hostvars[node]['gres_gpu_count'] }} Flags=nvidia_gpu_env
 {% endfor %}
