@@ -10,36 +10,11 @@
     - rocky-extras.repo
     - rocky.repo
 
-- name: install packages
-  ansible.builtin.dnf:
-    name:
-      ## packages to maintain parity with ubuntu
-      - device-mapper-multipath
-      # package polkit installed as dependency of udisks2
-      - udisks2
-      - upower
-      ## misc packages
-      - bind-utils
-      - hwloc
-      - nmap
-      # repo: appstream
-      - nmap-ncat
-      - pciutils
-      - podman
-      - tar
-      - traceroute
-      - which
-    state: present
-    update_cache: yes
-
 - name: install epel-release package
   ansible.builtin.dnf:
     name: epel-release
     state: present
     update_cache: yes
-
-# pending epel packages:
-# - netcat
 
 - name: disable epel repo
   community.general.dnf_config_manager:
@@ -62,3 +37,9 @@
     owner: root
     group: root
     mode: '0644'
+
+- name: install base os packages
+  ansible.builtin.dnf:
+    name: "{{ base_os_packages }}"
+    state: present
+    update_cache: yes
