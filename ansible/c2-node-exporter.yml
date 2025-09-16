@@ -1,8 +1,0 @@
-- import_playbook: c2-check-env.yml
-
-- name: configure node_exporter
-  hosts: all
-  become: yes
-  roles:
-    - name: c2-node-exporter
-      tags: c2-node-exporter

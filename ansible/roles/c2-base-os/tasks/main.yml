@@ -9,3 +9,8 @@
 
 - import_tasks: chrony.yml
   tags: chrony
+
+- name: run role c2-node-exporter
+  ansible.builtin.import_role:
+    name: c2-node-exporter
+  tags: c2-node-exporter
