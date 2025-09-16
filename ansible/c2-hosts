@@ -21,6 +21,9 @@ all:
     c2_epel_repo_client:
       children:
         c2_gpu_node:
+    c2_github_actions_runner:
+      hosts:
+        c2-ghashr-01:
     c2_gpu_node:
       hosts:
         c2-comp-01:
@@ -38,6 +41,7 @@ all:
         c2-infra-06:
     c2_kvm_guest:
       hosts:
+        c2-ghashr-01:
         c2-login-01:
         c2-slurmctl-01:
         c2-testvm-01:
@@ -54,6 +58,7 @@ all:
         c2-comp-03:
         c2-comp-04:
         c2-comp-05:
+        c2-ghashr-01:
         c2-infra-02:
         c2-infra-03:
         c2-infra-04:
