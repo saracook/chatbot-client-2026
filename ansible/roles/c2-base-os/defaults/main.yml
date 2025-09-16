@@ -8,7 +8,6 @@ base_os_packages:
   - bind-utils
   - hwloc
   - nmap
-  # repo: appstream
   - nmap-ncat
   - pciutils
   - podman
