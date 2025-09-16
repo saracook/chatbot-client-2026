@@ -3,8 +3,6 @@
 # 8 x Nvidia L40S GPUs
 boot_disk_bytes: 480036519936
 swapfile_gb: 8
-nginx_worker_processes: 32
-nginx_worker_connections: 1024
 idrac_username: "{{ lookup('env', 'IDRAC_USERNAME') }}"
 idrac_password: "{{ lookup('env', 'IDRAC_PASSWORD') }}"
 nic_1: ens9f0np0
