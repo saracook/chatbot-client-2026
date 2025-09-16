@@ -37,3 +37,10 @@
     home: /nonexistent
     create_home: no
     shell: /usr/sbin/nologin
+
+- name: create directory /var/log/slurm
+  ansible.builtin.file:
+    path: /var/log/slurm
+    state: directory
+    owner: "{{ slurm_user }}"
+    group: "{{ slurm_group }}"
