@@ -1,5 +1,6 @@
 - name: check for required secrets environment variables
-  hosts: localhost
+  hosts: all
+  connection: local
   gather_facts: no
   tasks:
     - name: check for required secrets environment variables
@@ -13,5 +14,5 @@
         - IDRAC_PASSWORD
         - IDRAC_USERNAME
         - MUNGE_KEY_B64
-      tags:
-        - always
+      run_once: yes
+      tags: always
