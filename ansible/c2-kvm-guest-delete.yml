@@ -4,13 +4,14 @@
   hosts: localhost
   gather_facts: no
   tasks:
-    - name: "{{ msg }}"
+    - name: check for kvm_guests extra variable
       fail:
         msg: "{{ msg }}"
       vars:
         msg: extra variable kvm_guests is not defined, is null/empty, or is not a subset of host group c2_kvm_guest
       when: kvm_guests is not defined or kvm_guests is none or kvm_guests | length == 0 or kvm_guests is not subset(groups['c2_kvm_guest'])
-    - debug:
+    - name: show contents of kvm_guests extra variable
+      debug:
         var: kvm_guests
 
 - name: delete kvm guests and disk volumes
