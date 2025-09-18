@@ -19,8 +19,7 @@
 - name: disable epel repo
   community.general.dnf_config_manager:
     name: epel
-    state: disabled
-  when: inventory_hostname not in groups['c2_epel_repo_client']
+    state: "{{ 'enabled' if inventory_hostname in groups['c2_epel_repo_client'] else 'disabled' }}"
 
 # https://developer.download.nvidia.com/compute/cuda/repos/rhel10/x86_64/cuda-rhel10.repo
 # sha256: 689eb7ff145de980248b3a8f1ac846cf739f22ea640f530e2575e6711bdd6306
