@@ -1,0 +1,4 @@
+slurm_db_root_password: "{{ lookup('env', 'SLURM_DB_ROOT_PASSWORD') }}"
+slurm_db_slurm_password: "{{ lookup('env', 'SLURM_DB_SLURM_PASSWORD') }}"
+innodb_buffer_pool_size_gb: "{{ '%d' | format( memory_gb / 2 ) }}"
+innodb_lock_wait_timeout_sec: 600

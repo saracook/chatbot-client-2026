@@ -26,7 +26,7 @@
     dest: /etc/slurm/{{ item }}.conf
     owner: "{{ slurm_user }}"
     group: "{{ slurm_group }}"
-    mode: '00644'
+    mode: '00600'
   loop:
     - cgroup
     - gres

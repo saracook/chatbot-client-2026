@@ -8,7 +8,7 @@
     update_cache: yes
     enablerepo: c2-local
 
-- name: install munge key
+- name: install /etc/munge/munge.key
   ansible.builtin.copy:
     content: "{{ lookup('env', 'MUNGE_KEY_B64') | b64decode }}"
     dest: /etc/munge/munge.key
@@ -17,10 +17,19 @@
     mode: '0600'
   register: mngky
 
+- name: install /etc/sysconfig/munge
+  ansible.builtin.template:
+    src: munge.j2
+    dest: /etc/sysconfig/munge
+    owner: root
+    group: root
+    mode: '00644'
+  register: mngsc
+
 - name: start/restart and enable munge.service
   ansible.builtin.systemd_service:
     name: munge.service
-    state: "{{ 'restarted' if mngky.changed else 'started' }}"
+    state: "{{ 'restarted' if mngky.changed or mngsc.changed else 'started' }}"
     enabled: yes
     daemon_reload: yes
 
@@ -41,6 +50,13 @@
 - name: create directory /var/log/slurm
   ansible.builtin.file:
     path: /var/log/slurm
+    state: directory
+    owner: "{{ slurm_user }}"
+    group: "{{ slurm_group }}"
+
+- name: create directory /var/run/slurm
+  ansible.builtin.file:
+    path: /var/run/slurm
     state: directory
     owner: "{{ slurm_user }}"
     group: "{{ slurm_group }}"

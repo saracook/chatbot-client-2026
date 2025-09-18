@@ -15,5 +15,7 @@
         - IDRAC_PASSWORD
         - IDRAC_USERNAME
         - MUNGE_KEY_B64
+        - SLURM_DB_ROOT_PASSWORD
+        - SLURM_DB_SLURM_PASSWORD
       run_once: yes
       tags: always

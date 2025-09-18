@@ -20,6 +20,7 @@ all:
         c2-comp-05:
     c2_epel_repo_client:
       children:
+        # dkms and other nvidia cuda package dependencies
         c2_gpu_node:
     c2_github_actions_runner:
       hosts:
@@ -44,6 +45,7 @@ all:
         c2-ghashr-01:
         c2-login-01:
         c2-slurmctl-01:
+        c2-slurmdb-01:
         c2-testvm-01:
     c2_kvm_host:
       hosts:
@@ -66,6 +68,7 @@ all:
         c2-infra-06:
         c2-login-01:
         c2-slurmctl-01:
+        c2-slurmdb-01:
         c2-testvm-01:
     c2_pxe_server:
       hosts:
@@ -73,9 +76,18 @@ all:
     c2_rpm_repo_server:
       hosts:
         c2-infra-01:
+    c2_slurm_client:
+      children:
+        c2_compute_node:
+        c2_login_node:
+        c2_slurm_controller:
+        c2_slurm_database:
     c2_slurm_controller:
       hosts:
         c2-slurmctl-01:
+    c2_slurm_database:
+      hosts:
+        c2-slurmdb-01:
   vars:
     ansible_python_interpreter: /usr/bin/python3
     ansible_ssh_private_key_file: "{{ lookup('env', 'ANSIBLE_SSH_PRIVATE_KEY_FILE') }}"
