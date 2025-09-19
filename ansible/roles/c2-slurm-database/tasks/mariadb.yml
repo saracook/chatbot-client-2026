@@ -24,7 +24,7 @@
 
 - name: install /root/.my.cnf
   ansible.builtin.template:
-    src: .my.cnf.j2
+    src: my.cnf.j2
     dest: /root/.my.cnf
     owner: root
     group: root
@@ -32,7 +32,7 @@
 
 - name: install /home/{{ default_user }}/.my.cnf (root db user)
   ansible.builtin.template:
-    src: .my.cnf.j2
+    src: my.cnf.j2
     dest: /home/{{ default_user }}/.my.cnf
     owner: "{{ default_user }}"
     group: "{{ default_user }}"
