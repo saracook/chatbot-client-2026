@@ -36,37 +36,24 @@ sshkey --username=root "{{ lookup('file', ansible_ssh_public_key_file) }}"
 firewall --disabled
 firstboot --disabled
 selinux --disabled
-services --enabled=acpid,sshd
+services --enabled=sshd
 
 %packages
 @^minimal-environment
-acpid
-cloud-init
 %end
 
 %post --erroronfail --interpreter=/bin/bash
+fallocate -l {{ swapfile_gb }}G /swapfile
+chmod 00600 /swapfile
+mkswap /swapfile
+echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
 install \
 -o root -g root -m 0400 \
 <(echo '{{ default_user }} ALL=(ALL) NOPASSWD:ALL') \
 /etc/sudoers.d/{{ default_user }}
-cat <<EOF > /etc/cloud/cloud.cfg.d/10-nocloud.cfg
-datasource:
-  NoCloud:
-{% if ks_mode == 'cdrom' %}
-    meta-data: |
-{% macro metadata() %}{% include "meta-data.j2" %}{% endmacro %}
-{{ metadata() | indent(width=6, first=True) }}
-    user-data: |
-{% macro userdata() %}{% include "user-data.j2" %}{% endmacro %}
-{{ userdata() | indent(width=6, first=True) }}
-{% elif ks_mode == 'url' %}
-    seedfrom: http://{{ nginx_ip }}:{{ nginx_port }}/{{ hostname }}/
-{% endif %}
-EOF
-cat <<EOF > /etc/cloud/cloud.cfg.d/99-network.cfg
-network:
-  config: disabled
-EOF
+echo "PasswordAuthentication no" \
+> /etc/ssh/sshd_config.d/90-no-passwd-authn.conf 
+chmod 600 /etc/ssh/sshd_config.d/90-no-passwd-authn.conf 
 rm -f /etc/NetworkManager/system-connections/*
 {% if hostname in groups['c2_kvm_guest'] %}
 cat <<EOF > /etc/NetworkManager/system-connections/{{ nic_1 }}.nmconnection

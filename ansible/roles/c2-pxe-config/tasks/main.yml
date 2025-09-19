@@ -45,32 +45,24 @@
   loop_control:
     loop_var: client
 
-- name: install client cloudinit config files
+- name: install client kickstart.cfg files
   template:
-    src: "{{ client[1] }}.j2"
-    dest: "/srv/{{ client[0] }}/{{ client[1] }}"
-  loop: "{{ ( pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] ) | product(cloudinit_config_files) | list }}"
+    src: kickstart.cfg.j2
+    dest: "/srv/{{ client }}/kickstart.cfg"
+  loop: "{{ pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] }}"
   loop_control:
     loop_var: client
   vars:
-    hostname: "{{ client[0] }}"
-    boot_disk_bytes: "{{ hostvars[client[0]]['boot_disk_bytes'] }}"
-    swapfile_gb: "{{ hostvars[client[0]]['swapfile_gb'] }}"
-    mac_address_1: "{{ hostvars[client[0]]['mac_address_1'] }}"
-    mac_address_2: "{{ hostvars[client[0]]['mac_address_2'] }}"
-    nic_1: "{{ hostvars[client[0]]['nic_1'] }}"
-    nic_2: "{{ hostvars[client[0]]['nic_2'] }}"
-    bond_1: "{{ hostvars[client[0]]['bond_1'] }}"
-    bond_mode: "{{ hostvars[client[0]]['bond_mode'] }}"
-    bond_xmit_hash_policy: "{{ hostvars[client[0]]['bond_xmit_hash_policy'] }}"
-    bond_miimon: "{{ hostvars[client[0]]['bond_miimon'] }}"
-    hostip: "{{ hostvars[client[0]]['ansible_host'] }}"
+    hostname: "{{ client }}"
+    boot_disk_bytes: "{{ hostvars[client]['boot_disk_bytes'] }}"
+    swapfile_gb: "{{ hostvars[client]['swapfile_gb'] }}"
+    mac_address_1: "{{ hostvars[client]['mac_address_1'] }}"
+    mac_address_2: "{{ hostvars[client]['mac_address_2'] }}"
+    nic_1: "{{ hostvars[client]['nic_1'] }}"
+    nic_2: "{{ hostvars[client]['nic_2'] }}"
+    bond_1: "{{ hostvars[client]['bond_1'] }}"
+    bond_mode: "{{ hostvars[client]['bond_mode'] }}"
+    bond_xmit_hash_policy: "{{ hostvars[client]['bond_xmit_hash_policy'] }}"
+    bond_miimon: "{{ hostvars[client]['bond_miimon'] }}"
+    hostip: "{{ hostvars[client]['ansible_host'] }}"
     ks_mode: url
-
-- name: generate client cloudinit config urls
-  debug:
-    msg: "http://{{ nginx_ip }}:{{ nginx_port }}/{{ client[0] }}/{{ client[1] }}"
-  loop: "{{ ( pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] ) | product(cloudinit_config_files) | list }}"
-  loop_control:
-    loop_var: client
-  throttle: 1

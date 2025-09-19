@@ -5,6 +5,7 @@
     enabled: yes
     daemon_reload: yes
   loop:
+    - acpid
     - multipathd
     - polkit
     - udisks2

@@ -1,7 +1,2 @@
 iso_pxe_linux: "{{ distro }}/images/pxeboot/vmlinuz"
 iso_pxe_initrd: "{{ distro }}/images/pxeboot/initrd.img"
-# network-config and vendor-data removed
-cloudinit_config_files:
-  - kickstart.cfg
-  - meta-data
-  - user-data
