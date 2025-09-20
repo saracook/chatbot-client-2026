@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -e
+
+[ -n "$@" ] && exec "$@"
+
+SLURM_TARBALL_BASE_URL="https://download.schedmd.com/slurm"
+SLURM_TARBALL_URL="$SLURM_TARBALL_BASE_URL/slurm-${SLURM_VERSION}.tar.bz2"
+SLURM_TARBALL_SHA256_URL="$SLURM_TARBALL_BASE_URL/SHA256"
+SLURM_TARBALL="$( basename $SLURM_TARBALL_URL )"
+
+mkdir -p /pwd && cd /pwd
+{% if _distro.value.version == '9.6' %}
+echo '%_with_slurmrestd 1' > $HOME/.rpmmacros
+{% endif %}
+curl -LO $SLURM_TARBALL_URL
+curl --fail --silent $SLURM_TARBALL_SHA256_URL | grep $SLURM_TARBALL | sha256sum --check --status
+rpmbuild -ta $SLURM_TARBALL
+rm -fv $SLURM_TARBALL
+mv -fv $HOME/rpmbuild/RPMS/$(uname -m)/*.rpm .

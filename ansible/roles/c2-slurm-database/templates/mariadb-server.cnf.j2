@@ -1,0 +1,14 @@
+[server]
+
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+log_error=/var/log/mariadb/mariadb.log
+pid_file=/run/mariadb/mariadb.pid
+bind_address=0.0.0.0
+innodb_buffer_pool_size={{ innodb_buffer_pool_size_gb }}G
+innodb_lock_wait_timeout={{ innodb_lock_wait_timeout_sec }}
+
+[mariadb]
+
+[mariadb-10.11]

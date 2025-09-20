@@ -1,0 +1,3 @@
+ansible_host: 10.112.12.44
+kvm_host: c2-infra-02
+mac_address_1: "52:54:00:e0:d3:f7"

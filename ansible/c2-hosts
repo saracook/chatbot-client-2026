@@ -1,0 +1,151 @@
+all:
+  children:
+    c2_compute_node:
+      children:
+        c2_gpu_node:
+    c2_dell_r6625:
+      hosts:
+        c2-infra-01:
+        c2-infra-02:
+        c2-infra-03:
+        c2-infra-04:
+        c2-infra-05:
+        c2-infra-06:
+    c2_dell_xe7745:
+      hosts:
+        c2-comp-01:
+        c2-comp-02:
+        c2-comp-03:
+        c2-comp-04:
+        c2-comp-05:
+    c2_epel_repo_client:
+      children:
+        # dkms and other nvidia cuda package dependencies
+        c2_gpu_node:
+        # provides ruby and nodejs dnf modules for ood
+        c2_open_ondemand:
+    c2_github_actions_runner:
+      hosts:
+        c2-ghashr-01:
+    c2_gpu_node:
+      hosts:
+        c2-comp-01:
+        c2-comp-02:
+        c2-comp-03:
+        c2-comp-04:
+        c2-comp-05:
+    c2_infra_node:
+      hosts:
+        c2-infra-01:
+        c2-infra-02:
+        c2-infra-03:
+        c2-infra-04:
+        c2-infra-05:
+        c2-infra-06:
+    c2_kvm_guest:
+      hosts:
+        c2-ghashr-01:
+        c2-login-01:
+        c2-ood-01:
+        c2-slurmctl-01:
+        c2-slurmdb-01:
+        c2-testvm-01:
+    c2_kvm_host:
+      hosts:
+        c2-infra-02:
+    c2_login_node:
+      hosts:
+        c2-login-01:
+    c2_open_ondemand:
+      hosts:
+        c2-ood-01:
+    c2_pxe_client:
+      hosts:
+        c2-comp-01:
+        c2-comp-02:
+        c2-comp-03:
+        c2-comp-04:
+        c2-comp-05:
+        c2-ghashr-01:
+        c2-infra-02:
+        c2-infra-03:
+        c2-infra-04:
+        c2-infra-05:
+        c2-infra-06:
+        c2-login-01:
+        c2-ood-01:
+        c2-slurmctl-01:
+        c2-slurmdb-01:
+        c2-testvm-01:
+    c2_pxe_server:
+      hosts:
+        c2-infra-01:
+    c2_rpm_repo_server:
+      hosts:
+        c2-infra-01:
+    c2_slurm_client:
+      children:
+        c2_compute_node:
+        c2_login_node:
+        c2_open_ondemand:
+        c2_slurm_controller:
+        c2_slurm_database:
+    c2_slurm_controller:
+      hosts:
+        c2-slurmctl-01:
+    c2_slurm_database:
+      hosts:
+        c2-slurmdb-01:
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    ansible_ssh_private_key_file: "{{ lookup('env', 'ANSIBLE_SSH_PRIVATE_KEY_FILE') }}"
+    ansible_ssh_public_key_file: "{{ lookup('env', 'ANSIBLE_SSH_PUBLIC_KEY_FILE') }}"
+    domain: stanford.edu
+    timezone: America/Los_Angeles
+    locale: en_US.UTF-8
+    ntp_server: time.stanford.edu
+    network_access_vlan: 3038
+    network_trunk_vlans: [2008,2009]
+    network_addr: 10.112.12.0
+    network_prefix: 22
+    network_cidr: "{{ network_addr }}/{{ network_prefix }}"
+    network_mask: "{{ network_cidr | ansible.utils.ipaddr('netmask') }}"
+    network_gateway: "{{ network_cidr | ansible.utils.next_nth_usable(1) }}"
+    network_dns:
+      # srv records for slurm configless
+      - "{{ hostvars[groups['c2_pxe_server'][0]]['ansible_host'] }}"
+      - 171.64.1.234
+      - 171.67.1.234
+    network_mtu: 9000
+    # default distro. must be one of the keys in distros.
+    # override in host/group vars to select a different version.
+    distro: rocky_10_0
+    distros:
+      rocky_9_6:
+        el: el9
+        version: 9.6
+        version_major: 9
+        name: rocky-9.6
+        iso_url: http://dl.rockylinux.org/pub/rocky/9.6/isos/x86_64/Rocky-9.6-x86_64-minimal.iso
+        iso_sha256: aed9449cf79eb2d1c365f4f2561f923a80451b3e8fdbf595889b4cf0ac6c58b8
+        iso_pxe_linux: rocky-9.6/images/pxeboot/vmlinuz
+        iso_pxe_initrd: rocky-9.6/images/pxeboot/initrd.img
+      rocky_10_0:
+        el: el10
+        version: 10.0
+        version_major: 10
+        name: rocky-10.0
+        iso_url: http://dl.rockylinux.org/pub/rocky/10.0/isos/x86_64/Rocky-10.0-x86_64-minimal.iso
+        iso_sha256: de75c2f7cc566ea964017a1e94883913f066c4ebeb1d356964e398ed76cadd12
+        iso_pxe_linux: rocky-10.0/images/pxeboot/vmlinuz
+        iso_pxe_initrd: rocky-10.0/images/pxeboot/initrd.img
+    ansible_user: rocky
+    default_user: rocky
+    default_user_gecos: Rocky Linux
+    default_user_groups: [adm, systemd-journal]
+    default_password: "{{ lookup('env', 'DEFAULT_PASSWORD') }}"
+    slurm_version: 25.05.3
+    nginx_ip: "{{ hostvars[groups['c2_pxe_server'][0]]['ansible_host'] }}"
+    nginx_port: 8000
+    rpm_repo_ip: "{{ hostvars[groups['c2_rpm_repo_server'][0]]['ansible_host'] }}"
+    rpm_repo_port: 8000

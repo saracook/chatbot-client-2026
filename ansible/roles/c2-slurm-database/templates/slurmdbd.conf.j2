@@ -1,0 +1,32 @@
+SlurmUser={{ slurm_user }}
+PidFile=/var/run/slurm/slurmdbd.pid
+LogFile=/var/log/slurm/slurmdbd.log
+MessageTimeout=60
+PrivateData=events,reservations,usage
+DebugLevelSyslog=INFO
+
+DbdHost={{ inventory_hostname }}
+DbdPort=6819
+# todo: set this!
+#DbdBackupHost=...
+StorageHost={{ inventory_hostname }}
+# todo: set this!
+#StorageBackupHost=...
+StorageType=accounting_storage/mysql
+StorageLoc=slurm
+StorageUser=slurm
+StoragePass={{ slurm_db_slurm_password }}
+
+# todo: set this (default: /tmp)!
+#ArchiveDir=...
+ArchiveEvents=yes
+ArchiveJobs=yes
+ArchiveResvs=yes
+ArchiveSteps=yes
+ArchiveSuspend=yes
+
+PurgeEventAfter=12months
+PurgeJobAfter=12months
+PurgeResvAfter=12months
+PurgeStepAfter=12months
+PurgeSuspendAfter=12months

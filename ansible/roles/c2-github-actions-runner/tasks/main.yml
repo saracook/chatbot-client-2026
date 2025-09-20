@@ -1,0 +1,95 @@
+- name: install packages
+  ansible.builtin.dnf:
+    name:
+      - libicu
+    state: present
+    update_cache: yes
+
+- name: create directory {{ ghashr_dir }}
+  ansible.builtin.file:
+    path: "{{ ghashr_dir }}"
+    state: directory
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+
+- name: fetch ghashr tarball
+  ansible.builtin.get_url:
+    url: "{{ ghashr_tgz_url }}"
+    dest: /var/tmp/{{ ghashr_tgz }}
+    checksum: "sha256:{{ ghashr_tgz_sha256 }}"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+    mode: '0644'
+
+- name: extract ghashr tarball
+  ansible.builtin.unarchive:
+    src: /var/tmp/{{ ghashr_tgz }}
+    dest: "{{ ghashr_dir }}"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+    remote_src: yes
+    creates: "{{ ghashr_dir }}/config.sh"
+
+- name: check for existence of ghashr {{ inventory_hostname }}
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/stanford-rc/carina/actions/runners?name={{ inventory_hostname }}
+    method: GET
+    follow_redirects: all
+    status_code: [200]
+    headers:
+      Accept: application/vnd.github+json
+      Authorization: Bearer {{ github_access_token }}
+      X-GitHub-Api-Version: 2022-11-28
+  register: getghashr
+
+- name: create ghashr {{ inventory_hostname }}
+  block:
+
+    - name: get registration token for ghashr {{ inventory_hostname }}
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/stanford-rc/carina/actions/runners/registration-token
+        method: POST
+        follow_redirects: all
+        status_code: [201]
+        headers:
+          Accept: application/vnd.github+json
+          Authorization: Bearer {{ github_access_token }}
+          X-GitHub-Api-Version: 2022-11-28
+      register: getregtoken
+      no_log: yes
+
+    - name: set fact ghashr_reg_token
+      ansible.builtin.set_fact:
+        ghashr_reg_token: "{{ getregtoken.json.token }}"
+      no_log: yes
+
+    - name: run ghashr configuration script
+      become: no
+      ansible.builtin.shell:
+        cmd: |
+          ./config.sh \
+          --disableupdate \
+          --name {{ inventory_hostname }} \
+          --replace \
+          --token $GHASHR_REG_TOKEN \
+          --unattended \
+          --url https://github.com/stanford-rc/carina
+        chdir: "{{ ghashr_dir }}"
+      environment:
+        GHASHR_REG_TOKEN: "{{ ghashr_reg_token }}"
+
+    - name: run ghashr service installation script
+      become: no
+      ansible.builtin.shell:
+        cmd: |
+          sudo ./svc.sh install {{ default_user }}
+        chdir: "{{ ghashr_dir }}"
+
+    - name: start/enable {{ ghashr_service }}
+      ansible.builtin.systemd_service:
+        name: "{{ ghashr_service }}"
+        state: started
+        enabled: yes
+        daemon_reload: yes
+
+  when: not getghashr.json.runners

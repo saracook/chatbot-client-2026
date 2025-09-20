@@ -1,0 +1,22 @@
+- import_tasks: packages.yml
+  tags: packages
+
+- import_tasks: multipath.yml
+  tags: multipath
+
+- import_tasks: services.yml
+  tags: services
+
+- import_tasks: chrony.yml
+  tags: chrony
+
+- name: run role c2-kvm-guest
+  ansible.builtin.import_role:
+    name: c2-kvm-guest
+  tags: c2-kvm-guest
+  when: inventory_hostname in groups['c2_kvm_guest']
+
+- name: run role c2-node-exporter
+  ansible.builtin.import_role:
+    name: c2-node-exporter
+  tags: c2-node-exporter

@@ -1,0 +1,23 @@
+- import_playbook: c2-check-env.yml
+
+- name: power down host
+  hosts: all
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: power down host {{ inventory_hostname }}
+      ansible.builtin.shell:
+        cmd: |
+          sshpass \
+          -p "$IDRAC_PASSWORD" \
+          ssh \
+          -l "$IDRAC_USERNAME" \
+          {{ idrac_ip }} \
+          racadm serveraction powerdown
+      environment:
+        IDRAC_PASSWORD: "{{ idrac_password }}"
+        IDRAC_USERNAME: "{{ idrac_username }}"
+      register: pwrdown
+
+    - debug:
+        msg: "{{ pwrdown.stdout }}"

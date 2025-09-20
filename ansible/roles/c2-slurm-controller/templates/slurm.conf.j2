@@ -1,0 +1,62 @@
+ClusterName={{ slurm_cluster_name }}
+{% for host in groups['c2_slurm_controller'] %}
+SlurmctldHost={{ host }}({{ hostvars[host]['ansible_host'] }})
+{% endfor %}
+ProctrackType=proctrack/cgroup
+ReturnToService=1
+SlurmctldParameters=enable_configless
+SlurmctldPidFile=/var/run/slurm/slurmctld.pid
+SlurmctldPort=6817
+SlurmdPidFile=/var/run/slurm/slurmd.pid
+SlurmdPort=6818
+SlurmdSpoolDir=/var/spool/slurmd
+SlurmUser=slurm
+StateSaveLocation=/var/spool/slurmctld
+TaskPlugin=task/affinity,task/cgroup
+
+# TIMERS
+InactiveLimit=0
+KillWait=30
+MinJobAge=300
+SlurmctldTimeout=120
+SlurmdTimeout=300
+Waittime=0
+
+# SCHEDULING
+SchedulerType=sched/backfill
+SelectType=select/cons_tres
+
+# SUBMISSION
+EnforcePartLimits=ALL
+
+# ACCOUNTING
+JobCompType=jobcomp/none
+JobAcctGatherType=jobacct_gather/cgroup
+JobAcctGatherFrequency=30
+AccountingStorageType=accounting_storage/slurmdbd
+AccountingStorageHost={{ groups['c2_slurm_database'][0] }}
+AccountingStoragePort=6819
+AccountingStorageTRES=gres/gpu
+AccountingStorageEnforce=qos,safe
+# todo: review these
+#AcctGatherNodeFreq=300
+#AcctGatherEnergyType=acct_gather_energy/rapl
+
+# LOGGING
+SlurmctldDebug=info
+SlurmctldLogFile=/var/log/slurm/slurmctld.log
+SlurmdDebug=info
+SlurmdLogFile=/var/log/slurm/slurmd.log
+
+# GRES
+GresTypes=gpu
+
+# COMPUTE NODES
+NodeName=DEFAULT State=UNKNOWN
+{% for node in groups['c2_compute_node'] %}
+NodeName={{ node }} CPUs={{ hostvars[node]['cpus'] }} RealMemory={{ hostvars[node]['real_memory_mb'] }} MemSpecLimit={{ hostvars[node]['mem_spec_limit_mb'] }} SocketsPerBoard={{ hostvars[node]['sockets_per_board'] }} CoresPerSocket={{ hostvars[node]['cores_per_socket'] }} ThreadsPerCore={{ hostvars[node]['threads_per_core'] }} {{ 'Gres=' ~ hostvars[node]['gres'] if node in groups['c2_gpu_node'] else '' }}
+{% endfor %}
+
+# PARTITIONS
+PartitionName=DEFAULT SelectTypeParameters=CR_Core_Memory
+PartitionName=dev Nodes=ALL Default=YES MaxTime=30 State=UP

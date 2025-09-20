@@ -1,0 +1,44 @@
+user=root
+group=root
+no-resolv
+# todo: add leading domains to server to only send queries to this
+#       server for those domains.
+{% for ns in network_dns %}
+{# exclude dnsmasq itself when forwarding queries #}
+{% if ns != ansible_host %}
+server={{ ns }}
+{% endif %}
+{% endfor %}
+dhcp-range={{ network_addr }},static,{{ network_mask }},30m
+# option 3 = gateway
+dhcp-option=3,{{ network_gateway }}
+# option 6 = dns
+dhcp-option=6,{{ network_dns | join(',') }}
+#dhcp-boot=pxelinux.0
+dhcp-boot=grubx64.efi
+# todo: revisit these later for private subnets
+#domain={{ domain }},{{ network_cidr }},local
+#domain={{ domain }}
+#dhcp-fqdn
+#domain-needed
+#bogus-priv
+#address=/{{ inventory_hostname }}.{{ domain }}/{{ ansible_host }}
+{% for client in groups['c2_pxe_client'] %}
+{% if 'mac_address_1' in hostvars[client] %}
+dhcp-host={{ hostvars[client]['mac_address_1'] }},{{ hostvars[client]['ansible_host'] }},{{ client }}
+{% elif 'mac_address_2' in hostvars[client] %}
+dhcp-host={{ hostvars[client]['mac_address_2'] }},{{ hostvars[client]['ansible_host'] }},{{ client }}
+{% endif %}
+{% endfor %}
+# srv records for slurm configless
+{% set scp = 0 %}
+{% for sc in groups['c2_slurm_controller'] %}
+srv-host=_slurmctld._tcp.{{ domain }},{{ hostvars[sc]['ansible_host'] }},6817,{{ scp }},0
+{% set scp = scp + 10 %}
+{% endfor %}
+enable-tftp
+tftp-mtu={{ network_mtu }}
+tftp-root=/srv
+conf-dir=/etc/dnsmasq.d/,*.conf
+log-queries
+log-facility=/var/log/dnsmasq.log

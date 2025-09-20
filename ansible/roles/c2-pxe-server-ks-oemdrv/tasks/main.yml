@@ -1,0 +1,34 @@
+- name: create directory {{ host_dir }}
+  file:
+    path: "{{ host_dir }}"
+    state: directory
+
+- name: install kickstart.cfg
+  template:
+    src: kickstart.cfg.j2
+    dest: "{{ kickstart_cfg }}"
+  vars:
+    hostname: "{{ inventory_hostname }}"
+    hostip: "{{ ansible_host }}"
+    ks_mode: cdrom
+
+- name: install kickstart.img
+  shell:
+    cmd: |
+      set -e
+      KSMNT="$( mktemp -d )"
+      rm -fv {{ kickstart_img }}
+      dd if=/dev/zero of={{ kickstart_img }} bs=1M count=16 status=progress
+      mkfs.ext4 {{ kickstart_img }}
+      sudo mount -v {{ kickstart_img }} $KSMNT
+      sudo cp -v {{ kickstart_cfg }} $KSMNT/ks.cfg
+      sudo umount -v $KSMNT
+      e2label {{ kickstart_img }} OEMDRV
+      rmdir -v $KSMNT
+
+- name: print file locations
+  debug:
+    msg: "{{ item }}"
+  loop:
+    - "{{ kickstart_cfg }}"
+    - "{{ kickstart_img }}"

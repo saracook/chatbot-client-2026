@@ -1,0 +1,12 @@
+- name: start/enable services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}.service"
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  loop:
+    - acpid
+    - multipathd
+    - polkit
+    - udisks2
+    - upower

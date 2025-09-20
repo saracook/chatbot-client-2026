@@ -1,0 +1,19 @@
+base_os_packages:
+  ## maintain parity with ubuntu
+  - acpid
+  - device-mapper-multipath
+  # package polkit installed as dependency of udisks2
+  - udisks2
+  - upower
+  ## misc packages
+  - bind-utils
+  - hwloc
+  - nmap
+  - nmap-ncat
+  - pciutils
+  - podman
+  - rsync
+  - sysstat
+  - tar
+  - traceroute
+  - which

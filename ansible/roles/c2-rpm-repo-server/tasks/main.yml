@@ -1,0 +1,63 @@
+- name: install packages
+  ansible.builtin.dnf:
+    name:
+      - createrepo_c
+    state: present
+    update_cache: yes
+
+- name: create slurm rpm build context directories
+  file:
+    path: "{{ path }}"
+    state: directory
+  loop: "{{ distros | dict2items }}"
+  loop_control:
+    loop_var: _distro
+  vars:
+    path: /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}/tmp
+
+- name: install containerfiles
+  template:
+    src: Containerfile.j2
+    dest: "{{ dest }}"
+  loop: "{{ distros | dict2items }}"
+  loop_control:
+    loop_var: _distro
+  vars:
+    dest: /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}/Containerfile
+
+- name: install entrypoint scripts
+  template:
+    src: entrypoint.j2
+    dest: "{{ dest }}"
+    mode: '00755'
+  loop: "{{ distros | dict2items }}"
+  loop_control:
+    loop_var: _distro
+  vars:
+    dest: /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}/entrypoint
+
+- name: build container images
+  containers.podman.podman_image:
+    name: "{{ name }}"
+    tag: "{{ slurm_version }}"
+    path: "{{ path }}"
+    build:
+      cache: no
+      force_rm: yes
+      format: oci
+  loop: "{{ distros | dict2items }}"
+  loop_control:
+    loop_var: _distro
+  vars:
+    name: localhost/slurm-rpm-builder-{{ _distro.value.name }}
+    path: /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}
+
+- name: prune images
+  containers.podman.podman_prune:
+    system: true
+
+- name: build and install slurm rpms for each distro
+  ansible.builtin.include_tasks: build.yml
+  loop: "{{ distros | dict2items }}"
+  loop_control:
+    loop_var: _distro

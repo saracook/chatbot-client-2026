@@ -1,0 +1,8 @@
+- import_playbook: c2-check-env.yml
+
+- name: configure compute node
+  hosts: c2_compute_node
+  become: yes
+  roles:
+    - name: c2-compute-node
+      tags: c2-compute-node

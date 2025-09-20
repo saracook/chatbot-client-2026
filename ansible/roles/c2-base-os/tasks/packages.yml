@@ -1,0 +1,44 @@
+# modified from rocky*.repo files in package rocky-repos
+- name: install /etc/yum.repos.d/*.repo
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: /etc/yum.repos.d/{{ item }}
+  loop:
+    - c2-local.repo
+    - rocky-addons.repo
+    - rocky-devel.repo
+    - rocky-extras.repo
+    - rocky.repo
+
+- name: install epel-release package
+  ansible.builtin.dnf:
+    name: epel-release
+    state: present
+    update_cache: yes
+
+- name: disable epel repo
+  community.general.dnf_config_manager:
+    name: epel
+    state: "{{ 'enabled' if inventory_hostname in groups['c2_epel_repo_client'] else 'disabled' }}"
+
+# https://developer.download.nvidia.com/compute/cuda/repos/rhel10/x86_64/cuda-rhel10.repo
+# sha256: 689eb7ff145de980248b3a8f1ac846cf739f22ea640f530e2575e6711bdd6306
+- name: install nvidia cuda repo
+  ansible.builtin.copy:
+    content: |
+      [cuda-rhel10-x86_64]
+      name=cuda-rhel10-x86_64
+      baseurl=https://developer.download.nvidia.com/compute/cuda/repos/rhel10/x86_64
+      enabled={{ '1' if inventory_hostname in groups['c2_gpu_node'] else '0' }}
+      gpgcheck=1
+      gpgkey=https://developer.download.nvidia.com/compute/cuda/repos/rhel10/x86_64/CDF6BA43.pub
+    dest: /etc/yum.repos.d/cuda-rhel10.repo
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: install base os packages
+  ansible.builtin.dnf:
+    name: "{{ base_os_packages }}"
+    state: present
+    update_cache: yes

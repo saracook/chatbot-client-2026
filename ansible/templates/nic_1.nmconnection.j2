@@ -1,0 +1,35 @@
+{% if hostname in groups['c2_kvm_guest'] %}
+[connection]
+id={{ nic_1 }}
+uuid=24f493e7-5f6d-462b-b1cb-33b7c833cc48
+type=ethernet
+interface-name={{ nic_1 }}
+
+[ethernet]
+mtu={{ network_mtu }}
+mac-address={{ mac_address_1 | upper }}
+
+[ipv4]
+method=manual
+address1={{ hostip }}/{{ network_prefix }}
+gateway={{ network_gateway }}
+dns={{ network_dns | join(';') }};
+dns-search={{ domain }};
+
+[ipv6]
+method=disabled
+{% else %}
+[connection]
+id={{ bond_1 }}-{{ nic_1 }}
+uuid=24f493e7-5f6d-462b-b1cb-33b7c833cc48
+type=ethernet
+interface-name={{ nic_1 }}
+controller={{ bond_1 }}
+port-type=bond
+
+[ethernet]
+mtu={{ network_mtu }}
+mac-address={{ mac_address_1 | upper }}
+
+[bond-port]
+{%- endif %}

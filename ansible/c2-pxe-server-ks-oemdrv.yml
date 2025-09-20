@@ -1,0 +1,8 @@
+- import_playbook: c2-check-env.yml
+
+- name: generate kickstart oemdrv image for virtual media install
+  hosts: c2_pxe_server
+  connection: local
+  gather_facts: no
+  roles:
+    - name: c2-pxe-server-ks-oemdrv

@@ -1,0 +1,9 @@
+node_exporter_version: 1.9.1
+node_exporter_tgz_dir: node_exporter-{{ node_exporter_version }}.linux-amd64
+node_exporter_tgz: "{{ node_exporter_tgz_dir }}.tar.gz"
+node_exporter_tgz_url: https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/{{ node_exporter_tgz }}
+node_exporter_tgz_sha256: becb950ee80daa8ae7331d77966d94a611af79ad0d3307380907e0ec08f5b4e8
+node_exporter_user: node_exporter
+node_exporter_uid: 9000
+node_exporter_group: "{{ node_exporter_user }}"
+node_exporter_gid: "{{ node_exporter_uid }}"

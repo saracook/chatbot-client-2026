@@ -1,0 +1,71 @@
+- name: create directory /srv/pxelinux.cfg
+  ansible.builtin.file:
+    path: /srv/pxelinux.cfg
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: install /srv/pxelinux.cfg/01-*
+  ansible.builtin.template:
+    src: pxelinuxcfg.j2
+    dest: /srv/pxelinux.cfg/{{ filename }}
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] }}"
+  loop_control:
+    loop_var: client
+  vars:
+    filename: "01-{{ ( hostvars[client]['mac_address_1'] if 'mac_address_1' in hostvars[client] else hostvars[client]['mac_address_2'] ) | replace(':','-') }}"
+    hostname: "{{ client }}"
+    distro: "{{ hostvars[client]['distro'] }}"
+
+- name: install /srv/grub.cfg-01-*
+  ansible.builtin.template:
+    src: grub.cfg.j2
+    dest: /srv/{{ filename }}
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] }}"
+  loop_control:
+    loop_var: client
+  vars:
+    filename: "grub.cfg-01-{{ ( hostvars[client]['mac_address_1'] if 'mac_address_1' in hostvars[client] else hostvars[client]['mac_address_2'] ) | replace(':','-') }}"
+    hostname: "{{ client }}"
+    distro: "{{ hostvars[client]['distro'] }}"
+
+- name: create host directories in /srv
+  ansible.builtin.file:
+    path: /srv/{{ client }}
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop: "{{ pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] }}"
+  loop_control:
+    loop_var: client
+
+- name: install client kickstart.cfg files
+  template:
+    src: kickstart.cfg.j2
+    dest: "/srv/{{ client }}/kickstart.cfg"
+  loop: "{{ pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] }}"
+  loop_control:
+    loop_var: client
+  vars:
+    hostname: "{{ client }}"
+    distro: "{{ hostvars[client]['distro'] }}"
+    boot_disk_bytes: "{{ hostvars[client]['boot_disk_bytes'] }}"
+    swapfile_gb: "{{ hostvars[client]['swapfile_gb'] }}"
+    mac_address_1: "{{ hostvars[client]['mac_address_1'] }}"
+    mac_address_2: "{{ hostvars[client]['mac_address_2'] }}"
+    nic_1: "{{ hostvars[client]['nic_1'] }}"
+    nic_2: "{{ hostvars[client]['nic_2'] }}"
+    bond_1: "{{ hostvars[client]['bond_1'] }}"
+    bond_mode: "{{ hostvars[client]['bond_mode'] }}"
+    bond_xmit_hash_policy: "{{ hostvars[client]['bond_xmit_hash_policy'] }}"
+    bond_miimon: "{{ hostvars[client]['bond_miimon'] }}"
+    hostip: "{{ hostvars[client]['ansible_host'] }}"
+    ks_mode: url

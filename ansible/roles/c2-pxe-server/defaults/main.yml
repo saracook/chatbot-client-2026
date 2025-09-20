@@ -1,0 +1,5 @@
+pxelinux_base_dir: /usr/share/syslinux
+syslinux_base_dir: /usr/share/syslinux
+grubefi_base_dir: /boot/efi/EFI/rocky
+nginx_worker_processes: 32
+nginx_worker_connections: 1024

@@ -1,0 +1,2 @@
+ood_version: 4.0
+ood_rpm: ondemand-release-web-{{ ood_version }}-1.{{ distros[distro]['el'] }}.noarch.rpm

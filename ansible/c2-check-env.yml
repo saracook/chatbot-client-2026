@@ -1,0 +1,21 @@
+- name: check for required secrets environment variables
+  hosts: all
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: check for required secrets environment variables
+      fail:
+        msg: required secret environment variable {{ item }} is not set!
+      when: lookup('env', item) | default('', true) | length == 0
+      loop:
+        - ANSIBLE_SSH_PRIVATE_KEY_FILE
+        - ANSIBLE_SSH_PUBLIC_KEY_FILE
+        - DEFAULT_PASSWORD
+        - GITHUB_ACCESS_TOKEN
+        - IDRAC_PASSWORD
+        - IDRAC_USERNAME
+        - MUNGE_KEY_B64
+        - SLURM_DB_ROOT_PASSWORD
+        - SLURM_DB_SLURM_PASSWORD
+      run_once: yes
+      tags: always
