@@ -10,7 +10,7 @@ SLURM_TARBALL_SHA256_URL="$SLURM_TARBALL_BASE_URL/SHA256"
 SLURM_TARBALL="$( basename $SLURM_TARBALL_URL )"
 
 mkdir -p /pwd && cd /pwd
-{% if slurm_rpm_builder_base_container_tag == '9.6' %}
+{% if distro.value.version == '9.6' %}
 echo '%_with_slurmrestd 1' > $HOME/.rpmmacros
 {% endif %}
 curl -LO $SLURM_TARBALL_URL

@@ -5,78 +5,59 @@
     state: present
     update_cache: yes
 
-- name: create directory {{ slurm_rpm_builder_container_context_dir }}/tmp
+- name: create slurm rpm build context directories
   file:
-    path: "{{ slurm_rpm_builder_container_context_dir }}/tmp"
+    path: "{{ path }}"
     state: directory
+  loop: "{{ distros | dict2items }}"
+  loop_control:
+    loop_var: distro
+  vars:
+    path: /var/tmp/slurm-rpm-builder-container-{{ distro.value.name }}/tmp
 
-- name: install containerfile
+- name: install containerfiles
   template:
     src: Containerfile.j2
-    dest: "{{ slurm_rpm_builder_container_context_dir }}/Containerfile"
+    dest: "{{ dest }}"
+  loop: "{{ distros | dict2items }}"
+  loop_control:
+    loop_var: distro
+  vars:
+    dest: /var/tmp/slurm-rpm-builder-container-{{ distro.value.name }}/Containerfile
 
-- name: install entrypoint script
+- name: install entrypoint scripts
   template:
     src: entrypoint.j2
-    dest: "{{ slurm_rpm_builder_container_context_dir }}/entrypoint"
+    dest: "{{ dest }}"
     mode: '00755'
+  loop: "{{ distros | dict2items }}"
+  loop_control:
+    loop_var: distro
+  vars:
+    dest: /var/tmp/slurm-rpm-builder-container-{{ distro.value.name }}/entrypoint
 
-- name: build container image
+- name: build container images
   containers.podman.podman_image:
-    name: "{{ slurm_rpm_builder_container_name }}"
-    tag: "{{ slurm_rpm_builder_container_tag }}"
-    path: "{{ slurm_rpm_builder_container_context_dir }}"
+    name: "{{ name }}"
+    tag: "{{ slurm_version }}"
+    path: "{{ path }}"
     build:
       cache: no
       force_rm: yes
       format: oci
-
-- name: tag image as latest
-  containers.podman.podman_tag:
-    image: "{{ slurm_rpm_builder_container_image }}"
-    target_names:
-      - "{{ slurm_rpm_builder_container_name }}:latest"
+  loop: "{{ distros | dict2items }}"
+  loop_control:
+    loop_var: distro
+  vars:
+    name: localhost/slurm-rpm-builder-{{ distro.value.name }}
+    path: /var/tmp/slurm-rpm-builder-container-{{ distro.value.name }}
 
 - name: prune images
   containers.podman.podman_prune:
     system: true
 
-- name: stat {{ slurm_rpm }}
-  ansible.builtin.stat:
-    path: "/srv/rpm/{{ slurm_rpm }}"
-  register: statslurmrpm
-
-- name: build slurm rpm packages
-  containers.podman.podman_container:
-    name: "{{ slurm_rpm_builder_container_name | basename }}"
-    image: "{{ slurm_rpm_builder_container_image }}"
-    state: started
-    detach: no
-    volumes:
-      - "{{ slurm_rpm_builder_container_context_dir }}/tmp:/pwd"
-    rm: yes
-  when: not statslurmrpm.stat.exists
-
-- name: sync to flush slurm rpms to disk
-  command: sync
-  changed_when: false
-  when: not statslurmrpm.stat.exists
-
-- name: install slurm rpm packages and update repo metadata
-  ansible.builtin.shell:
-    cmd: |
-      set -e
-      mkdir -p /srv/rpm
-      rm -fv /srv/rpm/slurm-*.rpm
-      mv -fv {{ slurm_rpm_builder_container_context_dir }}/tmp/slurm-*.rpm /srv/rpm
-      createrepo /srv/rpm
-  when: not statslurmrpm.stat.exists
-
-- name: install readme.txt
-  copy:
-    content: |
-      podman build --file Containerfile --no-cache --tag {{ slurm_rpm_builder_container_image }} .
-      podman tag {{ slurm_rpm_builder_container_image }} {{ slurm_rpm_builder_container_name }}:latest
-      podman image prune -f
-      podman run --interactive --name {{ slurm_rpm_builder_container_name | basename }} --rm --tty --volume $(pwd)/tmp:/pwd {{ slurm_rpm_builder_container_name }}:latest
-    dest: "{{ slurm_rpm_builder_container_context_dir }}/readme.txt"
+- name: build and install slurm rpms for each distro
+  ansible.builtin.include_tasks: build.yml
+  loop: "{{ distros | dict2items }}"
+  loop_control:
+    loop_var: distro

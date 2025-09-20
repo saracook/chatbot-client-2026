@@ -1,5 +1,3 @@
-iso_url: "http://dl.rockylinux.org/pub/rocky/{{ distro_version }}/isos/x86_64/Rocky-{{ distro_version }}-x86_64-minimal.iso"
-iso_sha256: de75c2f7cc566ea964017a1e94883913f066c4ebeb1d356964e398ed76cadd12
 pxelinux_base_dir: /usr/share/syslinux
 syslinux_base_dir: /usr/share/syslinux
 grubefi_base_dir: /boot/efi/EFI/rocky

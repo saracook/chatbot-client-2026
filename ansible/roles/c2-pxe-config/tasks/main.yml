@@ -19,6 +19,7 @@
   vars:
     filename: "01-{{ ( hostvars[client]['mac_address_1'] if 'mac_address_1' in hostvars[client] else hostvars[client]['mac_address_2'] ) | replace(':','-') }}"
     hostname: "{{ client }}"
+    distro: "{{ hostvars[client]['distro'] }}"
 
 - name: install /srv/grub.cfg-01-*
   ansible.builtin.template:
@@ -33,6 +34,7 @@
   vars:
     filename: "grub.cfg-01-{{ ( hostvars[client]['mac_address_1'] if 'mac_address_1' in hostvars[client] else hostvars[client]['mac_address_2'] ) | replace(':','-') }}"
     hostname: "{{ client }}"
+    distro: "{{ hostvars[client]['distro'] }}"
 
 - name: create host directories in /srv
   ansible.builtin.file:
@@ -54,6 +56,7 @@
     loop_var: client
   vars:
     hostname: "{{ client }}"
+    distro: "{{ hostvars[client]['distro'] }}"
     boot_disk_bytes: "{{ hostvars[client]['boot_disk_bytes'] }}"
     swapfile_gb: "{{ hostvars[client]['swapfile_gb'] }}"
     mac_address_1: "{{ hostvars[client]['mac_address_1'] }}"

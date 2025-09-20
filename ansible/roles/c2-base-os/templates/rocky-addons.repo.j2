@@ -16,7 +16,7 @@ gpgcheck=1
 enabled=0
 countme=1
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [highavailability-debuginfo]
 name=Rocky Linux $releasever - High Availability - Debug
@@ -25,7 +25,7 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=HighAva
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [highavailability-source]
 name=Rocky Linux $releasever - High Availability - Source
@@ -34,8 +34,38 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=HighAvaila
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
+{% if distros[distro]['version'] == '9.6' %}
+[resilientstorage]
+name=Rocky Linux $releasever - Resilient Storage
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=ResilientStorage-$releasever$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/$basearch/os/
+gpgcheck=1
+enabled=0
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
+
+[resilientstorage-debuginfo]
+name=Rocky Linux $releasever - Resilient Storage - Debug
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=ResilientStorage-$releasever-debug$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/$basearch/debug/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
+
+[resilientstorage-source]
+name=Rocky Linux $releasever - Resilient Storage - Source
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=ResilientStorage-$releasever-source$rltype
+#baseurl=http://dl.rockylinux.org/$contentdir/$releasever/ResilientStorage/source/tree/
+gpgcheck=1
+enabled=0
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
+
+{% endif %}
 [nfv]
 name=Rocky Linux $releasever - NFV
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=NFV-$releasever$rltype
@@ -44,7 +74,7 @@ gpgcheck=1
 enabled=0
 countme=1
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [nfv-debuginfo]
 name=Rocky Linux $releasever - NFV Debug
@@ -53,7 +83,7 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$rel
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [nfv-source]
 name=Rocky Linux $releasever - NFV Source
@@ -62,7 +92,7 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$rel
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [rt]
 name=Rocky Linux $releasever - Realtime
@@ -72,7 +102,7 @@ gpgcheck=1
 enabled=0
 countme=1
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [rt-debuginfo]
 name=Rocky Linux $releasever - Realtime Debug
@@ -81,7 +111,7 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$rel
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [rt-source]
 name=Rocky Linux $releasever - Realtime Source
@@ -90,7 +120,7 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=RT-$rel
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [sap]
 name=Rocky Linux $releasever - SAP
@@ -100,7 +130,7 @@ gpgcheck=1
 enabled=0
 countme=1
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [sap-debuginfo]
 name=Rocky Linux $releasever - SAP Debug
@@ -109,7 +139,7 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAP-$re
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [sap-source]
 name=Rocky Linux $releasever - SAP Source
@@ -118,7 +148,7 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAP-$re
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [saphana]
 name=Rocky Linux $releasever - SAPHANA
@@ -128,7 +158,7 @@ gpgcheck=1
 enabled=0
 countme=1
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [saphana-debuginfo]
 name=Rocky Linux $releasever - SAPHANA Debug
@@ -137,7 +167,7 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAPHANA
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [saphana-source]
 name=Rocky Linux $releasever - SAPHANA Source
@@ -146,4 +176,4 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=SAPHANA
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}

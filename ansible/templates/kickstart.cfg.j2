@@ -24,7 +24,7 @@ keyboard us
 cdrom
 network --bootproto=static --device={{ mac_address_1 if mac_address_1 is defined else mac_address_2 }} --gateway={{ network_gateway }} --hostname={{ hostname }} --ip={{ hostip }} --mtu={{ network_mtu }} --nameserver={{ network_dns | join(',') }} --netmask={{ network_mask }} --noipv6 --onboot=yes
 {% elif ks_mode == 'url' %}
-url --url=http://{{ nginx_ip }}:{{ nginx_port }}/{{ distro }}
+url --url=http://{{ nginx_ip }}:{{ nginx_port }}/{{ distros[distro]['name'] }}
 {% endif %}
 zerombr
 clearpart --all --disklabel=gpt --initlabel

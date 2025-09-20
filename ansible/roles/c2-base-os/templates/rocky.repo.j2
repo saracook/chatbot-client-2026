@@ -16,7 +16,7 @@ gpgcheck=1
 enabled=1
 countme=1
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [baseos-debuginfo]
 name=Rocky Linux $releasever - BaseOS - Debug
@@ -25,7 +25,7 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [baseos-source]
 name=Rocky Linux $releasever - BaseOS - Source
@@ -34,7 +34,7 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=BaseOS-$re
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [appstream]
 name=Rocky Linux $releasever - AppStream
@@ -44,7 +44,7 @@ gpgcheck=1
 enabled=1
 countme=1
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [appstream-debuginfo]
 name=Rocky Linux $releasever - AppStream - Debug
@@ -53,7 +53,7 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=AppStre
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [appstream-source]
 name=Rocky Linux $releasever - AppStream - Source
@@ -62,7 +62,7 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=AppStream-
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [crb]
 name=Rocky Linux $releasever - CRB
@@ -72,7 +72,7 @@ gpgcheck=1
 enabled=1
 countme=1
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [crb-debuginfo]
 name=Rocky Linux $releasever - CRB - Debug
@@ -81,7 +81,7 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=CRB-$re
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
 [crb-source]
 name=Rocky Linux $releasever - CRB - Source
@@ -90,4 +90,4 @@ mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=source&repo=CRB-$relea
 gpgcheck=1
 enabled=0
 metadata_expire=6h
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-10
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}

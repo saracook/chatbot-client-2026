@@ -44,6 +44,7 @@ all:
       hosts:
         c2-ghashr-01:
         c2-login-01:
+        c2-ood-01:
         c2-slurmctl-01:
         c2-slurmdb-01:
         c2-testvm-01:
@@ -53,6 +54,9 @@ all:
     c2_login_node:
       hosts:
         c2-login-01:
+    c2_open_ondemand:
+      hosts:
+        c2-ood-01:
     c2_pxe_client:
       hosts:
         c2-comp-01:
@@ -67,6 +71,7 @@ all:
         c2-infra-05:
         c2-infra-06:
         c2-login-01:
+        c2-ood-01:
         c2-slurmctl-01:
         c2-slurmdb-01:
         c2-testvm-01:
@@ -80,6 +85,7 @@ all:
       children:
         c2_compute_node:
         c2_login_node:
+        c2_open_ondemand:
         c2_slurm_controller:
         c2_slurm_database:
     c2_slurm_controller:
@@ -109,11 +115,28 @@ all:
       - 171.64.1.234
       - 171.67.1.234
     network_mtu: 9000
-    distro: rocky
-    distro_version: 10.0
-    distro_container_name: docker.io/rockylinux/rockylinux
-    distro_container_tag: "{{ distro_version }}"
-    distro_container_image: "{{ distro_container_name }}:{{ distro_container_tag }}"
+    # default distro. must be one of the keys in distros.
+    # override in host/group vars to select a different version.
+    distro: rocky_10_0
+    distros:
+      rocky_9_6:
+        el: el9
+        version: 9.6
+        version_major: 9
+        name: rocky-9.6
+        iso_url: http://dl.rockylinux.org/pub/rocky/9.6/isos/x86_64/Rocky-9.6-x86_64-minimal.iso
+        iso_sha256: aed9449cf79eb2d1c365f4f2561f923a80451b3e8fdbf595889b4cf0ac6c58b8
+        iso_pxe_linux: rocky-9.6/images/pxeboot/vmlinuz
+        iso_pxe_initrd: rocky-9.6/images/pxeboot/initrd.img
+      rocky_10_0:
+        el: el10
+        version: 10.0
+        version_major: 10
+        name: rocky-10.0
+        iso_url: http://dl.rockylinux.org/pub/rocky/10.0/isos/x86_64/Rocky-10.0-x86_64-minimal.iso
+        iso_sha256: de75c2f7cc566ea964017a1e94883913f066c4ebeb1d356964e398ed76cadd12
+        iso_pxe_linux: rocky-10.0/images/pxeboot/vmlinuz
+        iso_pxe_initrd: rocky-10.0/images/pxeboot/initrd.img
     ansible_user: rocky
     default_user: rocky
     default_user_gecos: Rocky Linux

@@ -88,39 +88,43 @@
     - grubx64
     - shim
 
-- name: create {{ distro }} iso image mount point directory
+- name: create distro iso image mount point directories
   file:
-    path: /srv/{{ distro }}
+    path: /srv/{{ item.value.name }}
     state: directory
     owner: root
     group: root
+  loop: "{{ distros | dict2items }}"
 
-- name: install {{ distro }} iso image
+- name: install distro iso images
   ansible.builtin.get_url:
-    url: "{{ iso_url }}"
-    dest: /srv/{{ distro }}.iso
-    checksum: "sha256:{{ iso_sha256 }}"
+    url: "{{ item.value.iso_url }}"
+    dest: /srv/{{ item.value.name }}.iso
+    checksum: "sha256:{{ item.value.iso_sha256 }}"
     owner: root
     group: root
     mode: '0644'
   register: isoimg
+  loop: "{{ distros | dict2items }}"
 
-- name: unmount {{ distro }} iso image
+- name: unmount distro iso images
   ansible.posix.mount:
-    src: /srv/{{ distro }}.iso
-    path: /srv/{{ distro }}
+    src: /srv/{{ item.value.name }}.iso
+    path: /srv/{{ item.value.name }}
     fstype: iso9660
     opts: auto,loop,ro
     state: absent
+  loop: "{{ distros | dict2items }}"
   when: isoimg is changed
 
-- name: mount {{ distro }} iso image
+- name: mount distro iso images
   ansible.posix.mount:
-    src: /srv/{{ distro }}.iso
-    path: /srv/{{ distro }}
+    src: /srv/{{ item.value.name }}.iso
+    path: /srv/{{ item.value.name }}
     fstype: iso9660
     opts: auto,loop,ro
     state: mounted
+  loop: "{{ distros | dict2items }}"
 
 - name: run role c2-pxe-config
   ansible.builtin.include_role:

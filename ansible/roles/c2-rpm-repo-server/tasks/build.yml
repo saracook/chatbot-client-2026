@@ -1,0 +1,33 @@
+- name: stat slurm rpm to determine if rpms should be rebuilt
+  ansible.builtin.stat:
+    path: /srv/rpm/{{ distro.value.name }}/slurm-{{ slurm_version }}-1.{{ distro.value.el }}.x86_64.rpm
+  register: statslurmrpm
+
+- block:
+    - name: build slurm rpms
+      containers.podman.podman_container:
+        name: "{{ name }}"
+        image: "{{ image }}"
+        state: started
+        detach: no
+        volumes:
+          - "{{ volume }}"
+        rm: yes
+      vars:
+        name: slurm-rpm-builder-{{ distro.value.name }}
+        image: localhost/slurm-rpm-builder-{{ distro.value.name }}:{{ slurm_version }}
+        volume: /var/tmp/slurm-rpm-builder-container-{{ distro.value.name }}/tmp:/pwd
+    
+    - name: sync to flush slurm rpms to disk
+      command: sync
+      changed_when: false
+    
+    - name: install slurm rpms and update repo metadata
+      ansible.builtin.shell:
+        cmd: |
+          set -e
+          mkdir -p /srv/rpm/{{ distro.value.name }}
+          rm -fv /srv/rpm/{{ distro.value.name }}/slurm-*.rpm
+          mv -fv /var/tmp/slurm-rpm-builder-container-{{ distro.value.name }}/tmp/slurm-*.rpm /srv/rpm/{{ distro.value.name }}
+          createrepo /srv/rpm/{{ distro.value.name }}
+  when: not statslurmrpm.stat.exists
