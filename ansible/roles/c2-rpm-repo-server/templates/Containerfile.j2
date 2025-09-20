@@ -1,4 +1,4 @@
-FROM docker.io/rockylinux/rockylinux:{{ distro.value.version }}
+FROM docker.io/rockylinux/rockylinux:{{ _distro.value.version }}
 
 ENV SLURM_VERSION="{{ slurm_version }}"
 
@@ -22,7 +22,7 @@ RUN dnf -y install dnf-plugins-core \
     pam-devel \
     perl-devel \
     perl-ExtUtils-MakeMaker \
-    readline-devel {{ 'http-parser-devel json-c-devel systemd' if distro.value.version == '9.6' else '' }}
+    readline-devel {{ 'http-parser-devel json-c-devel systemd' if _distro.value.version == '9.6' else '' }}
 
 COPY entrypoint /usr/local/bin/entrypoint
 

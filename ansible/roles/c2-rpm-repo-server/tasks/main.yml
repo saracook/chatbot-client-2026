@@ -11,9 +11,9 @@
     state: directory
   loop: "{{ distros | dict2items }}"
   loop_control:
-    loop_var: distro
+    loop_var: _distro
   vars:
-    path: /var/tmp/slurm-rpm-builder-container-{{ distro.value.name }}/tmp
+    path: /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}/tmp
 
 - name: install containerfiles
   template:
@@ -21,9 +21,9 @@
     dest: "{{ dest }}"
   loop: "{{ distros | dict2items }}"
   loop_control:
-    loop_var: distro
+    loop_var: _distro
   vars:
-    dest: /var/tmp/slurm-rpm-builder-container-{{ distro.value.name }}/Containerfile
+    dest: /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}/Containerfile
 
 - name: install entrypoint scripts
   template:
@@ -32,9 +32,9 @@
     mode: '00755'
   loop: "{{ distros | dict2items }}"
   loop_control:
-    loop_var: distro
+    loop_var: _distro
   vars:
-    dest: /var/tmp/slurm-rpm-builder-container-{{ distro.value.name }}/entrypoint
+    dest: /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}/entrypoint
 
 - name: build container images
   containers.podman.podman_image:
@@ -47,10 +47,10 @@
       format: oci
   loop: "{{ distros | dict2items }}"
   loop_control:
-    loop_var: distro
+    loop_var: _distro
   vars:
-    name: localhost/slurm-rpm-builder-{{ distro.value.name }}
-    path: /var/tmp/slurm-rpm-builder-container-{{ distro.value.name }}
+    name: localhost/slurm-rpm-builder-{{ _distro.value.name }}
+    path: /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}
 
 - name: prune images
   containers.podman.podman_prune:
@@ -60,4 +60,4 @@
   ansible.builtin.include_tasks: build.yml
   loop: "{{ distros | dict2items }}"
   loop_control:
-    loop_var: distro
+    loop_var: _distro
