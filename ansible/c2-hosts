@@ -22,6 +22,8 @@ all:
       children:
         # dkms and other nvidia cuda package dependencies
         c2_gpu_node:
+        # provides ruby and nodejs dnf modules for ood
+        c2_open_ondemand:
     c2_github_actions_runner:
       hosts:
         c2-ghashr-01:

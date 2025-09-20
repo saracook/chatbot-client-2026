@@ -1,0 +1,8 @@
+- import_playbook: c2-check-env.yml
+
+- name: configure open ondemand
+  hosts: c2_open_ondemand
+  become: yes
+  roles:
+    - name: c2-open-ondemand
+      tags: c2-open-ondemand
