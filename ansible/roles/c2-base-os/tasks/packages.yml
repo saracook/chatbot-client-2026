@@ -16,6 +16,12 @@
     state: present
     update_cache: yes
 
+- name: disable epel-cisco-openh264 repo
+  community.general.dnf_config_manager:
+    name: epel-cisco-openh264
+    state: disabled
+  when: distros[distro]['version'] == '9.6'
+
 - name: disable epel repo
   community.general.dnf_config_manager:
     name: epel
