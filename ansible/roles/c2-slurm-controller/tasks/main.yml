@@ -1,5 +1,7 @@
-- import_tasks: slurmctld.yml
+- import_tasks:
+    file: slurmctld.yml
   tags: slurmctld
 
-#- import_tasks: slurmrestd.yml
+#- import_tasks:
+#    file: slurmrestd.yml
 #  tags: slurmrestd

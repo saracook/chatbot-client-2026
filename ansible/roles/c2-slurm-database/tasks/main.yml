@@ -1,5 +1,7 @@
-- import_tasks: mariadb.yml
+- import_tasks:
+    file: mariadb.yml
   tags: mariadb
 
-- import_tasks: slurmdbd.yml
+- import_tasks:
+    file: slurmdbd.yml
   tags: slurmdbd

@@ -1,6 +1,9 @@
-- import_tasks: slurm.yml
+- import_tasks:
+    file: slurm.yml
   tags: slurm
 
-- include_tasks: gpu.yml
+- include_tasks:
+    file: gpu.yml
+    apply:
+      tags: gpu
   when: inventory_hostname in groups['c2_gpu_node']
-  tags: gpu

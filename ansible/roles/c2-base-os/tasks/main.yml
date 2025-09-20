@@ -1,13 +1,17 @@
-- import_tasks: packages.yml
+- import_tasks:
+    file: packages.yml
   tags: packages
 
-- import_tasks: multipath.yml
+- import_tasks:
+    file: multipath.yml
   tags: multipath
 
-- import_tasks: services.yml
+- import_tasks:
+    file: services.yml
   tags: services
 
-- import_tasks: chrony.yml
+- import_tasks:
+    file: chrony.yml
   tags: chrony
 
 - name: run role c2-kvm-guest
