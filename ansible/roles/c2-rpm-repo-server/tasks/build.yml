@@ -6,17 +6,13 @@
 - block:
     - name: build slurm rpms
       containers.podman.podman_container:
-        name: "{{ name }}"
-        image: "{{ image }}"
+        name: slurm-rpm-builder-{{ _distro.value.name }}
+        image: localhost/slurm-rpm-builder-{{ _distro.value.name }}:{{ slurm_version }}
         state: started
         detach: no
         volumes:
-          - "{{ volume }}"
+          - /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}/tmp:/pwd
         rm: yes
-      vars:
-        name: slurm-rpm-builder-{{ _distro.value.name }}
-        image: localhost/slurm-rpm-builder-{{ _distro.value.name }}:{{ slurm_version }}
-        volume: /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}/tmp:/pwd
     
     - name: sync to flush slurm rpms to disk
       command: sync

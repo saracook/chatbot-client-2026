@@ -123,8 +123,8 @@ all:
     distros:
       rocky_9_6:
         el: el9
-        version: 9.6
-        version_major: 9
+        version: '9.6'
+        version_major: '9'
         name: rocky-9.6
         iso_url: http://dl.rockylinux.org/pub/rocky/9.6/isos/x86_64/Rocky-9.6-x86_64-minimal.iso
         iso_sha256: aed9449cf79eb2d1c365f4f2561f923a80451b3e8fdbf595889b4cf0ac6c58b8
@@ -132,8 +132,8 @@ all:
         iso_pxe_initrd: rocky-9.6/images/pxeboot/initrd.img
       rocky_10_0:
         el: el10
-        version: 10.0
-        version_major: 10
+        version: '10.0'
+        version_major: '10'
         name: rocky-10.0
         iso_url: http://dl.rockylinux.org/pub/rocky/10.0/isos/x86_64/Rocky-10.0-x86_64-minimal.iso
         iso_sha256: de75c2f7cc566ea964017a1e94883913f066c4ebeb1d356964e398ed76cadd12
