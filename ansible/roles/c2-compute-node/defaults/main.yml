@@ -1,7 +1,0 @@
-# see role c2-base-os for details of the repo file
-# this repo gets enabled by the role
-nvidia_cuda_repo_name: cuda-rhel10-x86_64
-nvidia_cuda_packages:
-  - cuda-driver
-  - cuda-toolkit
-  - dkms # repo: epel

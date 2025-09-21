@@ -8,5 +8,6 @@
     - acpid
     - multipathd
     - polkit
+    - sysstat
     - udisks2
     - upower

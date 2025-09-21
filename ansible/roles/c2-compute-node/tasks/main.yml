@@ -7,3 +7,7 @@
     apply:
       tags: gpu
   when: inventory_hostname in groups['c2_gpu_node']
+
+- import_tasks:
+    file: ood.yml
+  tags: ood

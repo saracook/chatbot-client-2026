@@ -1,15 +1,11 @@
-- name: enable epel repo
-  community.general.dnf_config_manager:
-    name: epel
-    state: enabled
-
-- name: enable nvidia cuda repo
-  community.general.dnf_config_manager:
-    name: "{{ nvidia_cuda_repo_name }}"
-    state: enabled
-
 - name: install packages for gpu
   ansible.builtin.dnf:
-    name: "{{ nvidia_cuda_packages }}"
+    name:
+      - cuda-driver
+      - cuda-toolkit
+      - dkms # repo: epel
     state: present
     update_cache: yes
+    enablerepo:
+      - cuda-rhel{{ distros[distro]['version_major'] }}-x86_64
+      - epel

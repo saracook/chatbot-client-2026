@@ -1,0 +1,11 @@
+- name: install packages for ood interactive apps
+  ansible.builtin.dnf:
+    name:
+      # nmap-ncat is installed in role c2-base-os
+      - python3-websockify # repo: epel
+      - turbovnc # repo: turbovnc
+    state: present
+    update_cache: yes
+    enablerepo:
+      - epel
+      - turbovnc
