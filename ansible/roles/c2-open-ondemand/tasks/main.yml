@@ -9,8 +9,8 @@
   loop: "{{ modules }}"
   vars:
     modules:
-      - ruby:3.3
-      - nodejs:20
+      - ruby:3.3 # repo: epel
+      - nodejs:20 # repo: epel
 
 # todo: get url to gpg key and install it here
 
