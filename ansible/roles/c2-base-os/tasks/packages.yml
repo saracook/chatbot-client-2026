@@ -84,6 +84,8 @@
              https://raw.githubusercontent.com/TurboVNC/repo/main/VGL-GPG-KEY
              https://raw.githubusercontent.com/TurboVNC/repo/main/VGL-GPG-KEY-1024
       enabled=0
+      # exclude beta releases
+      excludepkgs=turbovnc-*.*.9[0-9]-*
       sslverify=1
       sslcacert=/etc/pki/tls/certs/ca-bundle.crt
     dest: /etc/yum.repos.d/turbovnc.repo
