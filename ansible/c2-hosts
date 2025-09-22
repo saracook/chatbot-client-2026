@@ -51,7 +51,7 @@ all:
     c2_login_node:
       hosts:
         c2-login-01:
-        c2-login-01:
+        c2-login-02:
     c2_open_ondemand:
       hosts:
         c2-ood-01:
