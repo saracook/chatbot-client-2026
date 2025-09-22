@@ -8,6 +8,7 @@ base_os_packages:
   ## misc packages
   - bind-utils
   - hwloc
+  - iperf3
   - nmap
   - nmap-ncat
   - pciutils
