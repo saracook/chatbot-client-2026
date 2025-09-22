@@ -40,6 +40,7 @@ all:
       hosts:
         c2-ghashr-01:
         c2-login-01:
+        c2-login-02:
         c2-ood-01:
         c2-slurmctl-01:
         c2-slurmdb-01:
@@ -49,6 +50,7 @@ all:
         c2-infra-02:
     c2_login_node:
       hosts:
+        c2-login-01:
         c2-login-01:
     c2_open_ondemand:
       hosts:
@@ -67,6 +69,7 @@ all:
         c2-infra-05:
         c2-infra-06:
         c2-login-01:
+        c2-login-02:
         c2-ood-01:
         c2-slurmctl-01:
         c2-slurmdb-01:
