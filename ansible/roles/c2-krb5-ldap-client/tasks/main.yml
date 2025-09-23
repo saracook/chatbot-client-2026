@@ -1,0 +1,112 @@
+- name: install krb5 packages
+  ansible.builtin.dnf:
+    name: "{{ krb5_packages }}"
+    state: present
+    update_cache: yes
+    enablerepo: epel
+
+- name: install stanford /etc/krb5.conf
+  ansible.builtin.get_url:
+    url: "{{ krb5_conf_url }}"
+    dest: /etc/krb5.conf
+    checksum: "sha256:{{ krb5_conf_sha256 }}"
+
+- name: check for existing host keytab
+  ansible.builtin.stat:
+    path: /etc/krb5.keytab
+  register: keytab
+
+# nb: run this only if /etc/krb5.keytab doesn't exist since keytab
+#     is regenerated every time it's retrieved via wallet.
+- name: install host keytab
+  ansible.builtin.copy:
+    content: "{{ lookup('pipe', 'wallet -s wallet.stanford.edu get keytab host/' ~ canonical_hostname ~ ' | base64') | b64decode }}"
+    dest: /etc/krb5.keytab
+    owner: root
+    group: root
+    mode: '00600'
+  when: not keytab.stat.exists
+
+- name: install package duo_unix
+  ansible.builtin.dnf:
+    name: duo_unix
+    state: present
+    update_cache: yes
+    enablerepo: duosecurity
+
+- name: remove /etc/duo/login_duo.conf
+  ansible.builtin.file:
+    path: /etc/duo/login_duo.conf
+    state: absent
+
+- name: install /etc/duo/pam_duo.conf
+  ansible.builtin.copy:
+    content: |
+      {{ lookup('pipe', 'wallet -s wallet.stanford.edu get duo-pam ' ~ canonical_hostname) }}
+      failmode = secure
+      pushinfo = yes
+    dest: /etc/duo/pam_duo.conf
+    owner: root
+    group: root
+    mode: '00600'
+
+- name: install sssd packages
+  ansible.builtin.dnf:
+    name: "{{ sssd_packages }}"
+    state: present
+    update_cache: yes
+
+# todo: check if this is needed
+#- name: disable sssd-sudo activation socket
+#  ansible.builtin.systemd_service:
+#    name: sssd-sudo.socket
+#    state: stopped
+#    enabled: no
+
+- name: install /etc/sssd/sssd.conf
+  ansible.builtin.template:
+    src: sssd.conf.j2
+    dest: /etc/sssd/sssd.conf
+    owner: root
+    group: sssd
+    mode: '00640'
+  register: sssdconf
+
+- name: start/restart and enable sssd.service
+  ansible.builtin.systemd_service:
+    name: sssd.service
+    state: "{{ 'restarted' if sssdconf.changed else 'started' }}"
+    enabled: yes
+    daemon_reload: yes
+
+- name: select authselect profile sssd
+  ansible.builtin.command:
+    cmd: authselect select sssd
+  changed_when: false
+
+# todo: install /usr/local/sbin/new-user here
+
+- name: install /etc/pam.d/sshd
+  ansible.builtin.template:
+    src: sshd.j2
+    dest: /etc/pam.d/sshd
+    owner: root
+    group: root
+    mode: '00644'
+
+- name: install /etc/ssh/sshd_config
+  ansible.builtin.template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: '00600'
+    validate: /usr/sbin/sshd -f %s -t
+  register: sshdconf
+
+- name: start/restart and enable sshd.service
+  ansible.builtin.systemd_service:
+    name: sshd.service
+    state: "{{ 'restarted' if sshdconf.changed else 'started' }}"
+    enabled: yes
+    daemon_reload: yes

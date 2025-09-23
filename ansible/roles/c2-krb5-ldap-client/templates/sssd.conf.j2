@@ -1,0 +1,37 @@
+[sssd]
+domains = stanford.edu
+
+[nss]
+filter_users = root, {{ default_user }}
+filter_groups = root, {{ default_user }}
+override_homedir = /home/users/%u
+override_shell = /bin/bash
+
+[domain/stanford.edu]
+id_provider = ldap
+access_provider = ldap
+override_gid = {{ sssd_domain_override_gid }}
+ldap_uri = ldap://ldap.stanford.edu
+ldap_id_use_start_tls = true
+ldap_sasl_mech = GSSAPI
+ldap_sasl_authid = host/{{ canonical_hostname }}@stanford.edu
+ldap_search_base = cn=accounts,dc=stanford,dc=edu?onelevel?(suPrivilegeGroup={{ sssd_search_ldap_group }})
+ldap_access_filter = suPrivilegeGroup={{ sssd_access_ldap_group }}
+ldap_user_object_class = posixAccount
+ldap_group_search_base = cn=groups,dc=stanford,dc=edu?onelevel?
+ldap_group_object_class = suPosixGroup
+ldap_group_name = suGroupCN
+ldap_sudo_smart_refresh_interval = 0
+
+auth_provider = krb5
+chpass_provider = krb5
+krb5_realm = stanford.edu
+krb5_server = krb5auth1.stanford.edu, krb5auth2.stanford.edu, krb5auth3.stanford.edu
+krb5_kpasswd = krb5-admin.stanford.edu
+krb5_use_fast = demand
+krb5_lifetime = 25h
+krb5_renewable_lifetime = 7d
+krb5_renew_interval = 8h
+
+enumerate = false
+cache_credentials = false

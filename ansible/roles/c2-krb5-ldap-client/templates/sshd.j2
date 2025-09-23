@@ -1,0 +1,38 @@
+#%PAM-1.0
+# require duo two-factor authentication
+auth       required     pam_env.so
+#auth       substack     password-auth
+auth       [success=3 default=ignore]   pam_succeed_if.so user ingroup {{ sshd_admins_group }}
+auth       [success=2 default=ignore]   pam_succeed_if.so user = {{ default_user }}
+auth       [success=1 default=ignore]   pam_succeed_if.so user = root
+auth       sufficient   /lib64/security/pam_duo.so
+auth       required     pam_deny.so
+auth       include      postlogin
+account    required     pam_sepermit.so
+account    required     pam_nologin.so
+account    include      password-auth
+{% if inventory_hostname in groups['c2_compute_node'] %}
+# permit unprivileged users to login to compute nodes only if they have a job running
+account    [success=3 default=ignore]   pam_succeed_if.so user ingroup {{ sshd_admins_group }}
+account    [success=2 default=ignore]   pam_succeed_if.so user = {{ default_user }}
+account    [success=1 default=ignore]   pam_succeed_if.so user = root
+-account   required                     pam_slurm_adopt.so action_adopt_failure=deny action_generic_failure=deny
+{% endif %}
+password   include      password-auth
+# pam_selinux.so close should be the first session rule
+session    required     pam_selinux.so close
+session    required     pam_loginuid.so
+# pam_selinux.so open should only be followed by sessions to be executed in the user context
+session    required     pam_selinux.so open env_params
+session    required     pam_namespace.so
+session    optional     pam_keyinit.so force revoke
+session    optional     pam_motd.so
+session    include      password-auth
+{% if inventory_hostname in groups['c2_login_node'] %}
+# set up environment for new users
+session    [success=3 default=ignore]   pam_succeed_if.so user ingroup {{ sshd_admins_group }}
+session    [success=2 default=ignore]   pam_succeed_if.so user = {{ default_user }}
+session    [success=1 default=ignore]   pam_succeed_if.so user = root
+session    optional                     pam_exec.so quiet /usr/local/sbin/new-user
+{% endif %}
+session    include      postlogin

@@ -1,0 +1,22 @@
+krb5_packages:
+  - krb5-workstation
+  - kstart # repo: epel
+
+krb5_conf_url: https://web.stanford.edu/dept/its/support/kerberos/dist/krb5.conf
+krb5_conf_sha256: 6dcae01b2193986d7e449c1a48ade21cdefe7f962a8330da50fc78ecd2a367c8
+
+canonical_hostname: "{{ inventory_hostname }}.{{ domain }}"
+
+sssd_packages:
+  - sssd
+  - sssd-kcm
+  - sssd-tools
+
+# group: users
+sssd_domain_override_gid: 100
+
+sssd_access_ldap_group: carina:cluster-users
+sssd_search_ldap_group: carina:cluster-users
+
+sshd_users_group: carina_cluster-users
+sshd_admins_group: carina_cluster-admins
