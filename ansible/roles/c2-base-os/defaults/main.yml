@@ -11,10 +11,12 @@ base_os_packages:
   - iperf3
   - nmap
   - nmap-ncat
+  - openldap-clients
   - pciutils
   - podman
   - rsync
   - sysstat
   - tar
+  - tmux
   - traceroute
   - which
