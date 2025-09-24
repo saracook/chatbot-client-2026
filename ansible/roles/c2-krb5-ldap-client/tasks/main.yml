@@ -63,6 +63,7 @@
 #    state: stopped
 #    enabled: no
 
+# todo: use domain global var
 - name: install /etc/sssd/sssd.conf
   ansible.builtin.template:
     src: sssd.conf.j2
