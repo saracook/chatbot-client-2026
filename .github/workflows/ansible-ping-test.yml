@@ -1,0 +1,26 @@
+name: ansible-ping-test
+on:
+  workflow_dispatch:
+jobs:
+  ansible-ping-test:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          set -e
+          cd ansible
+          install -m 0600 <(echo "$ANSIBLE_SSH_PRIVATE_KEY") /dev/shm/ansible.pem
+          ssh-keygen -yf /dev/shm/ansible.pem > /dev/shm/ansible.pub
+          export ANSIBLE_SSH_PRIVATE_KEY_FILE=/dev/shm/ansible.pem
+          export ANSIBLE_SSH_PUBLIC_KEY_FILE=/dev/shm/ansible.pub
+          ansible -a whoami -b -i c2-hosts -m shell all
+        env:
+          ANSIBLE_SSH_PRIVATE_KEY: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          DEFAULT_PASSWORD: ${{ secrets.DEFAULT_PASSWORD }}
+          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          IDRAC_PASSWORD: ${{ secrets.IDRAC_PASSWORD }}
+          IDRAC_USERNAME: ${{ secrets.IDRAC_USERNAME }}
+          MUNGE_KEY_B64: ${{ secrets.MUNGE_KEY_B64 }}
+          SLURM_DB_ROOT_PASSWORD: ${{ secrets.SLURM_DB_ROOT_PASSWORD }}
+          SLURM_DB_SLURM_PASSWORD: ${{ secrets.SLURM_DB_SLURM_PASSWORD }}
