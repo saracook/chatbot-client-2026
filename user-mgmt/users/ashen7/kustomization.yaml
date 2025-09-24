@@ -1,0 +1,56 @@
+# ./users/ashen7/kustomization.yaml
+namespace: ashen7
+
+resources:
+- ../../base/user
+- ../../base/configmaps
+
+patches:
+- target:
+    kind: Namespace
+    name: default
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: ashen7
+- target:
+    kind: PersistentVolume
+    name: cephfs-static-home
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cephfs-static-home-ashen7
+    - op: replace
+      path: /spec/csi/volumeHandle
+      value: cephfs-static-home-ashen7
+- target:
+    kind: PersistentVolume
+    name: cephfs-static-pi
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cephfs-static-pi-ashen7
+    - op: replace
+      path: /spec/csi/volumeHandle
+      value: cephfs-static-pi-ashen7
+- target:
+    kind: PersistentVolumeClaim
+    name: cephfs-static-home
+  patch: |-
+    - op: replace
+      path: /spec/volumeName
+      value: cephfs-static-home-ashen7
+- target:
+    kind: PersistentVolumeClaim
+    name: cephfs-static-pi
+  patch: |-
+    - op: replace
+      path: /spec/volumeName
+      value: cephfs-static-pi-ashen7
+- target:
+    kind: Service
+    name: jupyter
+  patch: |-
+    - op: replace
+      path: /spec/selector/hub.jupyter.org~1username
+      value: ashen7
