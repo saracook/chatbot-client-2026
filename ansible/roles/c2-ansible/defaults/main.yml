@@ -1,0 +1,2 @@
+# nb: ansible_version is reserved
+ansible_install_version: '12.0.0'

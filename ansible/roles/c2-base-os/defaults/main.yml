@@ -7,6 +7,7 @@ base_os_packages:
   - upower
   ## misc packages
   - bind-utils
+  - dnf-plugins-core
   - hwloc
   - iperf3
   - nmap
@@ -14,6 +15,7 @@ base_os_packages:
   - openldap-clients
   - pciutils
   - podman
+  - python3-pip
   - rsync
   - sysstat
   - tar
