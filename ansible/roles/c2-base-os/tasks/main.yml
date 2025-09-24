@@ -14,13 +14,19 @@
     file: chrony.yml
   tags: chrony
 
+- name: run role c2-node-exporter
+  ansible.builtin.import_role:
+    name: c2-node-exporter
+  tags: c2-node-exporter
+
 - name: run role c2-kvm-guest
   ansible.builtin.import_role:
     name: c2-kvm-guest
   tags: c2-kvm-guest
   when: inventory_hostname in groups['c2_kvm_guest']
 
-- name: run role c2-node-exporter
+- name: run role c2-krb5-ldap-client
   ansible.builtin.import_role:
-    name: c2-node-exporter
-  tags: c2-node-exporter
+    name: c2-krb5-ldap-client
+  tags: c2-krb5-ldap-client
+  when: inventory_hostname in groups['c2_krb5_ldap_client']

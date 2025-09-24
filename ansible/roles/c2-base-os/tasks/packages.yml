@@ -39,6 +39,25 @@
     state: disabled
   when: distros[distro]['version'] == '9.6'
 
+- block:
+    - name: import duo repo key
+      ansible.builtin.rpm_key:
+        key: https://duo.com/DUO-GPG-PUBLIC-KEY.asc
+        state: present
+    - name: install /etc/yum.repos.d/duosecurity.repo
+      ansible.builtin.copy:
+        content: |
+          [duosecurity]
+          name=Duo Security Repository
+          baseurl=https://pkg.duosecurity.com/RedHat/$releasever/$basearch
+          enabled=0
+          gpgcheck=1
+        dest: /etc/yum.repos.d/duosecurity.repo
+        owner: root
+        group: root
+        mode: '0644'
+  when: inventory_hostname in groups['c2_krb5_ldap_client']
+
 # https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
 - name: install /etc/yum.repos.d/cuda-rhel9.repo
   ansible.builtin.copy:

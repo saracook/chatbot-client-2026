@@ -36,6 +36,12 @@ all:
         c2-infra-04:
         c2-infra-05:
         c2-infra-06:
+    c2_krb5_ldap_client:
+      children:
+        c2_compute_node:
+        c2_login_node:
+        c2_open_ondemand:
+        c2_slurm_controller:
     c2_kvm_guest:
       hosts:
         c2-ghashr-01:
