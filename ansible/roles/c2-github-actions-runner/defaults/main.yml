@@ -5,4 +5,4 @@ ghashr_tgz_url: https://github.com/actions/runner/releases/download/v{{ ghashr_v
 ghashr_tgz_sha256: 01066fad3a2893e63e6ca880ae3a1fad5bf9329d60e77ee15f2b97c148c3cd4e
 ghashr_dir: /srv/ghashr
 ghashr_service: actions.runner.stanford-rc-carina.{{ inventory_hostname }}.service
-github_access_token: "{{ lookup('env', 'GITHUB_ACCESS_TOKEN') }}"
+github_access_token: "{{ lookup('env', 'GH_ACCESS_TOKEN') }}"
