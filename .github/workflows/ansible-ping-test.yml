@@ -36,7 +36,9 @@ jobs:
           webhook-type: incoming-webhook
           payload: |
             blocks:
-              - type: "section"
+              - type: section
                 text:
-                  type: "mrkdwn"
-                  text: "GitHub Actions workflow `${{ github.workflow }}` on runner `${{ runner.name }}` *FAILED*:\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                  type: mrkdwn
+                  text: |
+                    GitHub Actions workflow `${{ github.workflow }}` on runner `${{ runner.name }}` *FAILED*:
+                    ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
