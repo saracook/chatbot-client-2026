@@ -39,4 +39,4 @@ jobs:
               - type: "section"
                 text:
                   type: "mrkdwn"
-                  text: "GitHub Actions workflow `${{ github.workflow }}` on runner `${{ runner.name }}` failed:\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                  text: "GitHub Actions workflow `${{ github.workflow }}` on runner `${{ runner.name }}` *FAILED*:\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
