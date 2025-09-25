@@ -35,7 +35,7 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
-            text: "GitHub Action workflow `${{ github.workflow }}` on runner `${{ runner.name }}` failed:\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            text: "GitHub Actions workflow `${{ github.workflow }}` on runner `${{ runner.name }}` failed:\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             blocks:
               - type: "section"
                 text:
