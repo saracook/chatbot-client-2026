@@ -29,17 +29,30 @@ jobs:
           SLURM_DB_ROOT_PASSWORD: ${{ secrets.SLURM_DB_ROOT_PASSWORD }}
           SLURM_DB_SLURM_PASSWORD: ${{ secrets.SLURM_DB_SLURM_PASSWORD }}
         continue-on-error: true
+#      - name: post to slack if ping failed
+#        #if: ${{ steps.ping.conclusion == 'failure' }}
+#        uses: slackapi/slack-github-action@v2.1.1
+#        with:
+#          method: chat.postMessage
+#          token: ${{ secrets.SLACK_API_TOKEN }}
+#          payload: |
+#            channel: ${{ secrets.SLACK_CHANNEL_ID }}
+#            text: "GitHub Action result: ${{ job.status }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+#            blocks:
+#              - type: "section"
+#                text:
+#                  type: "mrkdwn"
+#                  text: "GitHub Action result: ${{ job.status }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
       - name: post to slack if ping failed
         #if: ${{ steps.ping.conclusion == 'failure' }}
         uses: slackapi/slack-github-action@v2.1.1
         with:
-          method: chat.postMessage
-          token: ${{ secrets.SLACK_API_TOKEN }}
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
           payload: |
-            channel: ${{ secrets.SLACK_CHANNEL_ID }}
-            text: "GitHub Action result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            text: "GitHub Action result: ${{ job.status }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             blocks:
               - type: "section"
                 text:
                   type: "mrkdwn"
-                  text: "GitHub Action result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                  text: "GitHub Action result: ${{ job.status }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
