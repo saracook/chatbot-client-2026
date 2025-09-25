@@ -28,21 +28,6 @@ jobs:
           MUNGE_KEY_B64: ${{ secrets.MUNGE_KEY_B64 }}
           SLURM_DB_ROOT_PASSWORD: ${{ secrets.SLURM_DB_ROOT_PASSWORD }}
           SLURM_DB_SLURM_PASSWORD: ${{ secrets.SLURM_DB_SLURM_PASSWORD }}
-        #continue-on-error: true
-#      - name: post to slack if ping failed
-#        #if: ${{ steps.ping.conclusion == 'failure' }}
-#        uses: slackapi/slack-github-action@v2.1.1
-#        with:
-#          method: chat.postMessage
-#          token: ${{ secrets.SLACK_API_TOKEN }}
-#          payload: |
-#            channel: ${{ secrets.SLACK_CHANNEL_ID }}
-#            text: "GitHub Action result: ${{ job.status }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-#            blocks:
-#              - type: "section"
-#                text:
-#                  type: "mrkdwn"
-#                  text: "GitHub Action result: ${{ job.status }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
       - name: post to slack if ping failed
         if: ${{ failure() && steps.ping.conclusion == 'failure' }}
         uses: slackapi/slack-github-action@v2.1.1
@@ -50,9 +35,9 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
-            text: "GitHub Action result: ${{ job.status }}\n${{ steps.ping.conclusion }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            text: "GitHub Action workflow `${{ github.workflow }}` on runner `${{ runner.name }}` failed:\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             blocks:
               - type: "section"
                 text:
                   type: "mrkdwn"
-                  text: "GitHub Action result: ${{ job.status }}\n${{ steps.ping.conclusion }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                  text: "GitHub Action workflow `${{ github.workflow }}` on runner `${{ runner.name }}` failed:\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
