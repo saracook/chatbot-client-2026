@@ -30,7 +30,7 @@ jobs:
           SLURM_DB_SLURM_PASSWORD: ${{ secrets.SLURM_DB_SLURM_PASSWORD }}
         continue-on-error: true
       - name: post to slack if ping failed
-        if: ${{ failure() && steps.ping.conclusion == 'failure' }}
+        if: ${{ steps.ping.conclusion == 'failure' }}
         uses: slackapi/slack-github-action@v2.1.1
         with:
           method: chat.postMessage
