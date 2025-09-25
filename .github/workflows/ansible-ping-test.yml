@@ -10,14 +10,12 @@ jobs:
       - name: ping all hosts
         id: ping
         run: |
-          set -e
           cd ansible
           install -m 0600 <(echo "$ANSIBLE_SSH_PRIVATE_KEY") /dev/shm/ansible.pem
           ssh-keygen -yf /dev/shm/ansible.pem > /dev/shm/ansible.pub
           export ANSIBLE_SSH_PRIVATE_KEY_FILE=/dev/shm/ansible.pem
           export ANSIBLE_SSH_PUBLIC_KEY_FILE=/dev/shm/ansible.pub
           ansible -a whoami -b -i c2-hosts -m shell all
-          rm -f /dev/shm/ansible.*
         env:
           ANSIBLE_SSH_PRIVATE_KEY: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
           AWS_REGION: ${{ vars.AWS_REGION }}
@@ -29,6 +27,7 @@ jobs:
           SLURM_DB_ROOT_PASSWORD: ${{ secrets.SLURM_DB_ROOT_PASSWORD }}
           SLURM_DB_SLURM_PASSWORD: ${{ secrets.SLURM_DB_SLURM_PASSWORD }}
       - name: post to slack if ping failed
+        id: post
         if: ${{ failure() && steps.ping.conclusion == 'failure' }}
         uses: slackapi/slack-github-action@v2.1.1
         with:
@@ -42,3 +41,7 @@ jobs:
                   text: |
                     GitHub Actions workflow `${{ github.workflow }}` on runner `${{ runner.name }}` *FAILED*:
                     ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      - name: cleanup
+        id: cleanup
+        if: ${{ always() }}
+        run: rm -f /dev/shm/ansible.*
