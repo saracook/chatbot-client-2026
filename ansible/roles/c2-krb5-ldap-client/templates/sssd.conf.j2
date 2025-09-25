@@ -8,8 +8,9 @@ override_homedir = /home/users/%u
 override_shell = /bin/bash
 
 [domain/stanford.edu]
-id_provider = ldap
 access_provider = ldap
+id_provider = ldap
+sudo_provider = none
 override_gid = {{ sssd_domain_override_gid }}
 ldap_uri = ldap://ldap.stanford.edu
 ldap_id_use_start_tls = true
