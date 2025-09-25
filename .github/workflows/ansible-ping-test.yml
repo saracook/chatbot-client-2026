@@ -5,8 +5,11 @@ jobs:
   ansible-ping-test:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v5
-      - run: |
+      - name: checkout code
+        uses: actions/checkout@v5
+      - name: ping all hosts
+        id: ping
+        run: |
           set -e
           cd ansible
           install -m 0600 <(echo "$ANSIBLE_SSH_PRIVATE_KEY") /dev/shm/ansible.pem
@@ -14,6 +17,7 @@ jobs:
           export ANSIBLE_SSH_PRIVATE_KEY_FILE=/dev/shm/ansible.pem
           export ANSIBLE_SSH_PUBLIC_KEY_FILE=/dev/shm/ansible.pub
           ansible -a whoami -b -i c2-hosts -m shell all
+          rm -f /dev/shm/ansible.*
         env:
           ANSIBLE_SSH_PRIVATE_KEY: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
           AWS_REGION: ${{ vars.AWS_REGION }}
@@ -24,3 +28,18 @@ jobs:
           MUNGE_KEY_B64: ${{ secrets.MUNGE_KEY_B64 }}
           SLURM_DB_ROOT_PASSWORD: ${{ secrets.SLURM_DB_ROOT_PASSWORD }}
           SLURM_DB_SLURM_PASSWORD: ${{ secrets.SLURM_DB_SLURM_PASSWORD }}
+        continue-on-error: true
+      - name: post to slack if ping failed
+        if: ${{ failure() && steps.ping.conclusion == 'failure' }}
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ secrets.SLACK_CHANNEL_ID }}
+            text: "GitHub Action result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            blocks:
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "GitHub Action result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
