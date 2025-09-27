@@ -3,8 +3,8 @@ services = nss, pam
 domains = stanford.edu
 
 [nss]
-filter_users = root, {{ default_user }}
-filter_groups = root, {{ default_user }}
+filter_users = root, {{ default_user }}, all
+filter_groups = root, {{ default_user }}, all
 override_homedir = /home/users/%u
 override_shell = /bin/bash
 
@@ -37,3 +37,5 @@ krb5_renew_interval = 8h
 
 enumerate = false
 cache_credentials = false
+# todo: set this higher in production
+entry_cache_timeout = 3
