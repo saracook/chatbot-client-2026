@@ -5,7 +5,7 @@ ENV SLURM_VERSION="{{ slurm_version }}"
 # todo: rocky 10.0 doesn't have package http-parser-devel which
 #       is a dependency for building slurmrestd package.
 #       for rocky 9.6 install the following additional packages:
-#       http-parser-devel json-c-devel systemd
+#       http-parser-devel systemd
 
 RUN dnf -y install dnf-plugins-core \
     && \
@@ -15,14 +15,16 @@ RUN dnf -y install dnf-plugins-core \
     @development \
     dbus-devel \
     hwloc \
+    json-c-devel \
     libbpf-devel \
+    libyaml-devel \
     mariadb-devel \
     munge-devel \
     munge-libs \
     pam-devel \
     perl-devel \
     perl-ExtUtils-MakeMaker \
-    readline-devel {{ 'http-parser-devel json-c-devel systemd' if _distro.value.version == '9.6' else '' }}
+    readline-devel {{ 'http-parser-devel systemd' if _distro.value.version == '9.6' else '' }}
 
 COPY entrypoint /usr/local/bin/entrypoint
 

@@ -1,12 +1,15 @@
 - name: install packages
   ansible.builtin.dnf:
     name:
+      - json-c
+      - libyaml
       - munge
       - slurm-{{ slurm_version }}
       - slurm-perlapi-{{ slurm_version }}
     state: present
     update_cache: yes
     enablerepo: c2-local
+  tags: packages
 
 - name: install /etc/munge/munge.key
   ansible.builtin.copy:
