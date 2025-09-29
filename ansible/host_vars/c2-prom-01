@@ -5,3 +5,4 @@ mac_address_1: "52:54:00:ed:2c:4b"
 vcpus: 16
 memory_gb: 64
 swapfile_gb: 8
+data_disk_gb: 128
