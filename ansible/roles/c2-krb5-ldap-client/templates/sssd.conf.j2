@@ -17,7 +17,7 @@ ldap_uri = ldap://ldap.stanford.edu
 ldap_id_use_start_tls = true
 ldap_sasl_mech = GSSAPI
 ldap_sasl_authid = host/{{ canonical_hostname }}@stanford.edu
-ldap_search_base = cn=accounts,dc=stanford,dc=edu?onelevel?(suPrivilegeGroup={{ sssd_search_ldap_group }})
+ldap_search_base = cn=accounts,dc=stanford,dc=edu?onelevel?(suPrivilegeGroup={{ sssd_access_ldap_group }})
 ldap_access_filter = suPrivilegeGroup={{ sssd_access_ldap_group }}
 ldap_user_object_class = posixAccount
 ldap_group_search_base = cn=groups,dc=stanford,dc=edu?onelevel?

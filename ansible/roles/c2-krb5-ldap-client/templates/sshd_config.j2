@@ -21,17 +21,17 @@ Subsystem sftp /usr/libexec/openssh/sftp-server
 AuthenticationMethods gssapi-keyex,keyboard-interactive gssapi-with-mic,keyboard-interactive password,keyboard-interactive
 
 # allow all users to login only from cluster network or vpn
-Match Address *,!127.0.0.1,!127.0.1.1,!::1,!{{ network_cidr }},!10.130.0.0/16,!10.131.0.0/16
+Match Address *,!127.0.0.1,!127.0.1.1,!::1,!{{ network_cidr }},!{{ network_vpn_cidrs | join(",!") }}
     DenyUsers *
 
 # allow privileged users to use public key authentication when logging in from cluster network or vpn
-Match User root,{{ default_user }} Address 127.0.0.1,127.0.1.1,::1,{{ network_cidr }},10.130.0.0/16,10.131.0.0/16
+Match User root,{{ default_user }} Address 127.0.0.1,127.0.1.1,::1,{{ network_cidr }},{{ network_vpn_cidrs | join(",") }}
     PermitRootLogin prohibit-password
     PubKeyAuthentication yes
     AuthenticationMethods gssapi-keyex gssapi-with-mic publickey
 
 # allow privileged groups to use public key authentication when logging in from cluster network or vpn
-Match Group {{ sshd_admins_group }} Address 127.0.0.1,127.0.1.1,::1,{{ network_cidr }},10.130.0.0/16,10.131.0.0/16
+Match Group {{ sshd_admins_group }} Address 127.0.0.1,127.0.1.1,::1,{{ network_cidr }},{{ network_vpn_cidrs | join(",") }}
     PubKeyAuthentication yes
     AuthenticationMethods gssapi-keyex gssapi-with-mic publickey password
 

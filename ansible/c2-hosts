@@ -129,6 +129,9 @@ all:
       - 171.64.1.234
       - 171.67.1.234
     network_mtu: 9000
+    network_vpn_cidrs:
+      - 10.130.0.0/16
+      - 10.131.0.0/16
     # default distro. must be one of the keys in distros.
     # override in host/group vars to select a different version.
     distro: rocky_10_0

@@ -14,9 +14,7 @@ sssd_packages:
 
 # group: users
 sssd_domain_override_gid: 100
-
 sssd_access_ldap_group: carina:cluster-users
-sssd_search_ldap_group: carina:cluster-users
 
 sshd_users_group: carina_cluster-users
 sshd_admins_group: carina_cluster-admins
