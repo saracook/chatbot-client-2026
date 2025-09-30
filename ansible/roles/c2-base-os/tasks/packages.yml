@@ -114,6 +114,29 @@
     mode: '0644'
   when: inventory_hostname in groups['c2_compute_node']
 
+- block:
+    - name: import grafana repo key
+      ansible.builtin.rpm_key:
+        key: https://rpm.grafana.com/gpg.key
+        state: present
+    - name: install /etc/yum.repos.d/grafana.repo
+      ansible.builtin.copy:
+        content: |
+          [grafana]
+          name=grafana
+          baseurl=https://rpm.grafana.com
+          repo_gpgcheck=0
+          enabled=0
+          gpgcheck=1
+          gpgkey=https://rpm.grafana.com/gpg.key
+          sslverify=1
+          sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+        dest: /etc/yum.repos.d/grafana.repo
+        owner: root
+        group: root
+        mode: '0644'
+  when: inventory_hostname in groups['c2_grafana']
+
 - name: install base os packages
   ansible.builtin.dnf:
     name: "{{ base_os_packages }}"
