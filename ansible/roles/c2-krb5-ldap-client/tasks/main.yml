@@ -80,12 +80,12 @@
     enabled: yes
     daemon_reload: yes
 
+# nb: this is idempotent and we're not modifying any profile files
+#     in /etc/authselect that are symlinked in /etc/pam.d .
 - name: select authselect profile sssd
   ansible.builtin.command:
     cmd: authselect select sssd
   changed_when: false
-
-# todo: install /usr/local/sbin/new-user here
 
 - name: install /etc/pam.d/sshd
   ansible.builtin.template:
@@ -94,6 +94,14 @@
     owner: root
     group: root
     mode: '00644'
+
+- name: install /usr/local/sbin/new-user
+  ansible.builtin.template:
+    src: new-user.j2
+    dest: /usr/local/sbin/new-user
+    owner: root
+    group: root
+    mode: '00750'
 
 - name: install /etc/ssh/sshd_config
   ansible.builtin.template:
