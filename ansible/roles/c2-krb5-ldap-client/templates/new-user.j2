@@ -4,6 +4,7 @@
 
 set -e
 
+HOMEBASE="/home/users"
 SACCTMGR="/usr/bin/sacctmgr"
 DEFACCT="users"
 DEFPART="dev"
@@ -14,11 +15,12 @@ DEFPART="dev"
 [ "$PAM_USER" = 'rocky' ] && exit 0
 
 # create user home directory
-if [ ! -d /home/users/$PAM_USER ]
+[ -d $HOMEBASE ] || mkdir -p $HOMEBASE
+if [ ! -d $HOMEBASE/$PAM_USER ]
 then
-  cp -r /etc/skel /home/users/$PAM_USER
-  chown -R $PAM_USER: /home/users/$PAM_USER
-  chmod 00700 /home/users/$PAM_USER
+  cp -r /etc/skel $HOMEBASE/$PAM_USER
+  chown -R $PAM_USER: $HOMEBASE/$PAM_USER
+  chmod 00700 $HOMEBASE/$PAM_USER
 fi
 
 # skip slurm user accounting if slurm not installed
