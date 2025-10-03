@@ -24,16 +24,15 @@ AuthenticationMethods gssapi-keyex,keyboard-interactive gssapi-with-mic,keyboard
 Match Address *,!127.0.0.1,!127.0.1.1,!::1,!{{ network_cidr }},!{{ network_vpn_cidrs | join(",!") }}
     DenyUsers *
 
-# allow privileged users to use public key authentication when logging in from cluster network or vpn
-Match User root,{{ default_user }} Address 127.0.0.1,127.0.1.1,::1,{{ network_cidr }},{{ network_vpn_cidrs | join(",") }}
-    PermitRootLogin prohibit-password
+# allow {{ default_user }} user to use public key authentication when logging in from cluster network or vpn
+Match User {{ default_user }} Address 127.0.0.1,127.0.1.1,::1,{{ network_cidr }},{{ network_vpn_cidrs | join(",") }}
     PubKeyAuthentication yes
-    AuthenticationMethods gssapi-keyex gssapi-with-mic publickey
+    AuthenticationMethods publickey
 
-# allow privileged groups to use public key authentication when logging in from cluster network or vpn
+# allow {{ sshd_admins_group }} group to use public key authentication when logging in from cluster network or vpn
 Match Group {{ sshd_admins_group }} Address 127.0.0.1,127.0.1.1,::1,{{ network_cidr }},{{ network_vpn_cidrs | join(",") }}
     PubKeyAuthentication yes
-    AuthenticationMethods gssapi-keyex gssapi-with-mic publickey password
+    AuthenticationMethods publickey gssapi-keyex,keyboard-interactive gssapi-with-mic,keyboard-interactive password,keyboard-interactive
 
 {% if inventory_hostname in groups['c2_compute_node'] %}
 # allow unprivileged users to login to compute nodes only from cluster network
