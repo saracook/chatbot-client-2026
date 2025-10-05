@@ -4,8 +4,6 @@ mac_address_2: "52:54:00:51:5a:0e"
 kvm_host: c2-infra-02
 
 interfaces:
-  # eth0 assumes net.ifnames=0 boot option
-  # without this the default is enp1s0
   eth0:
     type: ethernet
     uuid: 24f493e7-5f6d-462b-b1cb-33b7c833cc48
