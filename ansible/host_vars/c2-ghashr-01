@@ -1,7 +1,32 @@
 ansible_host: 10.112.12.47
-kvm_host: c2-infra-02
 mac_address_1: "52:54:00:a4:3a:85"
+mac_address_2: "52:54:00:69:d5:4c"
+kvm_host: c2-infra-02
 # group c2_kvm_guest overrides
 vcpus: 8
 memory_gb: 32
 swapfile_gb: 4
+
+interfaces:
+  # eth0 assumes net.ifnames=0 boot option
+  # without this the default is enp1s0
+  eth0:
+    type: ethernet
+    uuid: 24f493e7-5f6d-462b-b1cb-33b7c833cc48
+    mac_address: "{{ mac_address_1 }}"
+    host_bridge: br0
+    address:
+      - "{{ ansible_host }}/{{ network_access_prefix }}"
+    gateway: "{{ network_access_gateway }}"
+    dns: "{{ network_access_dns }}"
+    dns_search_domain: "{{ network_access_dns_search }}"
+  eth1:
+    type: ethernet
+    uuid: 0c27c607-de65-4353-98aa-35907201b533
+    mac_address: "{{ mac_address_2 }}"
+    host_bridge: br0.2009
+    address:
+      - "10.210.28.47/22"
+    gateway: "{{ network_cluster_gateway }}"
+    dns: "{{ network_cluster_dns }}"
+    dns_search_domain: "{{ network_cluster_dns_search }}"

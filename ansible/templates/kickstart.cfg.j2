@@ -1,5 +1,5 @@
 %pre --erroronfail --interpreter=/bin/bash
-BYTES="{{ boot_disk_bytes }}"
+BYTES="{{ hostvars[hostname]['boot_disk_bytes'] }}"
 DISK="$( lsblk -bdnr | grep " $BYTES " | awk '{print $1}' )"
 {% if hostname in groups['c2_kvm_guest'] %}
 DEV="/dev/$DISK"
@@ -22,9 +22,9 @@ lang {{ locale }}
 keyboard us
 {% if ks_mode == 'cdrom' %}
 cdrom
-network --bootproto=static --device={{ mac_address_1 if mac_address_1 is defined else mac_address_2 }} --gateway={{ network_gateway }} --hostname={{ hostname }} --ip={{ hostip }} --mtu={{ network_mtu }} --nameserver={{ network_dns | join(',') }} --netmask={{ network_mask }} --noipv6 --onboot=yes
+network --bootproto=static --device={{ mac_address }} --gateway={{ network_access_gateway }} --hostname={{ hostname }} --ip={{ hostvars[hostname]['ansible_host'] }} --mtu={{ network_mtu }} --nameserver={{ network_access_dns | join(',') }} --netmask={{ network_access_mask }} --noipv6 --onboot=yes
 {% elif ks_mode == 'url' %}
-url --url=http://{{ nginx_ip }}:{{ nginx_port }}/{{ distros[distro]['name'] }}
+url --url=http://{{ nginx_ip }}:{{ nginx_port }}/{{ distros[hostvars[hostname]['distro']]['name'] }}
 {% endif %}
 zerombr
 clearpart --all --disklabel=gpt --initlabel
@@ -43,7 +43,7 @@ services --enabled=sshd
 %end
 
 %post --erroronfail --interpreter=/bin/bash
-fallocate -l {{ swapfile_gb }}G /swapfile
+fallocate -l {{ hostvars[hostname]['swapfile_gb'] }}G /swapfile
 chmod 00600 /swapfile
 mkswap /swapfile
 echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
@@ -51,31 +51,16 @@ install \
 -o root -g root -m 0400 \
 <(echo '{{ default_user }} ALL=(ALL) NOPASSWD:ALL') \
 /etc/sudoers.d/{{ default_user }}
-echo "PasswordAuthentication no" \
-> /etc/ssh/sshd_config.d/90-no-passwd-authn.conf 
-chmod 600 /etc/ssh/sshd_config.d/90-no-passwd-authn.conf 
+install \
+-o root -g root -m 0600 \
+<(echo 'PasswordAuthentication no') \
+/etc/ssh/sshd_config.d/90-no-passwd-authn.conf 
 rm -f /etc/NetworkManager/system-connections/*
-{% if hostname in groups['c2_kvm_guest'] %}
-cat <<EOF > /etc/NetworkManager/system-connections/{{ nic_1 }}.nmconnection
-{% include "nic_1.nmconnection.j2" +%}
+{% for item in hostvars[hostname]['interfaces'] | dict2items %}
+{% set interface = item.key %}
+cat <<EOF > /etc/NetworkManager/system-connections/{{ interface }}.nmconnection
+{% include item.value.type ~ ".nmconnection.j2" +%}
 EOF
-{% else %}
-{% if mac_address_1 is defined %}
-cat <<EOF > /etc/NetworkManager/system-connections/{{ bond_1 }}-{{ nic_1 }}.nmconnection
-{% include "nic_1.nmconnection.j2" +%}
-EOF
-{% endif %}
-{% if mac_address_2 is defined %}
-cat <<EOF > /etc/NetworkManager/system-connections/{{ bond_1 }}-{{ nic_2 }}.nmconnection
-{% include "nic_2.nmconnection.j2" +%}
-EOF
-{% endif %}
-cat <<EOF > /etc/NetworkManager/system-connections/{{ bond_1 }}.nmconnection
-{% include "bond_1.nmconnection.j2" +%}
-EOF
-cat <<EOF > /etc/NetworkManager/system-connections/{{ bridge_1 }}.nmconnection
-{% include "bridge_1.nmconnection.j2" +%}
-EOF
-{% endif %}
+{% endfor %}
 chmod 600 /etc/NetworkManager/system-connections/*
 %end

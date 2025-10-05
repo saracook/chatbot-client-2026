@@ -1,0 +1,22 @@
+[connection]
+id={{ interface }}
+uuid={{ hostvars[hostname]['interfaces'][interface]['uuid'] }}
+type=vlan
+interface-name={{ interface }}
+
+[vlan]
+parent={{ hostvars[hostname]['interfaces'][interface]['parent'] }}
+id={{ hostvars[hostname]['interfaces'][interface]['vlan_id'] }}
+
+[ethernet]
+mtu={{ network_mtu }}
+
+[ipv4]
+method=manual
+address={{ hostvars[hostname]['interfaces'][interface]['address'] | join(";") }};
+gateway={{ hostvars[hostname]['interfaces'][interface]['gateway'] }}
+dns={{ hostvars[hostname]['interfaces'][interface]['dns'] | join(";") }};
+dns-search={{ hostvars[hostname]['interfaces'][interface]['dns_search_domain'] | join(";") }};
+
+[ipv6]
+method=ignore

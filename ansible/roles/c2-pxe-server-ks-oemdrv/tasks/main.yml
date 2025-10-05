@@ -9,7 +9,7 @@
     dest: "{{ kickstart_cfg }}"
   vars:
     hostname: "{{ inventory_hostname }}"
-    hostip: "{{ ansible_host }}"
+    mac_address: "{{ mac_address_1 }}"
     ks_mode: cdrom
 
 - name: install kickstart.img

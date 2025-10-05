@@ -1,0 +1,33 @@
+[connection]
+id={{ interface }}
+uuid={{ hostvars[hostname]['interfaces'][interface]['uuid'] }}
+type=bond
+interface-name={{ interface }}
+{% if 'bridge' in hostvars[hostname]['interfaces'][interface] %}
+controller={{ hostvars[hostname]['interfaces'][interface]['bridge'] }}
+port-type=bridge
+{% endif %}
+
+[ethernet]
+mtu={{ network_mtu }}
+
+[bond]
+mode={{ hostvars[hostname]['interfaces'][interface]['bond_mode'] }}
+{% if hostvars[hostname]['interfaces'][interface]['bond_mode'] == '802.3ad' %}
+xmit_hash_policy={{ hostvars[hostname]['interfaces'][interface]['bond_xmit_hash_policy'] }}
+{% endif %}
+miimon={{ hostvars[hostname]['interfaces'][interface]['bond_miimon'] }}
+
+{% if 'bridge' not in hostvars[hostname]['interfaces'][interface] %}
+[ipv4]
+method=manual
+address={{ hostvars[hostname]['interfaces'][interface]['address'] | join(";") }};
+gateway={{ hostvars[hostname]['interfaces'][interface]['gateway'] }}
+dns={{ hostvars[hostname]['interfaces'][interface]['dns'] | join(";") }};
+dns-search={{ hostvars[hostname]['interfaces'][interface]['dns_search_domain'] | join(";") }};
+
+[ipv6]
+method=ignore
+{% else %}
+[bridge-port]
+{%- endif %}

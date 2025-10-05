@@ -17,7 +17,7 @@
     <emulator>/usr/libexec/qemu-kvm</emulator>
     <disk type='volume' device='disk'>
       <driver name='qemu' type='raw'/>
-      <source pool='{{ hostvars[kvm_host]['pool_1'] }}' volume='{{ inventory_hostname }}-boot'/>
+      <source pool='{{ hostvars[kvm_host]['pool'] }}' volume='{{ inventory_hostname }}-boot'/>
       <target dev='{{ boot_disk_dev }}' bus='virtio'/>
 {% if pxe_mode is defined and pxe_mode == 'netinstall' %}
       <boot order='2'/>
@@ -27,16 +27,21 @@
     </disk>
     <disk type='volume' device='disk'>
       <driver name='qemu' type='raw'/>
-      <source pool='{{ hostvars[kvm_host]['pool_1'] }}' volume='{{ inventory_hostname }}-data'/>
+      <source pool='{{ hostvars[kvm_host]['pool'] }}' volume='{{ inventory_hostname }}-data'/>
       <target dev='{{ data_disk_dev }}' bus='virtio'/>
     </disk>
     <interface type='network'>
-      <mac address='{{ mac_address_1 }}'/>
-      <source network='{{ hostvars[kvm_host]['bridge_1'] }}'/>
+      <mac address='{{ interfaces[nic_1]['mac_address'] }}'/>
+      <source network='{{ interfaces[nic_1]['host_bridge'] }}'/>
       <model type='virtio'/>
 {% if pxe_mode is defined and pxe_mode == 'netinstall' %}
       <boot order='1'/>
 {% endif %}
+    </interface>
+    <interface type='network'>
+      <mac address='{{ interfaces[nic_2]['mac_address'] }}'/>
+      <source network='{{ interfaces[nic_2]['host_bridge'] }}'/>
+      <model type='virtio'/>
     </interface>
     <graphics type='vnc' autoport='yes'/>
   </devices>

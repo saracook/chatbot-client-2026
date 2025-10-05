@@ -97,31 +97,43 @@
     name: default
     autostart: no
 
-- name: create network {{ bridge_1 }}
+- name: create bridge networks
   community.libvirt.virt_net:
-    name: "{{ bridge_1 }}"
+    name: "{{ bridge }}"
     command: define
-    xml: "{{ lookup('template', 'bridge_1.xml.j2') }}"
+    xml: "{{ lookup('template', 'bridge.xml.j2') }}"
+  when: item.value.type == 'bridge'
+  vars:
+    bridge: "{{ item.key }}"
+  loop: "{{ interfaces | dict2items }}"
 
-- name: start network {{ bridge_1 }}
+- name: start bridge networks
   community.libvirt.virt_net:
-    name: "{{ bridge_1 }}"
+    name: "{{ bridge }}"
     state: active
+  when: item.value.type == 'bridge'
+  vars:
+    bridge: "{{ item.key }}"
+  loop: "{{ interfaces | dict2items }}"
 
-- name: enable network {{ bridge_1 }}
+- name: enable bridge networks
   community.libvirt.virt_net:
-    name: "{{ bridge_1 }}"
+    name: "{{ bridge }}"
     autostart: yes
+  when: item.value.type == 'bridge'
+  vars:
+    bridge: "{{ item.key }}"
+  loop: "{{ interfaces | dict2items }}"
 
-- name: check for existence of {{ md_1 }}
+- name: check for existence of {{ md }}
   ansible.builtin.shell:
     cmd: |
-      mdadm --query --detail /dev/{{ md_1 }} >/dev/null 2>&1
+      mdadm --query --detail /dev/{{ md }} >/dev/null 2>&1
   register: mdq
   ignore_errors: true
   changed_when: false
 
-- name: create raid1 {{ md_1 }} with first two extra nvme disks
+- name: create raid1 {{ md }} with first two extra nvme disks
   ansible.builtin.shell:
     cmd: |
       set -e
@@ -138,7 +150,7 @@
       mdadm \
       --create \
       --metadata 1.2 \
-      /dev/{{ md_1 }} \
+      /dev/{{ md }} \
       --level 1 \
       --raid-devices 2 \
       /dev/disk/by-id/{{ nvme_disk_ids[0] }} \
@@ -146,34 +158,34 @@
       wipefs \
       --all \
       --force \
-      /dev/{{ md_1 }}
+      /dev/{{ md }}
       mdadm --detail --scan | tee /etc/mdadm.conf
   when: mdq.rc != 0
 
-- name: create lvm pv /dev/{{ md_1 }}
+- name: create lvm pv /dev/{{ md }}
   community.general.lvm_pv:
-    device: /dev/{{ md_1 }}
+    device: /dev/{{ md }}
     state: present
     force: yes
 
-- name: create lvm vg /dev/{{ pool_1 }} with pv /dev/{{ md_1 }}
+- name: create lvm vg /dev/{{ pool }} with pv /dev/{{ md }}
   community.general.lvg:
-    vg: "{{ pool_1 }}"
-    pvs: /dev/{{ md_1 }}
+    vg: "{{ pool }}"
+    pvs: /dev/{{ md }}
     # todo: set pesize here
 
-- name: create lvm storage pool {{ pool_1 }}
+- name: create lvm storage pool {{ pool }}
   community.libvirt.virt_pool:
-    name: "{{ pool_1 }}"
+    name: "{{ pool }}"
     command: define
-    xml: "{{ lookup('template', 'pool_1.xml.j2') }}"
+    xml: "{{ lookup('template', 'pool.xml.j2') }}"
 
-- name: start lvm storage pool {{ pool_1 }}
+- name: start lvm storage pool {{ pool }}
   community.libvirt.virt_pool:
-    name: "{{ pool_1 }}"
+    name: "{{ pool }}"
     state: active
 
-- name: enable lvm storage pool {{ pool_1 }}
+- name: enable lvm storage pool {{ pool }}
   community.libvirt.virt_pool:
-    name: "{{ pool_1 }}"
+    name: "{{ pool }}"
     autostart: yes
