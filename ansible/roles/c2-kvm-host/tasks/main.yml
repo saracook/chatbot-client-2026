@@ -26,8 +26,8 @@
 
 - name: allow remote access via policykit
   ansible.builtin.template:
-    src: 50-libvirt-remote-access.pkla.j2
-    dest: /etc/polkit-1/localauthority/50-local.d/50-libvirt-remote-access.pkla
+    src: 50-libvirt-remote-access.rules.j2
+    dest: /etc/polkit-1/rules.d/50-libvirt-remote-access.rules
   register: plcyktcnf
 
 - name: restart polkit service
@@ -102,7 +102,7 @@
     name: "{{ bridge }}"
     command: define
     xml: "{{ lookup('template', 'bridge.xml.j2') }}"
-  when: item.value.type == 'bridge'
+  when: bridge is ansible.builtin.search('^br')
   vars:
     bridge: "{{ item.key }}"
   loop: "{{ interfaces | dict2items }}"
@@ -111,7 +111,7 @@
   community.libvirt.virt_net:
     name: "{{ bridge }}"
     state: active
-  when: item.value.type == 'bridge'
+  when: bridge is ansible.builtin.search('^br')
   vars:
     bridge: "{{ item.key }}"
   loop: "{{ interfaces | dict2items }}"
@@ -120,7 +120,7 @@
   community.libvirt.virt_net:
     name: "{{ bridge }}"
     autostart: yes
-  when: item.value.type == 'bridge'
+  when: bridge is ansible.builtin.search('^br')
   vars:
     bridge: "{{ item.key }}"
   loop: "{{ interfaces | dict2items }}"
