@@ -25,176 +25,19 @@
         pxe_clients: "{{ pxe_clients }}"
         pxe_mode: netinstall
 
-- name: power cycle pxe clients and set to pxe boot for auto-install
+- name: power cycle pxe clients for pxe boot auto-install
   hosts: "{{ pxe_clients }}"
   connection: local
   gather_facts: no
   tasks:
 
-    - name: bare metal pxe clients - connect to idrac
+    - name: bare metal pxe clients
+      ansible.builtin.include_tasks: c2-pxe-install-bare-metal-install.yml
       when: inventory_hostname not in groups['c2_kvm_guest']
-      block:
 
-        - name: power off pxe clients
-          ansible.builtin.shell:
-            cmd: |
-              sshpass \
-              -p "$IDRAC_PASSWORD" \
-              ssh \
-              -l "$IDRAC_USERNAME" \
-              {{ idrac_ip }} \
-              racadm serveraction powerdown
-          environment:
-            IDRAC_PASSWORD: "{{ idrac_password }}"
-            IDRAC_USERNAME: "{{ idrac_username }}"
-
-        - name: wait until pxe clients are powered off
-          ansible.builtin.shell:
-            cmd: |
-              sshpass \
-              -p "$IDRAC_PASSWORD" \
-              ssh \
-              -l "$IDRAC_USERNAME" \
-              {{ idrac_ip }} \
-              racadm getsysinfo -s | grep 'Power Status' | awk '{print $NF}'
-          environment:
-            IDRAC_PASSWORD: "{{ idrac_password }}"
-            IDRAC_USERNAME: "{{ idrac_username }}"
-          register: pwrstat
-          until: pwrstat.stdout == 'OFF'
-          # retry for 3 minutes
-          retries: 18
-          delay: 10
-
-        - name: set pxe clients to pxe boot
-          ansible.builtin.shell:
-            cmd: |
-              cat <<EOF | sshpass -p "$IDRAC_PASSWORD" ssh -l "$IDRAC_USERNAME" {{ idrac_ip }}
-              racadm set iDRAC.ServerBoot.BootOnce Enabled
-              racadm set iDRAC.ServerBoot.FirstBootDevice PXE
-              EOF
-          environment:
-            IDRAC_PASSWORD: "{{ idrac_password }}"
-            IDRAC_USERNAME: "{{ idrac_username }}"
-
-        - name: power on pxe clients
-          ansible.builtin.shell:
-            cmd: |
-              sshpass \
-              -p "$IDRAC_PASSWORD" \
-              ssh \
-              -l "$IDRAC_USERNAME" \
-              {{ idrac_ip }} \
-              racadm serveraction powerup
-          environment:
-            IDRAC_PASSWORD: "{{ idrac_password }}"
-            IDRAC_USERNAME: "{{ idrac_username }}"
-
-        - name: wait until pxe clients are powered on
-          ansible.builtin.shell:
-            cmd: |
-              sshpass \
-              -p "$IDRAC_PASSWORD" \
-              ssh \
-              -l "$IDRAC_USERNAME" \
-              {{ idrac_ip }} \
-              racadm getsysinfo -s | grep 'Power Status' | awk '{print $NF}'
-          environment:
-            IDRAC_PASSWORD: "{{ idrac_password }}"
-            IDRAC_USERNAME: "{{ idrac_username }}"
-          register: pwrstat
-          until: pwrstat.stdout == 'ON'
-          # retry for 3 minutes
-          retries: 18
-          delay: 10
-
-        - name: wait until pxe clients are powered off
-          ansible.builtin.shell:
-            cmd: |
-              sshpass \
-              -p "$IDRAC_PASSWORD" \
-              ssh \
-              -l "$IDRAC_USERNAME" \
-              {{ idrac_ip }} \
-              racadm getsysinfo -s | grep 'Power Status' | awk '{print $NF}'
-          environment:
-            IDRAC_PASSWORD: "{{ idrac_password }}"
-            IDRAC_USERNAME: "{{ idrac_username }}"
-          register: pwrstat
-          until: pwrstat.stdout == 'OFF'
-          # retry for 10 minutes
-          retries: 60
-          delay: 10
-
-    - name: kvm guest pxe clients - connect to kvm host
+    - name: kvm guest pxe clients
+      ansible.builtin.include_tasks: c2-pxe-install-kvm-guest-install.yml
       when: inventory_hostname in groups['c2_kvm_guest']
-      delegate_to: "{{ kvm_host }}"
-      connection: ssh
-      become: yes
-      block:
-
-        - name: destroy kvm guests
-          community.libvirt.virt:
-            name: "{{ inventory_hostname }}"
-            command: destroy
-          ignore_errors: true
-
-        - name: undefine kvm guests
-          community.libvirt.virt:
-            name: "{{ inventory_hostname }}"
-            command: undefine
-          ignore_errors: true
-
-        - name: delete boot and data disk volumes
-          community.libvirt.virt_volume:
-            pool: "{{ hostvars[kvm_host]['pool'] }}"
-            name: "{{ inventory_hostname }}-{{ item }}"
-            state: absent
-          loop:
-            - boot
-            - data
-
-        - name: create boot and data disk volumes
-          community.libvirt.virt_volume:
-            pool: "{{ hostvars[kvm_host]['pool'] }}"
-            # name not required here since it's defined in volume xml
-            name: "{{ inventory_hostname }}-{{ item }}"
-            state: present
-            xml: "{{ lookup('template', 'volume.xml.j2') }}"
-          loop:
-            - boot
-            - data
-
-        - name: define kvm guests for pxe boot
-          community.libvirt.virt:
-            # name not required here since it's defined in domain xml
-            #name: "{{ inventory_hostname }}"
-            command: define
-            xml: "{{ lookup('template', 'domain.xml.j2') }}"
-          vars:
-            pxe_mode: netinstall
-
-        - name: start kvm guests
-          community.libvirt.virt:
-            name: "{{ inventory_hostname }}"
-            state: running
-
-        - name: wait for pxe provisioning of kvm guests to finish
-          community.libvirt.virt:
-            name: "{{ inventory_hostname }}"
-            command: info
-          register: info
-          until: info[inventory_hostname]['state'] == 'shutdown'
-          # retry for 10 minutes
-          retries: 60
-          delay: 10
-
-        - name: redefine kvm guests for local boot
-          community.libvirt.virt:
-            # name not required here since it's defined in domain xml
-            #name: "{{ inventory_hostname }}"
-            command: define
-            xml: "{{ lookup('template', 'domain.xml.j2') }}"
 
 - name: configure pxe clients to local boot
   hosts: c2_pxe_server
@@ -213,67 +56,13 @@
   gather_facts: no
   tasks:
 
-    - name: bare metal pxe clients - connect to idrac
+    - name: bare metal pxe clients
+      ansible.builtin.include_tasks: c2-pxe-install-bare-metal-ping.yml
       when: inventory_hostname not in groups['c2_kvm_guest']
-      block:
 
-        - name: power on pxe clients
-          ansible.builtin.shell:
-            cmd: |
-              sshpass \
-              -p "$IDRAC_PASSWORD" \
-              ssh \
-              -l "$IDRAC_USERNAME" \
-              {{ idrac_ip }} \
-              racadm serveraction powerup
-          environment:
-            IDRAC_PASSWORD: "{{ idrac_password }}"
-            IDRAC_USERNAME: "{{ idrac_username }}"
-
-        - name: wait until pxe clients are powered on
-          ansible.builtin.shell:
-            cmd: |
-              sshpass \
-              -p "$IDRAC_PASSWORD" \
-              ssh \
-              -l "$IDRAC_USERNAME" \
-              {{ idrac_ip }} \
-              racadm getsysinfo -s | grep 'Power Status' | awk '{print $NF}'
-          environment:
-            IDRAC_PASSWORD: "{{ idrac_password }}"
-            IDRAC_USERNAME: "{{ idrac_username }}"
-          register: pwrstat
-          until: pwrstat.stdout == 'ON'
-          # retry for 3 minutes
-          retries: 18
-          delay: 10
-
-        - name: wait for ssh to be available
-          ansible.builtin.wait_for:
-            host: "{{ ansible_host }}"
-            port: 22
-            # retry for 10 minutes
-            delay: 60
-            timeout: 600
-
-    - name: kvm guest pxe clients - connect to kvm host
+    - name: kvm guest pxe clients
+      ansible.builtin.include_tasks: c2-pxe-install-kvm-guest-ping.yml
       when: inventory_hostname in groups['c2_kvm_guest']
-      delegate_to: "{{ hostvars[inventory_hostname]['kvm_host'] }}"
-      become: yes
-      block:
-
-        - name: start kvm guests
-          community.libvirt.virt:
-            name: "{{ inventory_hostname }}"
-            state: running
-          connection: ssh
-
-        - name: wait for ssh to be available
-          wait_for:
-            host: "{{ ansible_host }}"
-            port: 22
-            delay: 10
-          connection: local
 
 - name: ping pxe clients {{ pxe_clients }}
   hosts: "{{ pxe_clients }}"
