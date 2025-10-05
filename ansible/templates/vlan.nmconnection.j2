@@ -17,6 +17,7 @@ address={{ hostvars[hostname]['interfaces'][interface]['address'] | join(";") }}
 gateway={{ hostvars[hostname]['interfaces'][interface]['gateway'] }}
 dns={{ hostvars[hostname]['interfaces'][interface]['dns'] | join(";") }};
 dns-search={{ hostvars[hostname]['interfaces'][interface]['dns_search_domain'] | join(";") }};
+never-default=true
 
 [ipv6]
 method=ignore
