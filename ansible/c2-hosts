@@ -128,8 +128,8 @@ all:
     network_access_mask: "{{ network_access_cidr | ansible.utils.ipaddr('netmask') }}"
     network_access_gateway: 10.112.12.1
     network_access_dns:
-      # srv records for slurm configless
-      - "{{ hostvars[groups['c2_pxe_server'][0]]['ansible_host'] }}"
+      # todo: srv records for slurm configless via dnsmasq
+      - 10.112.12.2
       - 171.64.1.234
       - 171.67.1.234
     network_access_dns_search:
