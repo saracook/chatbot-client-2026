@@ -15,7 +15,7 @@ dhcp-option=3,{{ network_access_gateway }}
 # option 6 = dns
 dhcp-option=6,{{ network_access_dns | join(',') }}
 #dhcp-boot=pxelinux.0
-dhcp-boot=grubx64.efi
+dhcp-boot=shimx64.efi
 # todo: revisit these later for private subnets
 #domain={{ domain }},{{ network_access_cidr }},local
 #domain={{ domain }}
