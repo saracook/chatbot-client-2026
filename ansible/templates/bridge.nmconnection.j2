@@ -3,13 +3,16 @@ id={{ interface }}
 uuid={{ hostvars[hostname]['interfaces'][interface]['uuid'] }}
 type=bridge
 interface-name={{ interface }}
+autoconnect=true
 
 [ethernet]
 mtu={{ network_mtu }}
 
 [bridge]
 stp=on
+forward-delay=0
 
+{% if 'address' in hostvars[hostname]['interfaces'][interface] %}
 [ipv4]
 method=manual
 address={{ hostvars[hostname]['interfaces'][interface]['address'] | join(";") }};
@@ -19,5 +22,6 @@ dns-search={{ hostvars[hostname]['interfaces'][interface]['dns_search_domain'] |
 
 [ipv6]
 method=disabled
+{% endif %}
 
 [proxy]

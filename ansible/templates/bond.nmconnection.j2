@@ -7,6 +7,7 @@ interface-name={{ interface }}
 controller={{ hostvars[hostname]['interfaces'][interface]['bridge'] }}
 port-type=bridge
 {% endif %}
+autoconnect=true
 
 [ethernet]
 mtu={{ network_mtu }}
@@ -17,8 +18,8 @@ mode={{ hostvars[hostname]['interfaces'][interface]['bond_mode'] }}
 xmit_hash_policy={{ hostvars[hostname]['interfaces'][interface]['bond_xmit_hash_policy'] }}
 {% endif %}
 miimon={{ hostvars[hostname]['interfaces'][interface]['bond_miimon'] }}
+{% if 'address' in hostvars[hostname]['interfaces'][interface] %}
 
-{% if 'bridge' not in hostvars[hostname]['interfaces'][interface] %}
 [ipv4]
 method=manual
 address={{ hostvars[hostname]['interfaces'][interface]['address'] | join(";") }};
@@ -28,6 +29,8 @@ dns-search={{ hostvars[hostname]['interfaces'][interface]['dns_search_domain'] |
 
 [ipv6]
 method=ignore
-{% else %}
+{% endif %}
+{% if 'bridge' in hostvars[hostname]['interfaces'][interface] %}
+
 [bridge-port]
-{%- endif %}
+{% endif %}

@@ -7,12 +7,13 @@ interface-name={{ interface }}
 controller={{ hostvars[hostname]['interfaces'][interface]['bond'] }}
 port-type=bond
 {% endif %}
+autoconnect=true
 
 [ethernet]
 mtu={{ network_mtu }}
 mac-address={{ hostvars[hostname]['interfaces'][interface]['mac_address'] | upper }}
 
-{% if 'bond' not in hostvars[hostname]['interfaces'][interface] %}
+{% if 'address' in hostvars[hostname]['interfaces'][interface] %}
 [ipv4]
 method=manual
 address={{ hostvars[hostname]['interfaces'][interface]['address'] | join(";") }};
@@ -22,6 +23,7 @@ dns-search={{ hostvars[hostname]['interfaces'][interface]['dns_search_domain'] |
 
 [ipv6]
 method=disabled
-{% else %}
+{% endif %}
+{% if 'bond' in hostvars[hostname]['interfaces'][interface] %}
 [bond-port]
-{%- endif %}
+{% endif %}

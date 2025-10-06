@@ -3,6 +3,7 @@ id={{ interface }}
 uuid={{ hostvars[hostname]['interfaces'][interface]['uuid'] }}
 type=vlan
 interface-name={{ interface }}
+autoconnect=true
 
 [vlan]
 parent={{ hostvars[hostname]['interfaces'][interface]['parent'] }}
@@ -10,6 +11,7 @@ id={{ hostvars[hostname]['interfaces'][interface]['vlan_id'] }}
 
 [ethernet]
 mtu={{ network_mtu }}
+{% if 'address' in hostvars[hostname]['interfaces'][interface] %}
 
 [ipv4]
 method=manual
@@ -21,3 +23,4 @@ never-default=true
 
 [ipv6]
 method=ignore
+{% endif %}
