@@ -9,16 +9,27 @@ autoconnect=true
 mtu={{ network_mtu }}
 
 [bridge]
-stp=on
-forward-delay=0
+stp=off
+forward-delay=2
 
 {% if 'address' in hostvars[hostname]['interfaces'][interface] %}
 [ipv4]
 method=manual
-address={{ hostvars[hostname]['interfaces'][interface]['address'] | join(";") }};
+{% for addr in hostvars[hostname]['interfaces'][interface]['address'] %}
+address{{ loop.index }}={{ addr }}
+{% endfor %}
 gateway={{ hostvars[hostname]['interfaces'][interface]['gateway'] }}
 dns={{ hostvars[hostname]['interfaces'][interface]['dns'] | join(";") }};
 dns-search={{ hostvars[hostname]['interfaces'][interface]['dns_search_domain'] | join(";") }};
+{% if 'default_route' not in hostvars[hostname]['interfaces'][interface] or not hostvars[hostname]['interfaces'][interface]['default_route'] %}
+never-default=true
+{% endif %}
+
+[ipv6]
+method=disabled
+{% else %}
+[ipv4]
+method=disabled
 
 [ipv6]
 method=disabled

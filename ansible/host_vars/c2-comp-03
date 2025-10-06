@@ -32,20 +32,17 @@ interfaces:
     bond_mode: 802.3ad
     bond_xmit_hash_policy: layer2
     bond_miimon: 100
-    bridge: br0
-  br0:
-    type: bridge
-    uuid: bf0a6969-22a9-4049-b99e-b6ba78326c2b
     address:
       - "{{ ansible_host }}/{{ network_access_prefix }}"
     gateway: "{{ network_access_gateway }}"
     dns: "{{ network_access_dns }}"
     dns_search_domain: "{{ network_access_dns_search }}"
-  br0.2009:
+    default_route: yes
+  bond0.2009:
     type: vlan
     vlan_id: 2009
     uuid: 4f6e3ff0-c62d-4999-b5bc-cbe6b74e0ebd
-    parent: br0
+    parent: bond0
     address:
       - "10.210.28.11/22"
     gateway: "{{ network_cluster_gateway }}"
