@@ -28,8 +28,8 @@ interfaces:
   bond0:
     type: bond
     uuid: 54317911-f840-516b-a10d-82cb4c1f075c
-    bond_mode: 802.3ad
     #bond_mode: balance-rr
+    bond_mode: 802.3ad
     bond_xmit_hash_policy: layer2
     bond_miimon: 100
     bridge: br0
