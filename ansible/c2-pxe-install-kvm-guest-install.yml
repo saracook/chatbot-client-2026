@@ -57,8 +57,8 @@
       register: info
       until: info[inventory_hostname]['state'] == 'shutdown'
       # retry for 10 minutes
-      retries: 60
-      delay: 10
+      retries: 20
+      delay: 30
 
     - name: redefine kvm guests for local boot
       community.libvirt.virt:
