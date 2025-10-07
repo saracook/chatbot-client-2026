@@ -1,0 +1,14 @@
+- name: update packages and reboot system
+  hosts: all
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: update all packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+        update_cache: yes
+      register: dnfresult
+    - name: reboot system
+      ansible.builtin.reboot:
+      when: dnfresult is changed
