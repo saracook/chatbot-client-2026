@@ -33,6 +33,6 @@ session    include      password-auth
 session    [success=3 default=ignore]   pam_succeed_if.so user ingroup {{ sshd_admins_group }}
 session    [success=2 default=ignore]   pam_succeed_if.so user = {{ default_user }}
 session    [success=1 default=ignore]   pam_succeed_if.so user = root
-session    optional                     pam_exec.so quiet /usr/local/sbin/new-user
+session    optional                     pam_exec.so log=/var/log/new-user.log quiet /usr/local/sbin/new-user
 {% endif %}
 session    include      postlogin

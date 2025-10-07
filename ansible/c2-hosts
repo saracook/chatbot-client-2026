@@ -63,6 +63,12 @@ all:
       hosts:
         c2-login-01:
         c2-login-02:
+    c2_nfs_client:
+      children:
+        c2_compute_node:
+        c2_login_node:
+        c2_open_ondemand:
+        c2_slurm_controller:
     c2_open_ondemand:
       hosts:
         c2-ood-01:
