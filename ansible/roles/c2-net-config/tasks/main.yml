@@ -1,7 +1,10 @@
+# todo: document clean and restart behavioral variables
+
 - name: remove directory /etc/NetworkManager/system-connections
   ansible.builtin.file:
     path: /etc/NetworkManager/system-connections
     state: absent
+  when: clean is defined and clean
 
 - name: create directory /etc/NetworkManager/system-connections
   ansible.builtin.file:
@@ -26,4 +29,4 @@
     state: restarted
     enabled: yes
     daemon_reload: yes
-  when: nmscfiles is changed
+  when: restart is defined and restart and nmscfiles is changed
