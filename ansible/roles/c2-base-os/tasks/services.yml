@@ -6,8 +6,15 @@
     daemon_reload: yes
   loop:
     - acpid
-    - multipathd
     - polkit
     - sysstat
     - udisks2
     - upower
+
+- name: stop/disable services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}.service"
+    state: stopped
+    enabled: no
+    daemon_reload: yes
+  loop: []

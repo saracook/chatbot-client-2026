@@ -3,10 +3,6 @@
   tags: packages
 
 - import_tasks:
-    file: multipath.yml
-  tags: multipath
-
-- import_tasks:
     file: services.yml
   tags: services
 
