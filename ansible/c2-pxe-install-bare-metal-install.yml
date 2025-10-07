@@ -85,6 +85,6 @@
     IDRAC_USERNAME: "{{ idrac_username }}"
   register: pwrstat
   until: pwrstat.stdout == 'OFF'
-  # retry for 10 minutes
-  retries: 20
+  # retry for 15 minutes
+  retries: 30
   delay: 30

@@ -56,8 +56,8 @@
         command: info
       register: info
       until: info[inventory_hostname]['state'] == 'shutdown'
-      # retry for 10 minutes
-      retries: 20
+      # retry for 15 minutes
+      retries: 30
       delay: 30
 
     - name: redefine kvm guests for local boot
