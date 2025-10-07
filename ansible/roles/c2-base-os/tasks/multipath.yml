@@ -3,6 +3,7 @@
     content: |
       defaults {
           user_friendly_names yes
+          find_multipaths on
       }
     dest: /etc/multipath.conf
 
