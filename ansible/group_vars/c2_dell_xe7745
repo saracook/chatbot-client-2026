@@ -7,12 +7,6 @@ idrac_username: "{{ lookup('env', 'IDRAC_USERNAME') }}"
 idrac_password: "{{ lookup('env', 'IDRAC_PASSWORD') }}"
 nic_1: ens9f0np0
 nic_2: ens9f1np1
-bond_1: bond0
-bond_mode: 802.3ad
-#bond_mode: balance-rr
-bond_xmit_hash_policy: layer2
-bond_miimon: 100
-bridge_1: br0
 
 # following used in slurm.conf compute node configuration:
 boards: 1

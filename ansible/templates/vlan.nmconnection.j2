@@ -1,0 +1,44 @@
+[connection]
+id={{ interface }}
+uuid={{ hostvars[hostname]['interfaces'][interface]['uuid'] }}
+type=vlan
+interface-name={{ interface }}
+{% if 'bridge' in hostvars[hostname]['interfaces'][interface] %}
+controller={{ hostvars[hostname]['interfaces'][interface]['bridge'] }}
+port-type=bridge
+{% endif %}
+autoconnect=true
+
+[vlan]
+parent={{ hostvars[hostname]['interfaces'][interface]['parent'] }}
+id={{ hostvars[hostname]['interfaces'][interface]['vlan_id'] }}
+
+[ethernet]
+mtu={{ network_mtu }}
+
+{% if 'address' in hostvars[hostname]['interfaces'][interface] %}
+[ipv4]
+method=manual
+{% for addr in hostvars[hostname]['interfaces'][interface]['address'] %}
+address{{ loop.index }}={{ addr }}
+{% endfor %}
+gateway={{ hostvars[hostname]['interfaces'][interface]['gateway'] }}
+dns={{ hostvars[hostname]['interfaces'][interface]['dns'] | join(";") }};
+dns-search={{ hostvars[hostname]['interfaces'][interface]['dns_search_domain'] | join(";") }};
+{% if 'default_route' not in hostvars[hostname]['interfaces'][interface] or not hostvars[hostname]['interfaces'][interface]['default_route'] %}
+never-default=true
+{% endif %}
+
+[ipv6]
+method=disabled
+{% else %}
+[ipv4]
+method=disabled
+
+[ipv6]
+method=disabled
+{% endif %}
+{% if 'bridge' in hostvars[hostname]['interfaces'][interface] %}
+
+[bridge-port]
+{% endif %}

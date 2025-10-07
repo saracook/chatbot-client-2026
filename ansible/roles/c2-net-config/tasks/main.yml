@@ -1,7 +1,10 @@
+# todo: document clean and restart behavioral variables
+
 - name: remove directory /etc/NetworkManager/system-connections
   ansible.builtin.file:
     path: /etc/NetworkManager/system-connections
     state: absent
+  when: clean is defined and clean
 
 - name: create directory /etc/NetworkManager/system-connections
   ansible.builtin.file:
@@ -10,20 +13,13 @@
 
 - name: create networkmanager system connection files in /etc/NetworkManager/system-connections
   ansible.builtin.template:
-    src: "{{ item }}.nmconnection.j2"
-    dest: "{{ filename }}"
+    src: "{{ item.value.type }}.nmconnection.j2"
+    dest: /etc/NetworkManager/system-connections/{{ interface }}.nmconnection
     mode: '00600'
   vars:
-    hostip: "{{ ansible_host }}"
     hostname: "{{ inventory_hostname }}"
-    filename: /etc/NetworkManager/system-connections/{{ hostvars[inventory_hostname][item] }}.nmconnection
-  # todo: kvm guests only have nic_1 defined
-  when: item in hostvars[inventory_hostname]
-  loop:
-    - nic_1
-    - nic_2
-    - bond_1
-    - bridge_1
+    interface: "{{ item.key }}"
+  loop: "{{ interfaces | dict2items }}"
   register: nmscfiles
 
 # 'nmcli connection reload' is not sufficient if the bond mode changes
@@ -33,4 +29,4 @@
     state: restarted
     enabled: yes
     daemon_reload: yes
-  when: nmscfiles is changed
+  when: restart is defined and restart and nmscfiles is changed

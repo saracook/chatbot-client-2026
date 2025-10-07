@@ -76,7 +76,7 @@
     - libutil
     - vesamenu
 
-- name: install /srv/{grubx64,shim}.efi
+- name: install /srv/{grubx64,shimx64}.efi
   ansible.builtin.copy:
     src: "{{ grubefi_base_dir }}/{{ item }}.efi"
     dest: /srv/{{ item }}.efi
@@ -86,7 +86,7 @@
     mode: '0644'
   loop:
     - grubx64
-    - shim
+    - shimx64
 
 - name: create distro iso image mount point directories
   file:

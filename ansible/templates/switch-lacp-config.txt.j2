@@ -18,7 +18,7 @@ switchport mode trunk
 switchport access vlan {{ network_access_vlan }}
 switchport trunk allowed vlan {{ network_trunk_vlans | join(',') }}
 lacp individual
-description "{{ host }} lacp {{ hostvars[host]['bond_1'] }}"
+description "{{ host }} lacp bond0"
 end
 configure terminal
 interface ethernet {{ hostvars[host]['switch_eth_port_1'] }}

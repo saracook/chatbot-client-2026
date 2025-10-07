@@ -1,0 +1,17 @@
+- name: power on pxe clients
+  delegate_to: "{{ hostvars[inventory_hostname]['kvm_host'] }}"
+  become: yes
+  block:
+
+    - name: start kvm guests
+      community.libvirt.virt:
+        name: "{{ inventory_hostname }}"
+        state: running
+      connection: ssh
+
+    - name: wait for ssh to be available
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: 22
+        delay: 10
+      connection: local

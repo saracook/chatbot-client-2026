@@ -41,7 +41,7 @@
 
         - name: delete boot and data disk volumes
           community.libvirt.virt_volume:
-            pool: "{{ hostvars[kvm_host]['pool_1'] }}"
+            pool: "{{ hostvars[kvm_host]['pool'] }}"
             name: "{{ inventory_hostname }}-{{ item }}"
             state: absent
           loop:
