@@ -9,7 +9,7 @@ autoconnect=true
 mtu={{ network_mtu }}
 
 [bridge]
-stp=off
+stp=false
 forward-delay=2
 
 {% if 'address' in hostvars[hostname]['interfaces'][interface] %}
