@@ -59,7 +59,7 @@ rm -f /etc/NetworkManager/system-connections/*
 {% for item in hostvars[hostname]['interfaces'] | dict2items %}
 {% set interface = item.key %}
 cat <<EOF > /etc/NetworkManager/system-connections/{{ interface }}.nmconnection
-{% include item.value.type ~ ".nmconnection.j2" +%}
+{% include item.value.type ~ ".nmconnection.j2" %}
 EOF
 {% endfor %}
 chmod 600 /etc/NetworkManager/system-connections/*
