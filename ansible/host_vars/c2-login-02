@@ -1,7 +1,7 @@
 ansible_host: 10.112.12.48
 mac_address_1: "52:54:00:c9:fe:be"
 mac_address_2: "52:54:00:e4:11:26"
-kvm_host: c2-infra-02
+kvm_host: c2-infra-03
 # group c2_kvm_guest overrides
 vcpus: 16
 memory_gb: 64

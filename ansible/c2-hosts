@@ -58,6 +58,7 @@ all:
     c2_kvm_host:
       hosts:
         c2-infra-02:
+        c2-infra-03:
     c2_login_node:
       hosts:
         c2-login-01:
