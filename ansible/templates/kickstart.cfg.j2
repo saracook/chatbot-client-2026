@@ -1,4 +1,6 @@
 %pre --erroronfail --interpreter=/bin/bash
+
+# set boot disk details
 BYTES="{{ hostvars[hostname]['boot_disk_bytes'] }}"
 DISK="$( lsblk -bdnr | grep " $BYTES " | awk '{print $1}' )"
 {% if hostname in groups['c2_kvm_guest'] %}
@@ -6,12 +8,15 @@ DEV="/dev/$DISK"
 {% else %}
 DEV="$( find /dev/disk/by-id/nvme-eui.* -type l -lname "*/$DISK" | cut -d/ -f3- )"
 {% endif %}
+
+# create boot disk partitions include file
 cat <<EOF > /tmp/boot-disk-part
 part /boot/efi --asprimary --fstype=efi --ondisk=$DEV --size=256
 part /boot --asprimary --fstype=xfs --ondisk=$DEV --size=512
 part / --asprimary --fstype=xfs --ondisk=$DEV --grow
 bootloader --boot-drive=$DEV --driveorder=$DEV --location=mbr
 EOF
+
 %end
 
 text
