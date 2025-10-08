@@ -29,11 +29,13 @@
   retries: 18
   delay: 10
 
+# dell xe7745 (but not r6625) requires bootonce to be disabled.
+# disabled means pxe will persistently be the first boot device.
 - name: set pxe clients to pxe boot
   ansible.builtin.shell:
     cmd: |
       cat <<EOF | sshpass -p "$IDRAC_PASSWORD" ssh -l "$IDRAC_USERNAME" {{ idrac_ip }}
-      racadm set iDRAC.ServerBoot.BootOnce Enabled
+      racadm set iDRAC.ServerBoot.BootOnce Disabled
       racadm set iDRAC.ServerBoot.FirstBootDevice PXE
       EOF
   environment:

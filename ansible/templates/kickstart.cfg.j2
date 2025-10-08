@@ -43,18 +43,40 @@ services --enabled=sshd
 %end
 
 %post --erroronfail --interpreter=/bin/bash
+
+# make swapfile
 fallocate -l {{ hostvars[hostname]['swapfile_gb'] }}G /swapfile
 chmod 00600 /swapfile
 mkswap /swapfile
 echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
+
+# set full sudo privs for default user
 install \
 -o root -g root -m 0400 \
 <(echo '{{ default_user }} ALL=(ALL) NOPASSWD:ALL') \
 /etc/sudoers.d/{{ default_user }}
+
+# disable ssh password authentication
 install \
 -o root -g root -m 0600 \
 <(echo 'PasswordAuthentication no') \
 /etc/ssh/sshd_config.d/90-no-passwd-authn.conf 
+
+# install systemd link files to name network interfaces
+mkdir -p /etc/systemd/network
+{% for item in hostvars[hostname]['interfaces'] | dict2items %}
+{% if 'mac_address' in item.value %}
+cat <<EOF > /etc/systemd/network/70-{{ item.key }}.link
+[Match]
+MACAddress={{ item.value.mac_address }}
+
+[Link]
+Name={{ item.key }}
+EOF
+{% endif %}
+{% endfor %}
+
+# install networkmanager keyfiles
 rm -f /etc/NetworkManager/system-connections/*
 {% for item in hostvars[hostname]['interfaces'] | dict2items %}
 {% set interface = item.key %}
@@ -63,4 +85,5 @@ cat <<EOF > /etc/NetworkManager/system-connections/{{ interface }}.nmconnection
 EOF
 {% endfor %}
 chmod 600 /etc/NetworkManager/system-connections/*
+
 %end

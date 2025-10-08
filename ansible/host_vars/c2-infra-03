@@ -15,12 +15,12 @@ nvme_disk_ids:
   - nvme-eui.37374330584001480025384300000001
 
 interfaces:
-  ens1f0np0:
+  eth0:
     type: ethernet
     uuid: 99c4bf6c-1691-53c4-bfe8-abdcb90b278a
     mac_address: "{{ mac_address_1 }}"
     bond: bond0
-  ens1f1np1:
+  eth1:
     type: ethernet
     uuid: d886260b-f48f-410e-8b9a-b94d58646483
     mac_address: "{{ mac_address_2 }}"
