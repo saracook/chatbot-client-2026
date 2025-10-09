@@ -1,191 +1,23 @@
-- name: install packages
-  ansible.builtin.dnf:
-    name:
-      - edk2-ovmf
-      - libvirt
-      - lvm2
-      - qemu-kvm
-      - virt-viewer
-      - xorg-x11-xauth
-    state: present
-    update_cache: yes
+- ansible.builtin.include_tasks:
+    file: virt.yml
+    apply:
+      tags:
+        - virt
+  tags:
+    - always
 
-- name: start/enable libvirtd service
-  ansible.builtin.systemd_service:
-    name: libvirtd.service
-    state: started
-    enabled: yes
-    daemon_reload: yes
+- ansible.builtin.include_tasks:
+    file: virt-net.yml
+    apply:
+      tags:
+        - virt-net
+  tags:
+    - always
 
-- name: start/enable libvirt-guests service
-  ansible.builtin.systemd_service:
-    name: libvirt-guests.service
-    state: started
-    enabled: yes
-    daemon_reload: yes
-
-- name: allow remote access via policykit
-  ansible.builtin.template:
-    src: 50-libvirt-remote-access.rules.j2
-    dest: /etc/polkit-1/rules.d/50-libvirt-remote-access.rules
-  register: plcyktcnf
-
-- name: restart polkit service
-  ansible.builtin.systemd_service:
-    name: polkit.service
-    state: restarted
-    enabled: yes
-    daemon_reload: yes
-  when: plcyktcnf is changed
-
-- name: install /etc/libvirt/libvirtd.conf
-  ansible.builtin.copy:
-    content: |
-      unix_sock_group = "libvirt"
-      unix_sock_rw_perms = "0770"
-    dest: /etc/libvirt/libvirtd.conf
-  register: lbvrtdcnf
-
-- name: set uri_default in /etc/libvirt/libvirt.conf
-  ansible.builtin.lineinfile:
-    dest: /etc/libvirt/libvirt.conf
-    regexp: '^uri_default = '
-    line: 'uri_default = "qemu:///system"'
-  register: lbvrtcnf
-
-- name: restart libvirtd service
-  ansible.builtin.systemd_service:
-    name: libvirtd.service
-    state: restarted
-    enabled: yes
-    daemon_reload: yes
-  when: lbvrtdcnf is changed or lbvrtcnf is changed or plcyktcnf is changed
-
-- name: install /etc/sysconfig/libvirt-guests
-  ansible.builtin.copy:
-    content: |
-      ON_SHUTDOWN=shutdown
-    dest: /etc/sysconfig/libvirt-guests
-  register: lbvrtgsysc
-
-- name: restart libvirt-guests service
-  ansible.builtin.systemd_service:
-    name: libvirt-guests.service
-    state: restarted
-    enabled: yes
-    daemon_reload: yes
-  when: lbvrtgsysc is changed
-
-- name: install /etc/profile.d/libvirt.sh
-  ansible.builtin.template:
-    src: libvirt.sh.j2
-    dest: /etc/profile.d/libvirt.sh
-
-- name: add user {{ default_user }} to groups kvm and libvirt
-  ansible.builtin.user:
-    name: "{{ default_user }}"
-    groups: [kvm, libvirt]
-    append: yes
-
-- name: stop network default
-  community.libvirt.virt_net:
-    name: default
-    state: inactive
-
-- name: disable network default
-  community.libvirt.virt_net:
-    name: default
-    autostart: no
-
-- name: create bridge networks
-  community.libvirt.virt_net:
-    name: "{{ bridge }}"
-    command: define
-    xml: "{{ lookup('template', 'bridge.xml.j2') }}"
-  when: item.value.type == 'bridge'
-  vars:
-    bridge: "{{ item.key }}"
-  loop: "{{ interfaces | dict2items }}"
-
-- name: start bridge networks
-  community.libvirt.virt_net:
-    name: "{{ bridge }}"
-    state: active
-  when: item.value.type == 'bridge'
-  vars:
-    bridge: "{{ item.key }}"
-  loop: "{{ interfaces | dict2items }}"
-
-- name: enable bridge networks
-  community.libvirt.virt_net:
-    name: "{{ bridge }}"
-    autostart: yes
-  when: item.value.type == 'bridge'
-  vars:
-    bridge: "{{ item.key }}"
-  loop: "{{ interfaces | dict2items }}"
-
-- name: check for existence of {{ md }}
-  ansible.builtin.shell:
-    cmd: |
-      mdadm --query --detail /dev/{{ md }} >/dev/null 2>&1
-  register: mdq
-  ignore_errors: true
-  changed_when: false
-
-- name: create raid1 {{ md }} with first two extra nvme disks
-  ansible.builtin.shell:
-    cmd: |
-      set -e
-      # todo: stop only array contains specific disks
-      for MD in $(find /dev -mindepth 1 -maxdepth 1 -type b -name 'md*')
-      do
-        mdadm --stop --force $MD
-      done
-      wipefs \
-      --all \
-      --force \
-      /dev/disk/by-id/{{ nvme_disk_ids[0] }} \
-      /dev/disk/by-id/{{ nvme_disk_ids[1] }}
-      mdadm \
-      --create \
-      --metadata 1.2 \
-      /dev/{{ md }} \
-      --level 1 \
-      --raid-devices 2 \
-      /dev/disk/by-id/{{ nvme_disk_ids[0] }} \
-      /dev/disk/by-id/{{ nvme_disk_ids[1] }}
-      wipefs \
-      --all \
-      --force \
-      /dev/{{ md }}
-      mdadm --detail --scan | tee /etc/mdadm.conf
-  when: mdq.rc != 0
-
-- name: create lvm pv /dev/{{ md }}
-  community.general.lvm_pv:
-    device: /dev/{{ md }}
-    state: present
-    force: yes
-
-- name: create lvm vg /dev/{{ pool }} with pv /dev/{{ md }}
-  community.general.lvg:
-    vg: "{{ pool }}"
-    pvs: /dev/{{ md }}
-    # todo: set pesize here
-
-- name: create lvm storage pool {{ pool }}
-  community.libvirt.virt_pool:
-    name: "{{ pool }}"
-    command: define
-    xml: "{{ lookup('template', 'pool.xml.j2') }}"
-
-- name: start lvm storage pool {{ pool }}
-  community.libvirt.virt_pool:
-    name: "{{ pool }}"
-    state: active
-
-- name: enable lvm storage pool {{ pool }}
-  community.libvirt.virt_pool:
-    name: "{{ pool }}"
-    autostart: yes
+- ansible.builtin.include_tasks:
+    file: virt-pool.yml
+    apply:
+      tags:
+        - virt-pool
+  tags:
+    - always

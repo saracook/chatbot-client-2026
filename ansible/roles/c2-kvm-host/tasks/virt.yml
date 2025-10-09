@@ -1,0 +1,88 @@
+- name: install packages
+  ansible.builtin.dnf:
+    name:
+      - edk2-ovmf
+      - libvirt
+      - lvm2
+      - qemu-kvm
+      - virt-viewer
+      - xorg-x11-xauth
+    state: present
+    update_cache: yes
+
+- name: start/enable libvirtd service
+  ansible.builtin.systemd_service:
+    name: libvirtd.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: start/enable libvirt-guests service
+  ansible.builtin.systemd_service:
+    name: libvirt-guests.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: allow remote access via policykit
+  ansible.builtin.template:
+    src: 50-libvirt-remote-access.rules.j2
+    dest: /etc/polkit-1/rules.d/50-libvirt-remote-access.rules
+  register: plcyktcnf
+
+- name: restart polkit service
+  ansible.builtin.systemd_service:
+    name: polkit.service
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  when: plcyktcnf is changed
+
+- name: install /etc/libvirt/libvirtd.conf
+  ansible.builtin.copy:
+    content: |
+      unix_sock_group = "libvirt"
+      unix_sock_rw_perms = "0770"
+    dest: /etc/libvirt/libvirtd.conf
+  register: lbvrtdcnf
+
+- name: set uri_default in /etc/libvirt/libvirt.conf
+  ansible.builtin.lineinfile:
+    dest: /etc/libvirt/libvirt.conf
+    regexp: '^uri_default = '
+    line: 'uri_default = "qemu:///system"'
+  register: lbvrtcnf
+
+- name: restart libvirtd service
+  ansible.builtin.systemd_service:
+    name: libvirtd.service
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  when: lbvrtdcnf is changed or lbvrtcnf is changed or plcyktcnf is changed
+
+- name: install /etc/sysconfig/libvirt-guests
+  ansible.builtin.copy:
+    content: |
+      ON_SHUTDOWN=shutdown
+    dest: /etc/sysconfig/libvirt-guests
+  register: lbvrtgsysc
+
+- name: restart libvirt-guests service
+  ansible.builtin.systemd_service:
+    name: libvirt-guests.service
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  when: lbvrtgsysc is changed
+
+- name: install /etc/profile.d/libvirt.sh
+  ansible.builtin.template:
+    src: libvirt.sh.j2
+    dest: /etc/profile.d/libvirt.sh
+
+- name: add user {{ default_user }} to groups kvm and libvirt
+  ansible.builtin.user:
+    name: "{{ default_user }}"
+    groups: [kvm, libvirt]
+    append: yes

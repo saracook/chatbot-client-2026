@@ -1,0 +1,22 @@
+- name: install package duo_unix
+  ansible.builtin.dnf:
+    name: duo_unix
+    state: present
+    update_cache: yes
+    enablerepo: duosecurity
+
+- name: remove /etc/duo/login_duo.conf
+  ansible.builtin.file:
+    path: /etc/duo/login_duo.conf
+    state: absent
+
+- name: install /etc/duo/pam_duo.conf
+  ansible.builtin.copy:
+    content: |
+      {{ lookup('pipe', 'wallet -s wallet.stanford.edu get duo-pam ' ~ canonical_hostname) }}
+      failmode = secure
+      pushinfo = yes
+    dest: /etc/duo/pam_duo.conf
+    owner: root
+    group: root
+    mode: '00600'

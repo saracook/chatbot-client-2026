@@ -4,5 +4,4 @@
   hosts: c2_pxe_server
   become: yes
   roles:
-    - name: c2-pxe-server
-      tags: c2-pxe-server
+    - role: c2-pxe-server

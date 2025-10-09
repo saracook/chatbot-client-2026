@@ -1,3 +1,2 @@
 dependencies:
-  - name: c2-base-os
-    tags: c2-base-os
+  - role: c2-base-os

@@ -1,0 +1,64 @@
+- name: check for existence of {{ md }}
+  ansible.builtin.shell:
+    cmd: |
+      mdadm --query --detail /dev/{{ md }} >/dev/null 2>&1
+  register: mdq
+  ignore_errors: true
+  changed_when: false
+
+- name: create raid1 {{ md }} with first two extra nvme disks
+  ansible.builtin.shell:
+    cmd: |
+      set -e
+      # todo: stop only array contains specific disks
+      for MD in $(find /dev -mindepth 1 -maxdepth 1 -type b -name 'md*')
+      do
+        mdadm --stop --force $MD
+      done
+      wipefs \
+      --all \
+      --force \
+      /dev/disk/by-id/{{ nvme_disk_ids[0] }} \
+      /dev/disk/by-id/{{ nvme_disk_ids[1] }}
+      mdadm \
+      --create \
+      --metadata 1.2 \
+      /dev/{{ md }} \
+      --level 1 \
+      --raid-devices 2 \
+      /dev/disk/by-id/{{ nvme_disk_ids[0] }} \
+      /dev/disk/by-id/{{ nvme_disk_ids[1] }}
+      wipefs \
+      --all \
+      --force \
+      /dev/{{ md }}
+      mdadm --detail --scan | tee /etc/mdadm.conf
+  when: mdq.rc != 0
+
+- name: create lvm pv /dev/{{ md }}
+  community.general.lvm_pv:
+    device: /dev/{{ md }}
+    state: present
+    force: yes
+
+- name: create lvm vg /dev/{{ pool }} with pv /dev/{{ md }}
+  community.general.lvg:
+    vg: "{{ pool }}"
+    pvs: /dev/{{ md }}
+    # todo: set pesize here
+
+- name: create lvm storage pool {{ pool }}
+  community.libvirt.virt_pool:
+    name: "{{ pool }}"
+    command: define
+    xml: "{{ lookup('template', 'pool.xml.j2') }}"
+
+- name: start lvm storage pool {{ pool }}
+  community.libvirt.virt_pool:
+    name: "{{ pool }}"
+    state: active
+
+- name: enable lvm storage pool {{ pool }}
+  community.libvirt.virt_pool:
+    name: "{{ pool }}"
+    autostart: yes

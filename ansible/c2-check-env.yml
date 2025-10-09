@@ -18,4 +18,5 @@
         - SLURM_DB_ROOT_PASSWORD
         - SLURM_DB_SLURM_PASSWORD
       run_once: yes
-      tags: always
+      tags:
+        - always

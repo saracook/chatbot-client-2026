@@ -4,5 +4,4 @@
   hosts: c2_rpm_repo_server
   become: yes
   roles:
-    - name: c2-rpm-repo-server
-      tags: c2-rpm-repo-server
+    - role: c2-rpm-repo-server

@@ -9,7 +9,8 @@
     state: present
     update_cache: yes
     enablerepo: c2-local
-  tags: packages
+  tags:
+    - packages
 
 - name: install /etc/munge/munge.key
   ansible.builtin.copy:

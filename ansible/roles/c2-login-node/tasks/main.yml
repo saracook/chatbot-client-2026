@@ -1,1 +1,2 @@
-# only run role c2-slurm-client as dependency (see meta/main.yml)
+# only run roles c2-base-os and c2-slurm-client as dependencies
+# (see meta/main.yml)

@@ -1,0 +1,148 @@
+- name: install packages
+  ansible.builtin.dnf:
+    name:
+      - dnsmasq
+      - grub2-efi-x64
+      - nginx
+      - shim-x64
+      - syslinux
+      - tftp
+    state: present
+    update_cache: yes
+
+- name: install /etc/NetworkManager/NetworkManager.conf
+  ansible.builtin.template:
+    src: NetworkManager.conf.j2
+    dest: /etc/NetworkManager/NetworkManager.conf
+    owner: root
+    group: root
+    mode: '0644'
+  register: nmconf
+
+- name: restart NetworkManager
+  ansible.builtin.systemd_service:
+    name: NetworkManager.service
+    state: restarted
+    daemon_reload: yes
+  when: nmconf is changed
+
+- name: install /etc/resolv.conf
+  ansible.builtin.template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: install /etc/dnsmasq.conf
+  ansible.builtin.template:
+    src: dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
+    owner: root
+    group: root
+    mode: '0644'
+  register: dnsmasqconf
+  tags: dnsmasq
+
+- name: restart dnsmasq
+  ansible.builtin.systemd_service:
+    name: dnsmasq.service
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  when: dnsmasqconf is changed
+  tags: dnsmasq
+
+- name: install /srv/pxelinux.0
+  ansible.builtin.copy:
+    src: "{{ pxelinux_base_dir }}/pxelinux.0"
+    dest: /srv/pxelinux.0
+    remote_src: yes
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: install /srv/{ldlinux,libcom32,libutil,vesamenu}.c32
+  ansible.builtin.copy:
+    src: "{{ syslinux_base_dir }}/{{ item }}.c32"
+    dest: /srv/{{ item }}.c32
+    remote_src: yes
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - ldlinux
+    - libcom32
+    - libutil
+    - vesamenu
+
+- name: install /srv/{grubx64,shimx64}.efi
+  ansible.builtin.copy:
+    src: "{{ grubefi_base_dir }}/{{ item }}.efi"
+    dest: /srv/{{ item }}.efi
+    remote_src: yes
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - grubx64
+    - shimx64
+
+- name: create distro iso image mount point directories
+  file:
+    path: /srv/{{ item.value.name }}
+    state: directory
+    owner: root
+    group: root
+  loop: "{{ distros | dict2items }}"
+
+- name: install distro iso images
+  ansible.builtin.get_url:
+    url: "{{ item.value.iso_url }}"
+    dest: /srv/{{ item.value.name }}.iso
+    checksum: "sha256:{{ item.value.iso_sha256 }}"
+    owner: root
+    group: root
+    mode: '0644'
+  register: isoimg
+  loop: "{{ distros | dict2items }}"
+
+- name: unmount distro iso images
+  ansible.posix.mount:
+    src: /srv/{{ item.value.name }}.iso
+    path: /srv/{{ item.value.name }}
+    fstype: iso9660
+    opts: auto,loop,ro
+    state: absent
+  loop: "{{ distros | dict2items }}"
+  when: isoimg is changed
+
+- name: mount distro iso images
+  ansible.posix.mount:
+    src: /srv/{{ item.value.name }}.iso
+    path: /srv/{{ item.value.name }}
+    fstype: iso9660
+    opts: auto,loop,ro
+    state: mounted
+  loop: "{{ distros | dict2items }}"
+
+- name: run role c2-pxe-config
+  ansible.builtin.include_role:
+    name: c2-pxe-config
+
+- name: install /etc/nginx/nginx.conf
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: '0644'
+  register: nginxconf
+
+- name: restart nginx
+  ansible.builtin.systemd_service:
+    name: nginx.service
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  when: nginxconf is changed

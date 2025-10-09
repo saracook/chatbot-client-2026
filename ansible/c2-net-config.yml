@@ -4,5 +4,4 @@
   hosts: all
   become: yes
   roles:
-    - name: c2-net-config
-      tags: c2-net-config
+    - role: c2-net-config

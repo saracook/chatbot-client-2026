@@ -4,5 +4,4 @@
   hosts: c2_login_node
   become: yes
   roles:
-    - name: c2-login-node
-      tags: c2-login-node
+    - role: c2-login-node

@@ -4,5 +4,4 @@
   hosts: c2_slurm_database
   become: yes
   roles:
-    - name: c2-slurm-database
-      tags: c2-slurm-database
+    - role: c2-slurm-database

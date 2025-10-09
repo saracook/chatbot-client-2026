@@ -1,6 +1,5 @@
 - import_playbook: c2-check-env.yml
 
-# todo: add support for kvm guests
 - name: power up host
   hosts: all
   connection: local

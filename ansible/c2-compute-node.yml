@@ -4,5 +4,4 @@
   hosts: c2_compute_node
   become: yes
   roles:
-    - name: c2-compute-node
-      tags: c2-compute-node
+    - role: c2-compute-node

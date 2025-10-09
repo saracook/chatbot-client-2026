@@ -2,3 +2,5 @@
 - name: install ansible {{ ansible_install_version }}
   ansible.builtin.pip:
     name: ansible=={{ ansible_install_version }}
+  tags:
+    - ansible

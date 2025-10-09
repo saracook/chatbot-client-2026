@@ -1,3 +1,3 @@
-host_dir: "/var/tmp/{{ inventory_hostname }}"
-kickstart_cfg: "{{ host_dir }}/kickstart.cfg"
-kickstart_img: "{{ host_dir }}/kickstart.img"
+localhost_dir: "/var/tmp/{{ inventory_hostname }}"
+kickstart_cfg: "{{ localhost_dir }}/kickstart.cfg"
+kickstart_img: "{{ localhost_dir }}/kickstart.img"

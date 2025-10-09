@@ -1,0 +1,30 @@
+- name: remove directory /etc/NetworkManager/system-connections
+  ansible.builtin.file:
+    path: /etc/NetworkManager/system-connections
+    state: absent
+  when: clean is defined and clean
+
+- name: create directory /etc/NetworkManager/system-connections
+  ansible.builtin.file:
+    path: /etc/NetworkManager/system-connections
+    state: directory
+
+- name: create networkmanager system connection files in /etc/NetworkManager/system-connections
+  ansible.builtin.template:
+    src: "{{ item.value.type }}.nmconnection.j2"
+    dest: /etc/NetworkManager/system-connections/{{ interface }}.nmconnection
+    mode: '00600'
+  vars:
+    hostname: "{{ inventory_hostname }}"
+    interface: "{{ item.key }}"
+  loop: "{{ interfaces | dict2items }}"
+  register: nmscfiles
+
+# 'nmcli connection reload' is not sufficient if the bond mode changes
+- name: restart networkmanager
+  ansible.builtin.systemd_service:
+    name: NetworkManager.service
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  when: restart is defined and restart and nmscfiles is changed

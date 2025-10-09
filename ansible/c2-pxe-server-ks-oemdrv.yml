@@ -5,4 +5,4 @@
   connection: local
   gather_facts: no
   roles:
-    - name: c2-pxe-server-ks-oemdrv
+    - role: c2-pxe-server-ks-oemdrv

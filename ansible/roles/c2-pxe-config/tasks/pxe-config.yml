@@ -1,0 +1,57 @@
+- name: create directory /srv/pxelinux.cfg
+  ansible.builtin.file:
+    path: /srv/pxelinux.cfg
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: install /srv/pxelinux.cfg/01-*
+  ansible.builtin.template:
+    src: pxelinuxcfg.j2
+    dest: /srv/pxelinux.cfg/01-{{ mac_address | replace(':','-') }}
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] }}"
+  loop_control:
+    loop_var: client
+  vars:
+    hostname: "{{ client }}"
+    mac_address: "{{ ( hostvars[client]['interfaces'] | dict2items )[0]['value']['mac_address'] }}"
+
+- name: install /srv/grub.cfg-01-*
+  ansible.builtin.template:
+    src: grub.cfg.j2
+    dest: /srv/grub.cfg-01-{{ mac_address | replace(':','-') }}
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] }}"
+  loop_control:
+    loop_var: client
+  vars:
+    hostname: "{{ client }}"
+    mac_address: "{{ ( hostvars[client]['interfaces'] | dict2items )[0]['value']['mac_address'] }}"
+
+- name: create host directories in /srv
+  ansible.builtin.file:
+    path: /srv/{{ client }}
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop: "{{ pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] }}"
+  loop_control:
+    loop_var: client
+
+- name: install client kickstart.cfg files
+  template:
+    src: kickstart.cfg.j2
+    dest: "/srv/{{ client }}/kickstart.cfg"
+  loop: "{{ pxe_clients if pxe_clients is defined else groups['c2_pxe_client'] }}"
+  loop_control:
+    loop_var: client
+  vars:
+    hostname: "{{ client }}"
+    ks_mode: url

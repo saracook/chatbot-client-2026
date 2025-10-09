@@ -1,0 +1,37 @@
+- name: stop network default
+  community.libvirt.virt_net:
+    name: default
+    state: inactive
+
+- name: disable network default
+  community.libvirt.virt_net:
+    name: default
+    autostart: no
+
+- name: create bridge networks
+  community.libvirt.virt_net:
+    name: "{{ bridge }}"
+    command: define
+    xml: "{{ lookup('template', 'bridge.xml.j2') }}"
+  when: item.value.type == 'bridge'
+  vars:
+    bridge: "{{ item.key }}"
+  loop: "{{ interfaces | dict2items }}"
+
+- name: start bridge networks
+  community.libvirt.virt_net:
+    name: "{{ bridge }}"
+    state: active
+  when: item.value.type == 'bridge'
+  vars:
+    bridge: "{{ item.key }}"
+  loop: "{{ interfaces | dict2items }}"
+
+- name: enable bridge networks
+  community.libvirt.virt_net:
+    name: "{{ bridge }}"
+    autostart: yes
+  when: item.value.type == 'bridge'
+  vars:
+    bridge: "{{ item.key }}"
+  loop: "{{ interfaces | dict2items }}"

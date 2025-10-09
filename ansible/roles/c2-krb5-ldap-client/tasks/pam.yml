@@ -1,0 +1,16 @@
+- name: install /etc/pam.d/sshd
+  ansible.builtin.template:
+    src: sshd.j2
+    dest: /etc/pam.d/sshd
+    owner: root
+    group: root
+    mode: '00644'
+
+- name: install /usr/local/sbin/new-user
+  ansible.builtin.template:
+    src: new-user.j2
+    dest: /usr/local/sbin/new-user
+    owner: root
+    group: root
+    mode: '00750'
+  when: inventory_hostname in groups['c2_login_node']

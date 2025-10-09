@@ -33,13 +33,13 @@
   when: inventory_hostname in groups['c2_kvm_guest']
 
 - ansible.builtin.include_tasks:
-    file: nfs_mounts.yml
+    file: nfs-mounts.yml
     apply:
       tags:
-        - nfs_mounts
-  when: inventory_hostname in groups['c2_nfs_client']
+        - nfs-mounts
   tags:
     - always
+  when: inventory_hostname in groups['c2_nfs_client']
 
 - name: run role c2-node-exporter
   ansible.builtin.include_role:

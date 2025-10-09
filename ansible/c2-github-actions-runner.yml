@@ -4,5 +4,4 @@
   hosts: c2_github_actions_runner
   become: yes
   roles:
-    - name: c2-github-actions-runner
-      tags: c2-github-actions-runner
+    - role: c2-github-actions-runner

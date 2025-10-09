@@ -1,36 +1,7 @@
-# https://osc.github.io/ood-documentation/latest/installation/install-software.html
-# (ood version: 4.0)
-
-- name: install required modularity modules
-  ansible.builtin.dnf:
-    name: '@{{ item }}'
-    state: present
-    update_cache: yes
-    enablerepo: epel
-  loop: "{{ modules }}"
-  vars:
-    modules:
-      - ruby:3.3 # repo: epel
-      - nodejs:20 # repo: epel
-
-# todo: get url to gpg key and install it here
-
-- name: install ood repo rpm package
-  ansible.builtin.dnf:
-    name: https://yum.osc.edu/ondemand/{{ ood_version }}/{{ ood_rpm }}
-    state: present
-    update_cache: yes
-    disable_gpg_check: yes
-
-- name: install package ondemand
-  ansible.builtin.dnf:
-    name: ondemand
-    state: present
-    update_cache: yes
-
-- name: start/enable httpd.service
-  ansible.builtin.systemd_service:
-    name: httpd.service
-    state: started
-    enabled: yes
-    daemon_reload: yes
+- ansible.builtin.include_tasks:
+    file: ood.yml
+    apply:
+      tags:
+        - ood
+  tags:
+    - always

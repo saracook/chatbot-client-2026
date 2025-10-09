@@ -4,5 +4,4 @@
   hosts: c2_slurm_controller
   become: yes
   roles:
-    - name: c2-slurm-controller
-      tags: c2-slurm-controller
+    - role: c2-slurm-controller
