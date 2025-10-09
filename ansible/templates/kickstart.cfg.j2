@@ -27,7 +27,11 @@ lang {{ locale }}
 keyboard us
 {% if ks_mode == 'cdrom' %}
 cdrom
-network --bootproto=static --device={{ mac_address }} --gateway={{ network_access_gateway }} --hostname={{ hostname }} --ip={{ hostvars[hostname]['ansible_host'] }} --mtu={{ network_mtu }} --nameserver={{ network_access_dns | join(',') }} --netmask={{ network_access_mask }} --noipv6 --onboot=yes
+{% for item in hostvars[hostname]['interfaces'] | dict2items if item.value.type == 'ethernet' %}
+{% if loop.index == 1 %}
+network --bootproto=static --device={{ item.value.mac_address }} --gateway={{ network_access_gateway }} --hostname={{ hostname }} --ip={{ hostvars[hostname]['ansible_host'] }} --mtu={{ network_mtu }} --nameserver={{ network_access_dns | join(',') }} --netmask={{ network_access_mask }} --noipv6 --onboot=yes
+{% endif %}
+{% endfor %}
 {% elif ks_mode == 'url' %}
 url --url=http://{{ nginx_ip }}:{{ nginx_port }}/{{ distros[hostvars[hostname]['distro']]['name'] }}
 {% endif %}
@@ -69,8 +73,8 @@ install \
 
 # install systemd link files to name network interfaces
 mkdir -p /etc/systemd/network
-{% for item in hostvars[hostname]['interfaces'] | dict2items %}
-{% if 'mac_address' in item.value %}
+{% for item in hostvars[hostname]['interfaces'] | dict2items if item.value.type == 'ethernet' %}
+
 cat <<EOF > /etc/systemd/network/70-{{ item.key }}.link
 [Match]
 MACAddress={{ item.value.mac_address }}
@@ -78,17 +82,18 @@ MACAddress={{ item.value.mac_address }}
 [Link]
 Name={{ item.key }}
 EOF
-{% endif %}
 {% endfor %}
 
 # install networkmanager keyfiles
 rm -f /etc/NetworkManager/system-connections/*
 {% for item in hostvars[hostname]['interfaces'] | dict2items %}
 {% set interface = item.key %}
+
 cat <<EOF > /etc/NetworkManager/system-connections/{{ interface }}.nmconnection
 {% include item.value.type ~ ".nmconnection.j2" %}
 EOF
 {% endfor %}
+
 chmod 600 /etc/NetworkManager/system-connections/*
 
 %end

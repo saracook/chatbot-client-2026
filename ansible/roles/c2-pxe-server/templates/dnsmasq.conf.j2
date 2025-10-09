@@ -24,7 +24,11 @@ dhcp-boot=shimx64.efi
 #bogus-priv
 #address=/{{ inventory_hostname }}.{{ domain }}/{{ ansible_host }}
 {% for client in groups['c2_pxe_client'] %}
-dhcp-host={{ hostvars[client]['mac_address_1'] }},{{ hostvars[client]['ansible_host'] }},{{ client }}
+{% for item in hostvars[client]['interfaces'] | dict2items if item.value.type == 'ethernet' %}
+{% if loop.index == 1 %}
+dhcp-host={{ item.value.mac_address }},{{ hostvars[client]['ansible_host'] }},{{ client }}
+{% endif %}
+{% endfor %}
 {% endfor %}
 # srv records for slurm configless
 {% set scp = 0 %}

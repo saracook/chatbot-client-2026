@@ -1,12 +1,8 @@
 ansible_host: 10.112.12.13
-mac_address_1: "b8:e9:24:e6:37:3e"
-mac_address_2: "b8:e9:24:e6:37:3f"
 idrac_ip: 10.112.12.43
 idrac_mac: "6c:3c:8c:92:37:94"
 service_tag: 3CDCZ84
 rack_location: SRCF B4 U13-16
-switch_eth_port_1: 1/1/29
-switch_eth_port_2: 1/1/30
 switch_port_channel: 12
 nvme_disk_ids:
   - ???
@@ -18,13 +14,15 @@ interfaces:
   eth0:
     type: ethernet
     uuid: 99c4bf6c-1691-53c4-bfe8-abdcb90b278a
-    mac_address: "{{ mac_address_1 }}"
+    mac_address: "b8:e9:24:e6:37:3e"
     bond: bond0
+    switch_port: 1/1/29
   eth1:
     type: ethernet
     uuid: d886260b-f48f-410e-8b9a-b94d58646483
-    mac_address: "{{ mac_address_2 }}"
+    mac_address: "b8:e9:24:e6:37:3f"
     bond: bond0
+    switch_port: 1/1/30
   bond0:
     type: bond
     uuid: 54317911-f840-516b-a10d-82cb4c1f075c

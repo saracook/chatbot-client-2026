@@ -18,7 +18,7 @@
     loop_var: client
   vars:
     hostname: "{{ client }}"
-    mac_address: "{{ hostvars[client]['mac_address_1'] }}"
+    mac_address: "{{ ( hostvars[client]['interfaces'] | dict2items )[0]['value']['mac_address'] }}"
 
 - name: install /srv/grub.cfg-01-*
   ansible.builtin.template:
@@ -32,7 +32,7 @@
     loop_var: client
   vars:
     hostname: "{{ client }}"
-    mac_address: "{{ hostvars[client]['mac_address_1'] }}"
+    mac_address: "{{ ( hostvars[client]['interfaces'] | dict2items )[0]['value']['mac_address'] }}"
 
 - name: create host directories in /srv
   ansible.builtin.file:
@@ -54,5 +54,4 @@
     loop_var: client
   vars:
     hostname: "{{ client }}"
-    mac_address: "{{ hostvars[client]['mac_address_1'] }}"
     ks_mode: url

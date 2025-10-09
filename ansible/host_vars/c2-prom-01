@@ -1,6 +1,4 @@
 ansible_host: 10.112.12.51
-mac_address_1: "52:54:00:ed:2c:4b"
-mac_address_2: "52:54:00:50:d3:d8"
 kvm_host: c2-infra-02
 # group c2_kvm_guest overrides
 vcpus: 16
@@ -12,7 +10,7 @@ interfaces:
   eth0:
     type: ethernet
     uuid: 24f493e7-5f6d-462b-b1cb-33b7c833cc48
-    mac_address: "{{ mac_address_1 }}"
+    mac_address: "52:54:00:ed:2c:4b"
     host_bridge: br3038
     address:
       - "{{ ansible_host }}/{{ network_access_prefix }}"
@@ -23,7 +21,7 @@ interfaces:
   eth1:
     type: ethernet
     uuid: 0c27c607-de65-4353-98aa-35907201b533
-    mac_address: "{{ mac_address_2 }}"
+    mac_address: "52:54:00:50:d3:d8"
     host_bridge: br2009
     address:
       - "10.210.28.51/22"

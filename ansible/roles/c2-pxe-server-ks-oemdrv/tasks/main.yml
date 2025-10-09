@@ -9,7 +9,6 @@
     dest: "{{ kickstart_cfg }}"
   vars:
     hostname: "{{ inventory_hostname }}"
-    mac_address: "{{ mac_address_1 }}"
     ks_mode: cdrom
 
 - name: install kickstart.img

@@ -8,10 +8,12 @@ end
 configure terminal
 interface port-channel {{ hostvars[host]['switch_port_channel'] }}
 end
+{% for item in hostvars[host]['interfaces'] | dict2items if item.value.type == 'ethernet' %}
 configure terminal
-interface range ethernet {{ hostvars[host]['switch_eth_port_1'] }}-{{ hostvars[host]['switch_eth_port_2'] }}
+interface range ethernet {{ item.value.switch_port }}
 channel-group {{ hostvars[host]['switch_port_channel'] }} mode active
 end
+{% endfor %}
 configure terminal
 interface port-channel {{ hostvars[host]['switch_port_channel'] }}
 switchport mode trunk
@@ -20,14 +22,12 @@ switchport trunk allowed vlan {{ network_trunk_vlans | join(',') }}
 lacp individual
 description "{{ host }} lacp bond0"
 end
+{% for item in hostvars[host]['interfaces'] | dict2items if item.value.type == 'ethernet' %}
 configure terminal
-interface ethernet {{ hostvars[host]['switch_eth_port_1'] }}
-description "{{ host }} ethernet {{ hostvars[host]['nic_1'] }}"
+interface ethernet {{ item.value.switch_port }}
+description "{{ host }} ethernet {{ item.key }}"
 end
-configure terminal
-interface ethernet {{ hostvars[host]['switch_eth_port_2'] }}
-description "{{ host }} ethernet {{ hostvars[host]['nic_2'] }}"
-end
+{% endfor %}
 write memory
 # end host {{ host }}
 

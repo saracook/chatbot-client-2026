@@ -30,19 +30,16 @@
       <source pool='{{ hostvars[kvm_host]['pool'] }}' volume='{{ inventory_hostname }}-data'/>
       <target dev='{{ data_disk_dev }}' bus='virtio'/>
     </disk>
+{% for item in interfaces | dict2items if item.value.type == 'ethernet' %}
     <interface type='network'>
-      <mac address='{{ interfaces[nic_1]['mac_address'] }}'/>
-      <source network='{{ interfaces[nic_1]['host_bridge'] }}'/>
+      <mac address='{{ item.value.mac_address }}'/>
+      <source network='{{ item.value.host_bridge }}'/>
       <model type='virtio'/>
-{% if pxe_mode is defined and pxe_mode == 'netinstall' %}
+{% if loop.index == 1 and pxe_mode is defined and pxe_mode == 'netinstall' %}
       <boot order='1'/>
 {% endif %}
     </interface>
-    <interface type='network'>
-      <mac address='{{ interfaces[nic_2]['mac_address'] }}'/>
-      <source network='{{ interfaces[nic_2]['host_bridge'] }}'/>
-      <model type='virtio'/>
-    </interface>
+{% endfor %}
     <graphics type='vnc' autoport='yes'/>
   </devices>
 </domain>

@@ -7,5 +7,3 @@ boot_disk_bytes: "{{ boot_disk_gb * 1024 * 1024 * 1024 }}"
 data_disk_dev: vdb
 data_disk_gb: 64
 data_disk_bytes: "{{ data_disk_gb * 1024 * 1024 * 1024 }}"
-nic_1: eth0
-nic_2: eth1

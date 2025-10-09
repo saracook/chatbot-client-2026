@@ -4,8 +4,6 @@ boot_disk_bytes: 480036519936
 swapfile_gb: 8
 idrac_username: "{{ lookup('env', 'IDRAC_USERNAME') }}"
 idrac_password: "{{ lookup('env', 'IDRAC_PASSWORD') }}"
-nic_1: eth0
-nic_2: eth1
 
 # following used in slurm.conf compute node configuration:
 boards: 1
