@@ -1,4 +1,12 @@
 - ansible.builtin.include_tasks:
+    file: repos.yml
+    apply:
+      tags:
+        - repos
+  tags:
+    - always
+
+- ansible.builtin.include_tasks:
     file: packages.yml
     apply:
       tags:
