@@ -1,13 +1,24 @@
-- import_tasks:
-    file: slurm.yml
-  tags: slurm
-
-- include_tasks:
+- ansible.builtin.include_tasks:
     file: gpu.yml
     apply:
-      tags: gpu
+      tags:
+        - gpu
+  tags:
+    - always
   when: inventory_hostname in groups['c2_gpu_node']
 
-- import_tasks:
+- ansible.builtin.include_tasks:
+    file: slurm.yml
+    apply:
+      tags:
+        - slurm
+  tags:
+    - always
+
+- ansible.builtin.include_tasks:
     file: ood.yml
-  tags: ood
+    apply:
+      tags:
+        - ood
+  tags:
+    - always

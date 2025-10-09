@@ -1,8 +1,16 @@
-- import_tasks:
+- ansible.builtin.include_tasks:
     file: ghashr.yml
-  tags: ghashr
+    apply:
+      tags:
+        - ghashr
+  tags:
+    - always
 
 - name: run role c2-ansible
-  ansible.builtin.import_role:
+  ansible.builtin.include_role:
     name: c2-ansible
-  tags: c2-ansible
+    apply:
+      tags:
+        - ansible
+  tags:
+    - always

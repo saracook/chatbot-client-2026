@@ -1,33 +1,61 @@
-- import_tasks:
+- ansible.builtin.include_tasks:
     file: packages.yml
-  tags: packages
+    apply:
+      tags:
+        - packages
+  tags:
+    - always
 
-- import_tasks:
+- ansible.builtin.include_tasks:
     file: services.yml
-  tags: services
+    apply:
+      tags:
+        - services
+  tags:
+    - always
 
-- import_tasks:
+- ansible.builtin.include_tasks:
     file: chrony.yml
-  tags: chrony
+    apply:
+      tags:
+        - chrony
+  tags:
+    - always
 
 - name: run role c2-kvm-guest
-  ansible.builtin.import_role:
+  ansible.builtin.include_role:
     name: c2-kvm-guest
-  tags: c2-kvm-guest
+    apply:
+      tags:
+        - kvm-guest
+  tags:
+    - always
   when: inventory_hostname in groups['c2_kvm_guest']
 
-- import_tasks:
+- ansible.builtin.include_tasks:
     file: nfs_mounts.yml
-  tags: nfs_mounts
+    apply:
+      tags:
+        - nfs_mounts
   when: inventory_hostname in groups['c2_nfs_client']
+  tags:
+    - always
 
 - name: run role c2-node-exporter
-  ansible.builtin.import_role:
+  ansible.builtin.include_role:
     name: c2-node-exporter
-  tags: c2-node-exporter
+    apply:
+      tags:
+        - node-exporter
+  tags:
+    - always
 
 - name: run role c2-krb5-ldap-client
-  ansible.builtin.import_role:
+  ansible.builtin.include_role:
     name: c2-krb5-ldap-client
-  tags: c2-krb5-ldap-client
+    apply:
+      tags:
+        - krb5-ldap-client
+  tags:
+    - always
   when: inventory_hostname in groups['c2_krb5_ldap_client']
