@@ -17,8 +17,8 @@
     src: sssd.conf.j2
     dest: /etc/sssd/sssd.conf
     owner: root
-    group: sssd
-    mode: '00640'
+    group: "{{ 'root' if distros[distro]['version'] == '9.6' else 'sssd' }}"
+    mode: "{{ '00600' if distros[distro]['version'] == '9.6' else '00640' }}"
   register: sssdconf
 
 - name: start/restart and enable sssd.service
@@ -32,5 +32,5 @@
 #     in /etc/authselect that are symlinked in /etc/pam.d .
 - name: select authselect profile sssd
   ansible.builtin.command:
-    cmd: authselect select sssd
+    cmd: authselect select --force sssd
   changed_when: false

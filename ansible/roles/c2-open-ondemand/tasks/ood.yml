@@ -26,6 +26,7 @@
     name: ondemand
     state: present
     update_cache: yes
+    enablerepo: epel
 
 - name: start/enable httpd.service
   ansible.builtin.systemd_service:
