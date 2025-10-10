@@ -2,7 +2,6 @@
 # require duo two-factor authentication
 auth       required     pam_env.so
 #auth       substack     password-auth
-auth       [success=3 default=ignore]   pam_succeed_if.so user ingroup {{ sshd_admins_group }}
 auth       [success=2 default=ignore]   pam_succeed_if.so user = {{ default_user }}
 auth       [success=1 default=ignore]   pam_succeed_if.so user = root
 auth       sufficient   /lib64/security/pam_duo.so
@@ -13,7 +12,6 @@ account    required     pam_nologin.so
 account    include      password-auth
 {% if inventory_hostname in groups['c2_compute_node'] %}
 # permit unprivileged users to login to compute nodes only if they have a job running
-account    [success=3 default=ignore]   pam_succeed_if.so user ingroup {{ sshd_admins_group }}
 account    [success=2 default=ignore]   pam_succeed_if.so user = {{ default_user }}
 account    [success=1 default=ignore]   pam_succeed_if.so user = root
 -account   required                     pam_slurm_adopt.so action_adopt_failure=deny action_generic_failure=deny
@@ -30,7 +28,6 @@ session    optional     pam_motd.so
 session    include      password-auth
 {% if inventory_hostname in groups['c2_login_node'] %}
 # set up environment for new users
-session    [success=3 default=ignore]   pam_succeed_if.so user ingroup {{ sshd_admins_group }}
 session    [success=2 default=ignore]   pam_succeed_if.so user = {{ default_user }}
 session    [success=1 default=ignore]   pam_succeed_if.so user = root
 session    optional                     pam_exec.so log=/var/log/new-user.log quiet /usr/local/sbin/new-user

@@ -18,24 +18,31 @@ PrintMotd no
 AuthorizedKeysFile .ssh/authorized_keys
 AcceptEnv LANG LC_*
 Subsystem sftp /usr/libexec/openssh/sftp-server
+# gssapi plus duo or password plus duo
 AuthenticationMethods gssapi-keyex,keyboard-interactive gssapi-with-mic,keyboard-interactive password,keyboard-interactive
 
 # allow all users to login only from cluster network or vpn
-Match Address *,!127.0.0.1,!127.0.1.1,!::1,!{{ network_access_cidr }},!{{ network_vpn_cidrs | join(",!") }}
+Match Address *,!127.0.0.1,!::1,!{{ network_access_cidr }},!{{ network_vpn_cidrs | join(",!") }}
     DenyUsers *
 
-# allow {{ default_user }} user to use public key authentication when logging in from cluster network or vpn
-Match User {{ default_user }} Address 127.0.0.1,127.0.1.1,::1,{{ network_access_cidr }},{{ network_vpn_cidrs | join(",") }}
+# allow {{ default_user }} user to use public key authentication only without duo
+Match User {{ default_user }}
     PubKeyAuthentication yes
     AuthenticationMethods publickey
 
-# allow {{ sshd_admins_group }} group to use public key authentication when logging in from cluster network or vpn
-Match Group {{ sshd_admins_group }} Address 127.0.0.1,127.0.1.1,::1,{{ network_access_cidr }},{{ network_vpn_cidrs | join(",") }}
+# allow {{ sshd_admins_group }} group to use public key authentication with duo
+Match Group {{ sshd_admins_group }}
     PubKeyAuthentication yes
-    AuthenticationMethods gssapi-keyex gssapi-with-mic publickey password
+    AuthenticationMethods gssapi-keyex,keyboard-interactive gssapi-with-mic,keyboard-interactive publickey,keyboard-interactive password,keyboard-interactive
 
 {% if inventory_hostname in groups['c2_compute_node'] %}
 # allow unprivileged users to login to compute nodes only from cluster network
-Match Group {{ sshd_users_group }} Address *,!127.0.0.1,!127.0.1.1,!::1,!{{ network_access_cidr }}
+Match Group {{ sshd_users_group }},!{{ sshd_admins_group }} Address *,!127.0.0.1,!::1,!{{ network_access_cidr }}
+    ForceCommand /usr/sbin/nologin
+{% endif %}
+
+{% if inventory_hostname in groups['c2_open_ondemand'] or inventory_hostname in groups['c2_slurm_controller'] %}
+# allow only admins to login to open ondemand and slurm controller nodes
+Match Group {{ sshd_users_group }},!{{ sshd_admins_group }}
     ForceCommand /usr/sbin/nologin
 {% endif %}
