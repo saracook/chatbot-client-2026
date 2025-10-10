@@ -41,8 +41,8 @@ Match Group {{ sshd_users_group }},!{{ sshd_admins_group }} Address *,!127.0.0.1
     ForceCommand /usr/sbin/nologin
 {% endif %}
 
-{% if inventory_hostname in groups['c2_open_ondemand'] or inventory_hostname in groups['c2_slurm_controller'] %}
-# allow only admins to login to open ondemand and slurm controller nodes
+{% if inventory_hostname not in ( groups['c2_compute_node'] + groups['c2_login_node'] ) %}
+# allow only admins to login to nodes other than login and compute nodes
 Match Group {{ sshd_users_group }},!{{ sshd_admins_group }}
     ForceCommand /usr/sbin/nologin
 {% endif %}
