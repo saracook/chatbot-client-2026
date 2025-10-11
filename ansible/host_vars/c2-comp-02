@@ -5,10 +5,10 @@ service_tag: 4CDCZ84
 rack_location: SRCF B4 U1-4
 switch_port_channel: 9
 nvme_disk_ids:
-  - ???
-  - ???
-  - ???
-  - ???
+  - nvme-eui.37374330583017070025384700000001
+  - nvme-eui.37374330583017080025384700000001
+  - nvme-eui.37374330583017160025384700000001
+  - nvme-eui.37374330584004390025384300000001
 
 interfaces:
   eth0:

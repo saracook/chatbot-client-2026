@@ -5,10 +5,10 @@ service_tag: JBDCZ84
 rack_location: SRCF B4 U5-8
 switch_port_channel: 10
 nvme_disk_ids:
-  - ???
-  - ???
-  - ???
-  - ???
+  - nvme-eui.37374330583017090025384700000001
+  - nvme-eui.37374330583019930025384700000001
+  - nvme-eui.37374330583019970025384700000001
+  - nvme-eui.37374330584004420025384300000001
 
 interfaces:
   eth0:
