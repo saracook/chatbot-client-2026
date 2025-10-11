@@ -1,0 +1,28 @@
+# add common paths to the files menu
+Rails.application.config.after_initialize do
+  OodFilesApp.candidate_favorite_paths.tap do |paths|
+    paths << FavoritePath.new("/projects", title: "Project Directories")
+  end
+end
+
+# cache partition list for use in apps
+class Partitions
+  def self.list
+    @list ||= begin
+      cmd = "sinfo"
+      args = ["--noheader","-o %R"]
+      @partitions = []
+      o, e, s = Open3.capture3(cmd , *args)
+      if s.success?
+        @partitions = o.split("\n").map(&:strip).reject(&:blank?).sort
+      else
+        raise o
+      end
+      @partitions
+    end
+  end
+end
+
+Rails.application.config.after_initialize do
+  Partitions.list
+end

@@ -1,2 +1,22 @@
 ood_version: 4.0
 ood_rpm: ondemand-release-web-{{ ood_version }}-1.{{ distros[distro]['el'] }}.noarch.rpm
+ood_file_upload_max_bytes: 136577024
+ood_download_dir_max_bytes: 1073741824
+
+public_name: ondemand.carina.stanford.edu
+
+apache_tls_key: /etc/pki/tls/private/{{ public_name }}.pem
+apache_tls_crt: /etc/pki/tls/certs/{{ public_name }}.pem
+apache_webroot: /var/www/html
+
+certbot_email: srcc-support@stanford.edu
+certbot_tls_key: /etc/letsencrypt/live/{{ public_name }}/privkey.pem
+certbot_tls_crt: /etc/letsencrypt/live/{{ public_name }}/fullchain.pem
+certbot_plugin_venv: /opt/certbot-plugin-venv
+# todo: toggle this to false for production (duh)
+certbot_staging: true
+certbot_dns_google_plugin_package: certbot-dns-google
+certbot_dns_google_project: srcc-anthos-secure-prod
+certbot_dns_google_credentials_file: /dev/shm/certbot-dns-google-credentials.json
+certbot_dns_google_credentials_json: "{{ lookup('env','OOD_CERTBOT_DNS_GOOGLE_CREDENTIALS_JSON_B64') | b64decode }}"
+certbot_dns_google_propagation_seconds: 60

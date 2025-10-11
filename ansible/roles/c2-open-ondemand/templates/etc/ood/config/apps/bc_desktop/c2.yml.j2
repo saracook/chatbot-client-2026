@@ -1,0 +1,45 @@
+---
+title: 'Carina Desktop'
+cluster: '{{ slurm_cluster_name }}'
+submit: 'submit/{{ slurm_cluster_name }}.yml.erb'
+
+form:
+  - desktop
+  - bc_account
+  - bc_queue
+  - fs_size
+  - fs_gpu
+  - bc_num_hours
+  - bc_email_on_started
+
+attributes:
+  desktop: 'xfce'
+  bc_account: 'users'
+  bc_queue: 'dev'
+
+  fs_size:
+    label: 'Size'
+    widget: 'select'
+    options:
+      - [ 'Tiny', 'tiny' ]
+      - [ 'Small', 'small' ]
+      - [ 'Medium', 'medium' ]
+      - [ 'Large', 'large' ]
+    value: 'small'
+    help: |
+      <small>
+
+        - **Tiny**: 1 core, 4 GB
+        - **Small**: 2 cores, 8 GB
+        - **Medium**: 4 cores, 16 GB
+        - **Large**: 8 cores, 32 GB
+
+      </small>
+
+  fs_gpu:
+    label: 'Allocate a GPU'
+    widget: 'check_box'
+
+  bc_num_hours:
+    value: 1
+    max: 24

@@ -1,5 +1,3 @@
-slurm_cluster_name: c2
-
 slurmrestd_user: slurmrestd
 slurmrestd_uid: 6001
 slurmrestd_group: "{{ slurmrestd_user }}"

@@ -5,3 +5,11 @@
         - ood
   tags:
     - always
+
+- ansible.builtin.include_tasks:
+    file: certbot.yml
+    apply:
+      tags:
+        - certbot
+  tags:
+    - always
