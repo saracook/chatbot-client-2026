@@ -1,0 +1,8 @@
+- name: update repo metadata
+  ansible.builtin.shell:
+    cmd: createrepo /srv/rpm/{{ _distro.value.name }}
+  loop: "{{ distros | dict2items }}"
+  loop_control:
+    loop_var: _distro
+  tags:
+    - always
