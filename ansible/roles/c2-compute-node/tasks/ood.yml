@@ -4,6 +4,7 @@
       # nmap-ncat is installed in role c2-base-os
       - python3-websockify # repo: epel
       - turbovnc # repo: turbovnc
+      - "@xfce-desktop"
     state: present
     update_cache: yes
     disable_gpg_check: yes

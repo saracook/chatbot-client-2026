@@ -1,19 +1,21 @@
 ---
 script:
   native:
-    - '--qos'
-    - 'normal'
     - '--cpus-per-task'
     - <% case fs_size when "tiny" %>
-        1
+      1
       <% when "small" %>
-        2
+      2
       <% when "medium" %>
-        4
+      4
       <% else %>
-        8
+      8
       <% end %>
-  <% if fs_gpu.to_i == 1 %>
+    <% if fs_gpu.to_i == 1 %>
     - '--gpus'
     - 1
-  <% end %>
+    <% end %>
+    - '--nodes'
+    - '<%= bc_num_slots.blank? ? 1 : bc_num_slots.to_i %>'
+    - '--qos'
+    - 'normal'

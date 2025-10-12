@@ -1,8 +1,8 @@
 - name: install packages for gpu
   ansible.builtin.dnf:
     name:
-      - cuda-driver
-      - cuda-toolkit
+      - cuda
+      - "@development"
       - dkms # repo: epel
     state: present
     update_cache: yes

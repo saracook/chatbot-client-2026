@@ -4,7 +4,6 @@ kvm_host: c2-infra-02
 vcpus: 16
 memory_gb: 64
 swapfile_gb: 8
-distro: rocky_9_6
 
 interfaces:
   eth0:

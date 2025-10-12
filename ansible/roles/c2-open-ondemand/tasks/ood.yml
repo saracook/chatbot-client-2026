@@ -167,3 +167,12 @@
     group: root
     mode: '00644'
   notify: restart httpd
+
+- name: install /var/www/ood/apps/sys/bc_desktop/template/script.sh.erb
+  ansible.builtin.template:
+    src: var/www/ood/apps/sys/bc_desktop/template/script.sh.erb.j2
+    dest: /var/www/ood/apps/sys/bc_desktop/template/script.sh.erb
+    owner: root
+    group: root
+    mode: '00755'
+  notify: restart httpd

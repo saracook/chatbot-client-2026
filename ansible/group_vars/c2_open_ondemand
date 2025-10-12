@@ -1,0 +1,2 @@
+# nb: ood isn't yet supported on rocky 10.0 .
+distro: rocky_9_6

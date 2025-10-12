@@ -19,6 +19,6 @@ oidc_settings:
 
 logout_redirect: "/oidc?logout=https%3A%2F%2F{{ public_name }}"
 
-host_regex: '^({{ groups['c2_compute_node'] | join("|") }})\.{{ domain | replace(".","\\.") }}$'
+host_regex: "({{ groups['c2_compute_node'] | join("|") }})\\.{{ domain | replace(".","\\\\.") }}"
 node_uri: '/node'
 rnode_uri: '/rnode'
