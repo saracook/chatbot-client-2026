@@ -22,3 +22,5 @@ base_os_packages:
   - tmux
   - traceroute
   - which
+
+lmod_modulepath: /software/modulefiles

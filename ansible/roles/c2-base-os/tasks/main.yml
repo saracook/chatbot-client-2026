@@ -30,6 +30,15 @@
   tags:
     - always
 
+- name: run role c2-node-exporter
+  ansible.builtin.include_role:
+    name: c2-node-exporter
+    apply:
+      tags:
+        - node-exporter
+  tags:
+    - always
+
 - name: run role c2-kvm-guest
   ansible.builtin.include_role:
     name: c2-kvm-guest
@@ -40,23 +49,22 @@
     - always
   when: inventory_hostname in groups['c2_kvm_guest']
 
-- ansible.builtin.include_tasks:
-    file: nfs-mounts.yml
-    apply:
+- block:
+    - ansible.builtin.include_tasks:
+        file: nfs-mounts.yml
+        apply:
+          tags:
+            - nfs-mounts
       tags:
-        - nfs-mounts
-  tags:
-    - always
+        - always
+    - ansible.builtin.include_tasks:
+        file: lmod.yml
+        apply:
+          tags:
+            - lmod
+      tags:
+        - always
   when: inventory_hostname in groups['c2_nfs_client']
-
-- name: run role c2-node-exporter
-  ansible.builtin.include_role:
-    name: c2-node-exporter
-    apply:
-      tags:
-        - node-exporter
-  tags:
-    - always
 
 - name: run role c2-krb5-ldap-client
   ansible.builtin.include_role:
