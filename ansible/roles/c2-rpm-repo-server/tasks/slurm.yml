@@ -1,12 +1,5 @@
-- name: install packages
-  ansible.builtin.dnf:
-    name:
-      - createrepo_c
-    state: present
-    update_cache: yes
-
 - name: create slurm rpm build context directories for each distro
-  file:
+  ansible.builtin.file:
     path: "{{ path }}"
     state: directory
   loop: "{{ distros | dict2items }}"
@@ -16,7 +9,7 @@
     path: /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}/tmp
 
 - name: install containerfiles
-  template:
+  ansible.builtin.template:
     src: Containerfile.j2
     dest: /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}/Containerfile
   loop: "{{ distros | dict2items }}"
@@ -24,7 +17,7 @@
     loop_var: _distro
 
 - name: install entrypoint scripts
-  template:
+  ansible.builtin.template:
     src: entrypoint.j2
     dest: /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}/entrypoint
     mode: '00755'
@@ -51,7 +44,7 @@
 
 - name: build and install slurm rpms for each distro
   ansible.builtin.include_tasks:
-    file: rpm-build.yml
+    file: slurm-build.yml
   loop: "{{ distros | dict2items }}"
   loop_control:
     loop_var: _distro

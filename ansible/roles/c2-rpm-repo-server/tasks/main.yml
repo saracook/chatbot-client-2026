@@ -1,7 +1,22 @@
+- name: install packages
+  ansible.builtin.dnf:
+    name:
+      - createrepo_c
+    state: present
+    update_cache: yes
+
 - ansible.builtin.include_tasks:
-    file: rpm-repo.yml
+    file: slurm.yml
     apply:
       tags:
-        - rpm-repo
+        - slurm
+  tags:
+    - always
+
+- ansible.builtin.include_tasks:
+    file: rstudio-server.yml
+    apply:
+      tags:
+        - rstudio-server
   tags:
     - always

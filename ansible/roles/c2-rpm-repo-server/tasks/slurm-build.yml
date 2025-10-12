@@ -4,6 +4,7 @@
   register: statslurmrpm
 
 - block:
+
     - name: build slurm rpms
       containers.podman.podman_container:
         name: slurm-rpm-builder-{{ _distro.value.name }}
@@ -13,17 +14,18 @@
         volumes:
           - /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}/tmp:/pwd
         rm: yes
-    
+
     - name: sync to flush slurm rpms to disk
-      command: sync
+      ansible.builtin.command: sync
       changed_when: false
-    
-    - name: install slurm rpms and update repo metadata
+
+    - name: install slurm rpms
       ansible.builtin.shell:
         cmd: |
           set -e
           mkdir -p /srv/rpm/{{ _distro.value.name }}
           rm -fv /srv/rpm/{{ _distro.value.name }}/slurm-*.rpm
           mv -fv /var/tmp/slurm-rpm-builder-container-{{ _distro.value.name }}/tmp/slurm-*.rpm /srv/rpm/{{ _distro.value.name }}
-          createrepo /srv/rpm/{{ _distro.value.name }}
+
   when: not statslurmrpm.stat.exists
+  notify: update repo metadata

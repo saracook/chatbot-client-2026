@@ -1,0 +1,12 @@
+- name: get rstudio-server rpms for each distro
+  ansible.builtin.get_url:
+    url: "{{ rstudio_server_rpms[_distro.value.el]['url'] }}"
+    dest: /srv/rpm/{{ _distro.value.name }}/{{ rstudio_server_rpms[_distro.value.el]['url'] | basename }}
+    checksum: "sha256:{{ rstudio_server_rpms[_distro.value.el]['sha256'] }}"
+    owner: root
+    group: root
+    mode: '00644'
+  loop: "{{ distros | dict2items }}"
+  loop_control:
+    loop_var: _distro
+  notify: update repo metadata

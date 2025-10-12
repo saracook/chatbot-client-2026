@@ -1,0 +1,8 @@
+# el9 url is used for el10 as well
+rstudio_server_rpms:
+  el9:
+    url: https://download2.rstudio.org/server/rhel9/x86_64/rstudio-server-rhel-2025.09.1-401-x86_64.rpm
+    sha256: be52563fbeb251960f6741fa81544b575fbae4d779b856d5c59ccdb3c159496a
+  el10:
+    url: https://download2.rstudio.org/server/rhel9/x86_64/rstudio-server-rhel-2025.09.1-401-x86_64.rpm
+    sha256: be52563fbeb251960f6741fa81544b575fbae4d779b856d5c59ccdb3c159496a
