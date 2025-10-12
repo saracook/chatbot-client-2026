@@ -12,3 +12,9 @@ nfs_mounts:
     opts: defaults,_netdev,sec=sys,sync
     dump: 0
     passno: 0
+  - src: "{{ nfs_server }}:/software"
+    path: /software
+    fstype: nfs4
+    opts: defaults,_netdev,sec=sys,sync
+    dump: 0
+    passno: 0
