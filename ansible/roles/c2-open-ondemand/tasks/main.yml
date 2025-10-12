@@ -13,3 +13,11 @@
         - certbot
   tags:
     - always
+
+- ansible.builtin.include_tasks:
+    file: jupyterlab.yml
+    apply:
+      tags:
+        - jupyterlab
+  tags:
+    - always

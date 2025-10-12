@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+echo "$(date): Starting main script"
+
+cd $HOME
+
+. {{ ood_jupyterlab_venv }}/bin/activate
+
+echo "$(date): Starting JupyterLab"
+
+set -x
+
+jupyter lab --config="${CONFIG_FILE}" <%= context.extra_jupyter_args %>

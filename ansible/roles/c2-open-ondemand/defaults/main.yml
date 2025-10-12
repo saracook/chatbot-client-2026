@@ -20,3 +20,5 @@ certbot_dns_google_project: srcc-anthos-secure-prod
 certbot_dns_google_credentials_file: /dev/shm/certbot-dns-google-credentials.json
 certbot_dns_google_credentials_json: "{{ lookup('env','OOD_CERTBOT_DNS_GOOGLE_CREDENTIALS_JSON_B64') | b64decode }}"
 certbot_dns_google_propagation_seconds: 60
+
+ood_jupyterlab_venv: /software/environments/ood-jupyterlab
