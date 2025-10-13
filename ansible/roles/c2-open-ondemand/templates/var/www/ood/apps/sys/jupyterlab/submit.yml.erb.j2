@@ -15,6 +15,8 @@ script:
     8
     <% end %>,
     <% if fs_gpu.to_i == 1 %>
-    '--gpus', 1
+    '--gpus', 1,
     <% end %>
+    '--qos',
+    'normal'
   ]

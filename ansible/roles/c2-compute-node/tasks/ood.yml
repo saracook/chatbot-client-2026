@@ -3,11 +3,49 @@
     name:
       # nmap-ncat is installed in role c2-base-os
       - python3-websockify # repo: epel
+      - rstudio-server # repo: c2-local
       - turbovnc # repo: turbovnc
-      - "@xfce-desktop"
+      - "@xfce-desktop" # repo: epel
     state: present
     update_cache: yes
     disable_gpg_check: yes
     enablerepo:
+      - c2-local
       - epel
       - turbovnc
+
+# nb: these packages are required for building r so we install
+#     them on all compute nodes so we can do r builds via slurm.
+- name: install packages for r builds
+  ansible.builtin.dnf:
+    name:
+      - bzip2-devel
+      - cairo-devel
+      - gcc-gfortran
+      - gmp-devel
+      - java-17-openjdk-headless
+      - java-17-openjdk-devel
+      - libcurl-devel
+      - libdeflate-devel
+      - libjpeg-turbo-devel
+      - libpng-devel
+      - libtiff-devel
+      - libX11-devel
+      - libXt-devel
+      - openjpeg2-devel
+      - pandoc
+      - pandoc-pdf
+      - pcre2-devel
+      - poppler-cpp-devel
+      - poppler-data-devel
+      - poppler-devel
+      - poppler-glib-devel
+      - readline-devel
+      - tbb-devel
+      - texlive-collection-latexrecommended
+      - xorg-x11-server-devel
+      - xz-devel
+    state: present
+    update_cache: yes
+    disable_gpg_check: yes
+    enablerepo: epel
