@@ -57,6 +57,9 @@
             - nfs-mounts
       tags:
         - always
+  when: inventory_hostname in groups['c2_nfs_client']
+
+- block:
     - ansible.builtin.include_tasks:
         file: lmod.yml
         apply:
@@ -64,7 +67,14 @@
             - lmod
       tags:
         - always
-  when: inventory_hostname in groups['c2_nfs_client']
+    - ansible.builtin.include_tasks:
+        file: ood.yml
+        apply:
+          tags:
+            - ood
+      tags:
+        - always
+  when: inventory_hostname in ( groups['c2_compute_node'] + groups['c2_login_node'] + groups['c2_open_ondemand'] )
 
 - name: run role c2-krb5-ldap-client
   ansible.builtin.include_role:
