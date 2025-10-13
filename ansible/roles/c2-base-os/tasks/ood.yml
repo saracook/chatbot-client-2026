@@ -5,6 +5,7 @@
     name:
       - bzip2-devel
       - cairo-devel
+      - gcc-c++
       - gcc-gfortran
       - gmp-devel
       - java-17-openjdk-headless
