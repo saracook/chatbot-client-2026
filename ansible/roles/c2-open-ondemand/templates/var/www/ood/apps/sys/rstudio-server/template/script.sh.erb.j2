@@ -12,12 +12,14 @@ echo "RStudio Server temporary working directory: $RSTMPDIR"
 mkdir -p $RSTMPDIR/{bin,data,db,etc,log}
 AUTH="$RSTMPDIR/bin/auth"
 DATADIR="$RSTMPDIR/data"
+CONFDIR="$RSTMPDIR/etc"
 DBCONF="$RSTMPDIR/etc/database.conf"
 DBDIR="$RSTMPDIR/db"
 LOGCONF="$RSTMPDIR/etc/logging.conf"
 LOGDIR="$RSTMPDIR/log"
 RSERVERCONF="$RSTMPDIR/etc/rserver.conf"
 RSESSIONCONF="$RSTMPDIR/etc/rsession.conf"
+RSTUDIOPREFS="$RSTMPDIR/etc/rstudio-prefs.json"
 
 cp -a $PWD/bin/auth $RSTMPDIR/bin
 
@@ -52,6 +54,16 @@ r-cran-repos=https://cloud.r-project.org/
 session-timeout-minutes=0
 EOF
 
+cat <<EOF > $RSTUDIOPREFS
+{
+  "check_for_updates": false,
+  "load_workspace": false,
+  "posix_terminal_shell": "bash",
+  "save_workspace": "never"
+}
+EOF
+
+export RSTUDIO_CONFIG_HOME="$CONFDIR"
 export RS_LOG_CONF_FILE="$LOGCONF"
 export RSTUDIO_PASSWORD="$password"
 
