@@ -20,3 +20,11 @@
         - rstudio-server
   tags:
     - always
+
+- ansible.builtin.include_tasks:
+    file: code-server.yml
+    apply:
+      tags:
+        - code-server
+  tags:
+    - always

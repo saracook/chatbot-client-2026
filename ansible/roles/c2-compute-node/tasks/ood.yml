@@ -1,6 +1,7 @@
 - name: install packages for ood interactive apps
   ansible.builtin.dnf:
     name:
+      - code-server # repo: c2-local
       # nmap-ncat is installed in role c2-base-os
       - python3-websockify # repo: epel
       - rstudio-server # repo: c2-local
@@ -13,3 +14,10 @@
       - c2-local
       - epel
       - turbovnc
+
+- name: stop/disable rstudio-server.service
+  ansible.builtin.systemd_service:
+    name: rstudio-server.service
+    state: stopped
+    enabled: no
+    daemon_reload: yes

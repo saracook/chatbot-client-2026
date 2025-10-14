@@ -6,3 +6,14 @@ rstudio_server_rpms:
   el10:
     url: https://download2.rstudio.org/server/rhel9/x86_64/rstudio-server-rhel-2025.09.1-401-x86_64.rpm
     sha256: be52563fbeb251960f6741fa81544b575fbae4d779b856d5c59ccdb3c159496a
+
+# el9 and el10 rpms are the same
+# todo: this is also defined in role c2-open-ondemand
+code_server_version: '4.104.3'
+code_server_rpms:
+  el9:
+    url: https://github.com/coder/code-server/releases/download/v{{ code_server_version }}/code-server-{{ code_server_version }}-amd64.rpm
+    sha256: 3761f147ffd36e3b3fa3d26b5c90f555f5ebe0c1e39fa49e7ee292012b860862
+  el10:
+    url: https://github.com/coder/code-server/releases/download/v{{ code_server_version }}/code-server-{{ code_server_version }}-amd64.rpm
+    sha256: 3761f147ffd36e3b3fa3d26b5c90f555f5ebe0c1e39fa49e7ee292012b860862

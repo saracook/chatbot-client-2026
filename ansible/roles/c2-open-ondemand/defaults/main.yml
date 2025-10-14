@@ -22,3 +22,6 @@ certbot_dns_google_credentials_json: "{{ lookup('env','OOD_CERTBOT_DNS_GOOGLE_CR
 certbot_dns_google_propagation_seconds: 60
 
 ood_jupyterlab_venv: /software/environments/ood-jupyterlab
+
+# todo: this is also defined in role c2-rpm-repo-server
+code_server_version: '4.104.3'
