@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+EXEC_MODE="<%= context.exec_mode %>"
+
+if [ -z "$EXEC_MODE" ] || ! echo "$EXEC_MODE" | egrep -q '^(module|container)$'
+then
+  echo "Execution mode must be set to 'Module' or 'Container'." >&2
+  exit 1
+fi
+
+exec_module()
+{
+
+  . /software/environments/ood-matlab/bin/activate
+  module load matlab/<%= context.matlab_version.downcase %>
+
+  #export MWI_CUSTOM_HTTP_HEADERS="{\"mwi-auth-token\": \"$password\"}"
+
+  # todo: token auth is disabled since token prompt is still present
+  #       even when it's enabled. need to debug this.
+
+  env MWI_APP_PORT="$port" \
+      MWI_APP_HOST="0.0.0.0" \
+      MWI_AUTH_TOKEN="$password" \
+      MWI_ENABLE_TOKEN_AUTH="False" \
+      MWI_ENABLE_WEB_LOGGING="True" \
+      MWI_SHUTDOWN_ON_IDLE_TIMEOUT="60" \
+      matlab-proxy-app
+}
+
+exec_container()
+{
+  module load apptainer
+
+  export MLM_LICENSE_FILE="27015@srcc-license-srcf.stanford.edu:27015@srcc-license-rcf.stanford.edu"
+  export APPTAINERENV_MLM_LICENSE_FILE="$MLM_LICENSE_FILE"
+  export MWI_ENABLE_WEB_LOGGING="True"
+  export APPTAINERENV_MWI_ENABLE_WEB_LOGGING="$MWI_ENABLE_WEB_LOGGING"
+  export MWI_APP_PORT="$port"
+  export APPTAINERENV_MWI_APP_PORT="$MWI_APP_PORT"
+  export PASSWORD="$password"
+  export APPTAINERENV_PASSWORD="$PASSWORD"
+
+  IMAGE="/software/containers/admin/mathworks/mathworks-matlab-<%= context.matlab_version.downcase %>.sif"
+  apptainer run \
+  --bind /etc/csh/cshrc.d/z00_lmod.csh \
+  --bind /etc/environment \
+  --bind /etc/lmod \
+  --bind /etc/nsswitch.conf \
+  --bind /etc/profile.d/z00_lmod.sh \
+  --bind /etc/sssd \
+  --bind /etc/zsh/zprofile \
+  --bind /scratch \
+  --bind /software \
+  --bind /var/lib/sss/pipes \
+  --bind /var/run/munge/munge.socket.2 \
+  --bind /var/spool/slurmd/conf-cache \
+  --bind /zfs \
+  --writable-tmpfs \
+  $IMAGE \
+  -browser
+}
+
+module purge
+
+echo "$(date): Running on compute node $host:$port"
+echo "$(date): Starting MATLAB"
+cd $HOME
+
+if [ "$EXEC_MODE" = "module" ]
+then
+  exec_module
+elif [ "$EXEC_MODE" = "container" ]
+then
+  exec_container
+fi

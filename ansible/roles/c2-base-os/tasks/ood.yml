@@ -32,5 +32,12 @@
       - xz-devel
     state: present
     update_cache: yes
-    disable_gpg_check: yes
+    enablerepo: epel
+
+- name: install packages for matlab-proxy
+  ansible.builtin.dnf:
+    name:
+      - xorg-x11-server-Xvfb
+    state: present
+    update_cache: yes
     enablerepo: epel

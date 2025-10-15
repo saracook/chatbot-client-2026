@@ -1,0 +1,22 @@
+---
+batch_connect:
+  template: 'basic'
+
+script:
+  native: [
+    '--cpus-per-task',
+    <% case fs_size when "tiny" %>
+    1
+    <% when "small" %>
+    2
+    <% when "medium" %>
+    4
+    <% else %>
+    8
+    <% end %>,
+    <% if fs_gpu.to_i == 1 %>
+    '--gpus', 1,
+    <% end %>
+    '--qos',
+    'normal'
+  ]

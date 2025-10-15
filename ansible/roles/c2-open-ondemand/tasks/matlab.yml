@@ -1,0 +1,41 @@
+- name: create directory /var/www/ood/apps/sys/matlab/template
+  ansible.builtin.file:
+    path: /var/www/ood/apps/sys/matlab/template
+    state: directory
+    owner: root
+    group: root
+    mode: '00755'
+
+- name: install app files in /var/www/ood/apps/sys/matlab
+  ansible.builtin.template:
+    src: var/www/ood/apps/sys/matlab/{{ item.name }}.j2
+    dest: /var/www/ood/apps/sys/matlab/{{ item.name }}
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  loop:
+    - name: form.yml.erb
+      mode: '00644'
+    - name: manifest.yml
+      mode: '00644'
+    - name: submit.yml.erb
+      mode: '00644'
+    - name: template/after.sh.erb
+      mode: '00755'
+    - name: template/before.sh.erb
+      mode: '00755'
+    - name: template/script.sh.erb
+      mode: '00755'
+    - name: view.html.erb
+      mode: '00644'
+
+- name: install binary app files in /var/www/ood/apps/sys/matlab
+  ansible.builtin.copy:
+    src: var/www/ood/apps/sys/matlab/{{ item.name }}
+    dest: /var/www/ood/apps/sys/matlab/{{ item.name }}
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  loop:
+    - name: icon.png
+      mode: '00644'

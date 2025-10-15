@@ -37,3 +37,11 @@
         - code-server
   tags:
     - always
+
+- ansible.builtin.include_tasks:
+    file: matlab.yml
+    apply:
+      tags:
+        - matlab
+  tags:
+    - always
