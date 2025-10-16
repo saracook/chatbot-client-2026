@@ -2,6 +2,10 @@
 title: 'Carina Desktop'
 cluster: '{{ slurm_cluster_name }}'
 submit: 'submit/{{ slurm_cluster_name }}.yml.erb'
+description: |
+  This app will launch an [Xfce] interactive desktop on a compute node.
+
+  [Xfce]: https://www.xfce.org/
 
 form:
   - desktop
