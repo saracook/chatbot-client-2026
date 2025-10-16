@@ -1,2 +1,7 @@
-# only run roles c2-base-os and c2-slurm-client as dependencies
-# (see meta/main.yml)
+- ansible.builtin.include_tasks:
+    file: ood.yml
+    apply:
+      tags:
+        - ood
+  tags:
+    - always

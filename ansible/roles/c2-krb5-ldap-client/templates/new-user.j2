@@ -17,7 +17,7 @@ DEFPART="dev"
 # create user home directory
 if mountpoint -q $HOMEBASE && [ ! -d $HOMEBASE/$PAM_USER ]
 then
-  cp -r /etc/skel $HOMEBASE/$PAM_USER
+  cp -a /etc/skel $HOMEBASE/$PAM_USER
   chown -R $PAM_USER: $HOMEBASE/$PAM_USER
   chmod 00700 $HOMEBASE/$PAM_USER
 fi

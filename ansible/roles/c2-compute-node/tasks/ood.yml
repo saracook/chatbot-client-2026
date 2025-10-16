@@ -21,3 +21,20 @@
     state: stopped
     enabled: no
     daemon_reload: yes
+
+# nb: /etc/skel/Desktop/SAS94.desktop
+#     symlink installed in role c2-login-node .
+- name: install sas desktop file
+  ansible.builtin.copy:
+    content: |
+      [Desktop Entry]
+      Version=1.0
+      Type=Application
+      Name=SAS 9.4
+      GenericName=SAS
+      Exec=/software/modules/sas/9.4/SASHome/SASFoundation/9.4/sas
+      Icon=/software/modules/sas/9.4/SASHome/saslogo.png
+      Terminal=true
+      StartupNotify=true
+    dest: /usr/share/applications/SAS94.desktop
+    mode: '00644'
