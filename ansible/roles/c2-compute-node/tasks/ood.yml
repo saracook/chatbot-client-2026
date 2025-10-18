@@ -38,3 +38,12 @@
       StartupNotify=true
     dest: /usr/share/applications/SAS94.desktop
     mode: '00644'
+
+- name: install /usr/local/sbin/proot
+  ansible.builtin.get_url:
+    url: "{{ proot_binary_url }}"
+    dest: /usr/local/sbin/proot
+    checksum: "sha256:{{ proot_binary_sha256 }}"
+    owner: root
+    group: root
+    mode: '00755'
