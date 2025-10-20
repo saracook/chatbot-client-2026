@@ -176,3 +176,17 @@
     group: root
     mode: '00755'
   notify: restart httpd
+
+- name: create directory /var/www/ood/apps/dev/<user>
+  ansible.builtin.file:
+    path: /var/www/ood/apps/dev/{{ item }}
+    state: directory
+  loop: "{{ ood_dev_users }}"
+
+- name: symlink /var/www/ood/apps/dev/<user>/gateway to /home/users/<user>/ondemand/dev
+  ansible.builtin.file:
+    src: /home/users/{{ item }}/ondemand/dev
+    dest: /var/www/ood/apps/dev/{{ item }}/gateway
+    state: link
+    force: yes
+  loop: "{{ ood_dev_users }}"

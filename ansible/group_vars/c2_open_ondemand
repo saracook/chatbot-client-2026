@@ -1,2 +1,6 @@
 # nb: ood isn't yet supported on rocky 10.0 .
 distro: rocky_9_6
+# nb: configured to resolve to c2-ood-01.stanford.edu
+#     in cloud dns zone carina-stanford-edu in project
+#     srcc-anthos-secure-prod.
+ood_domain: c2-ondemand.carina.stanford.edu

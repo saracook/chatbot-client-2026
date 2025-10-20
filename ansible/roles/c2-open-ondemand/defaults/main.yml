@@ -3,7 +3,17 @@ ood_rpm: ondemand-release-web-{{ ood_version }}-1.{{ distros[distro]['el'] }}.no
 ood_file_upload_max_bytes: 136577024
 ood_download_dir_max_bytes: 1073741824
 
-public_name: c2-ondemand.carina.stanford.edu
+ood_dev_users:
+  - addiso
+  - btempero
+  - ddh
+  - gancayco
+  - mpiercy
+  - mvan
+  - rvrollin
+  - saracook
+
+public_name: "{{ ood_domain }}"
 
 apache_tls_key: /etc/pki/tls/private/{{ public_name }}.pem
 apache_tls_crt: /etc/pki/tls/certs/{{ public_name }}.pem

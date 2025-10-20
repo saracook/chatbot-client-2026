@@ -3,20 +3,20 @@ v2:
   metadata:
     title: 'Carina'
   login:
-    host: '{{ groups['c2_login_node'][0] }}.{{ domain }}'
+    host: '{{ hostvars[groups['c2_login_node'][0]]['login_domain'] }}'
   job:
     adapter: 'slurm'
     bin: '/usr/bin'
   batch_connect:
     basic:
       script_wrapper: |
-        #module purge
+        module purge
         export HOME="/home/users/$SLURM_JOB_USER"
         %s
       set_host: 'host="$(hostname -s).{{ domain }}"'
     vnc:
       script_wrapper: |
-        #module purge
+        module purge
         export HOME="/home/users/$SLURM_JOB_USER"
         export PATH="/opt/TurboVNC/bin:$PATH"
         export WEBSOCKIFY_CMD="/usr/bin/websockify"
