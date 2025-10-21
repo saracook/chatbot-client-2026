@@ -47,3 +47,10 @@
     owner: root
     group: root
     mode: '00755'
+
+- name: install package ncurses-compat-libs (provides libncurses.so.5 for stata)
+  ansible.builtin.dnf:
+    name: ncurses-compat-libs # repo: devel
+    state: present
+    update_cache: yes
+    enablerepo: devel
