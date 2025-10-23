@@ -1,0 +1,23 @@
+- name: install packages
+  ansible.builtin.dnf:
+    name:
+      - postfix
+      - s-nail
+    state: present
+    update_cache: yes
+
+- name: install /etc/postfix/main.cf
+  ansible.builtin.template:
+    src: main.cf.j2
+    dest: /etc/postfix/main.cf
+    owner: root
+    group: root
+    mode: '00644'
+  register: pstfxsrv
+
+- name: start/restart and enable postfix.service
+  ansible.builtin.systemd_service:
+    name: postfix.service
+    state: "{{ 'restarted' if pstfxsrv.changed else 'started' }}"
+    enabled: yes
+    daemon_reload: yes

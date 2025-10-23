@@ -1,4 +1,12 @@
 - ansible.builtin.include_tasks:
+    file: postfix.yml
+    apply:
+      tags:
+        - postfix
+  tags:
+    - always
+
+- ansible.builtin.include_tasks:
     file: slurmctld.yml
     apply:
       tags:
