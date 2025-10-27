@@ -1,4 +1,10 @@
-- name: delegate to localhost
+- name: |
+    (re)generate on localhost:
+    {{ splunk_client_tls_key }}
+    {{ splunk_client_tls_csr }}
+    provide instructions to obtain:
+    {{ splunk_client_tls_crt }}
+    {{ splunk_rootca_tls_crt }}
   delegate_to: localhost
   become: no
   run_once: yes
@@ -8,40 +14,57 @@
       ansible.builtin.file:
         path: "{{ splunk_client_tls_crt | dirname }}"
         state: directory
-    
+
     - name: install {{ splunk_client_tls_cfg }}
       ansible.builtin.template:
         src: "{{ splunk_client_tls_cfg_tmpl }}"
         dest: "{{ splunk_client_tls_cfg }}"
+      register: splkclitlscfg
+
+    - name: >
+        regenerate {{ splunk_client_tls_key }} and {{ splunk_client_tls_csr }}
+        if configuration changed
+      block:
+
+        - name: remove files in {{ splunk_client_tls_crt | dirname }}
+          ansible.builtin.file:
+            path: "{{ item }}"
+            state: absent
+          loop:
+            - "{{ splunk_client_tls_key }}"
+            - "{{ splunk_client_tls_csr }}"
+            - "{{ splunk_client_tls_crt }}"
+            - "{{ splunk_rootca_tls_crt }}"
+
+        - name: generate {{ splunk_client_tls_key }} and {{ splunk_client_tls_csr }}
+          ansible.builtin.shell:
+            cmd: >
+              openssl req
+              -new
+              -nodes
+              -newkey rsa:2048
+              -keyout {{ splunk_client_tls_key }}
+              -passout pass:"{{ splunk_client_tls_key_passphrase }}"
+              -out {{ splunk_client_tls_csr }}
+              -config {{ splunk_client_tls_cfg }}
+
+        - name: print file locations
+          ansible.builtin.debug:
+            msg: "{{ item }}"
+          loop:
+            - "{{ splunk_client_tls_cfg }}"
+            - "{{ splunk_client_tls_key }}"
+            - "{{ splunk_client_tls_csr }}"
     
-    - name: generate {{ splunk_client_tls_key }} and {{ splunk_client_tls_csr }}
-      ansible.builtin.shell:
-        cmd: >
-          openssl req
-          -new
-          -nodes
-          -newkey rsa:2048
-          -keyout {{ splunk_client_tls_key }}
-          -passout pass:"{{ splunk_client_tls_key_passphrase }}"
-          -out {{ splunk_client_tls_csr }}
-          -config {{ splunk_client_tls_cfg }}
-        creates: "{{ splunk_client_tls_csr }}"
-    
-    - name: print file locations
-      ansible.builtin.debug:
-        msg: "{{ item }}"
-      loop:
-        - "{{ splunk_client_tls_cfg }}"
-        - "{{ splunk_client_tls_key }}"
-        - "{{ splunk_client_tls_csr }}"
-    
-    - name: print further instructions
-      ansible.builtin.debug:
-        msg: |
-          TODO:
-          1) Upload {{ splunk_client_tls_csr }} to
-             https://susplunk.stanford.edu/signcert
-          2) Download cert file to {{ splunk_client_tls_crt }}
-          3) Download root ca file to {{ splunk_rootca_tls_crt }}
-          4) Run playbook c2-base-os.yml
-             (or any playbook that depends on role c2-base-os)
+        - name: print further instructions
+          ansible.builtin.debug:
+            msg: |
+              TODO:
+              1) Upload {{ splunk_client_tls_csr }} to
+                 https://susplunk.stanford.edu/signcert
+              2) Download cert file to {{ splunk_client_tls_crt }}
+              3) Download root ca file to {{ splunk_rootca_tls_crt }}
+              4) Run playbook c2-base-os.yml
+                 (or any playbook that depends on role c2-base-os)
+
+      when: splkclitlscfg is changed

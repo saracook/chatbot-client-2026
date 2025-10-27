@@ -1,4 +1,4 @@
-- name: check that c2-splunk-client-certificate.yml has been run
+- name: check that role c2-splunk-client-certificate has been run
   delegate_to: localhost
   become: no
   run_once: yes
@@ -8,16 +8,16 @@
       ansible.builtin.stat:
         path: "{{ splunk_client_tls_crt }}"
       register: splkclitlscrt
-    
+
     - name: fail if {{ splunk_client_tls_crt }} doesn't exist
       ansible.builtin.fail:
       when: not splkclitlscrt.stat.exists
-    
+
     - name: stat {{ splunk_rootca_tls_crt }}
       ansible.builtin.stat:
         path: "{{ splunk_rootca_tls_crt }}"
       register: splkrtcatlscrt
-    
+
     - name: fail if {{ splunk_rootca_tls_crt }} doesn't exist
       ansible.builtin.fail:
       when: not splkrtcatlscrt.stat.exists
