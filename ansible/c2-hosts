@@ -114,7 +114,6 @@ all:
     c2_slurm_database:
       hosts:
         c2-slurmdb-01:
-    # nb: run c2-splunk-client-certificate.yml after add/remove
     c2_splunk_client:
       children:
         c2_login_node:
