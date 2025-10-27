@@ -1,4 +1,6 @@
-- name: check that role c2-splunk-client-certificate has been run
+- name: >
+    check for client and root ca certificates
+    (see role c2-splunk-client-certificate)
   delegate_to: localhost
   become: no
   run_once: yes
@@ -106,6 +108,8 @@
     group: splunkfwd
     mode: '00600'
   register: spllclsrvcf
+
+# todo: set PYTHONHTTPSVERIFY=1 in /opt/splunkforwarder/etc/splunk-launch.conf
 
 - name: enable and start/restart SplunkForwarder.service
   ansible.builtin.systemd_service:
