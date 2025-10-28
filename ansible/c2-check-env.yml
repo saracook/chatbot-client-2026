@@ -20,6 +20,8 @@
         - OOD_OIDC_CLIENT_SECRET
         - SLURM_DB_ROOT_PASSWORD
         - SLURM_DB_SLURM_PASSWORD
+        - SPLUNK_CLIENT_ADMIN_PASSWORD
+        - SPLUNK_CLIENT_TLS_KEY_PASSPHRASE
       run_once: yes
       tags:
         - always
