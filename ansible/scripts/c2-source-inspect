@@ -1,9 +1,4 @@
 #!/bin/bash
-if ! klist -s
-then
-  echo "ticket expired, run: kinit -F $USER/root" >&2
-  exit 1
-fi
 ME="$( basename "$( readlink -f "$0" )" )"
 DIR="$( cd "$( dirname "$( readlink -f "$0" )" )" && pwd )"
 EXPECTED="$( grep '^export ' $DIR/c2-source | cut -d= -f1 | cut -d' ' -f2 | sort )"
