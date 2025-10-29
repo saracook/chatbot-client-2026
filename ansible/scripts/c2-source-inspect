@@ -8,4 +8,4 @@ ME="$( basename "$( readlink -f "$0" )" )"
 DIR="$( cd "$( dirname "$( readlink -f "$0" )" )" && pwd )"
 EXPECTED="$( grep '^export ' $DIR/c2-source | cut -d= -f1 | cut -d' ' -f2 | sort )"
 ACTUAL="$( env | grep -f <(echo "$EXPECTED") | sort )"
-diff -Naur <(echo "$EXPECTED") <(echo "$ACTUAL")
+diff -Nau <(echo "$EXPECTED") <(echo "$ACTUAL")
