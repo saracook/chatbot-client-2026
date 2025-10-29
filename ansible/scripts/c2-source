@@ -11,8 +11,8 @@ export ANSIBLE_SSH_PRIVATE_KEY="$( wallet get file $WALLET_FILE_PREFIX/c2-rocky-
 export ANSIBLE_SSH_PUBLIC_KEY="$( wallet get file $WALLET_FILE_PREFIX/c2-rocky-ansible-ssh-public-key )"
 export ANSIBLE_SSH_PRIVATE_KEY_FILE="$TEMP_DIR/rocky.pem"
 export ANSIBLE_SSH_PUBLIC_KEY_FILE="$TEMP_DIR/rocky.pub"
-install -m 0600 <(echo -n "$ANSIBLE_SSH_PRIVATE_KEY") $ANSIBLE_SSH_PRIVATE_KEY_FILE
-install -m 0644 <(echo -n "$ANSIBLE_SSH_PUBLIC_KEY") $ANSIBLE_SSH_PUBLIC_KEY_FILE
+install -m 0600 <(echo "$ANSIBLE_SSH_PRIVATE_KEY") $ANSIBLE_SSH_PRIVATE_KEY_FILE
+install -m 0644 <(echo "$ANSIBLE_SSH_PUBLIC_KEY") $ANSIBLE_SSH_PUBLIC_KEY_FILE
 export DEFAULT_PASSWORD="$( wallet get file $WALLET_FILE_PREFIX/c2-rocky-default-password )"
 export GITHUB_ACCESS_TOKEN="$( wallet get file $WALLET_FILE_PREFIX/github-machine-account-access-token-default )"
 export IDRAC_PASSWORD="$( wallet get file $WALLET_FILE_PREFIX/c2-dell-idrac-password )"
