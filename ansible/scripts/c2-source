@@ -1,0 +1,27 @@
+# source this file before running ansible / ansible-playbook
+# this provides all required c2 secrets in the environment via wallet
+if ! klist -s
+then
+  echo "ticket expired, run: kinit -F $USER/root" >&2
+  return 1
+fi
+WALLET_FILE_PREFIX="password/its-rc/carina-nero"
+TEMP_DIR="$( mktemp -d -p /dev/shm )"
+export ANSIBLE_SSH_PRIVATE_KEY="$( wallet get file $WALLET_FILE_PREFIX/c2-rocky-ansible-ssh-private-key )"
+export ANSIBLE_SSH_PUBLIC_KEY="$( wallet get file $WALLET_FILE_PREFIX/c2-rocky-ansible-ssh-public-key )"
+export ANSIBLE_SSH_PRIVATE_KEY_FILE="$TEMP_DIR/rocky.pem"
+export ANSIBLE_SSH_PUBLIC_KEY_FILE="$TEMP_DIR/rocky.pub"
+install -m 0600 <(echo -n "$ANSIBLE_SSH_PRIVATE_KEY") $ANSIBLE_SSH_PRIVATE_KEY_FILE
+install -m 0644 <(echo -n "$ANSIBLE_SSH_PUBLIC_KEY") $ANSIBLE_SSH_PUBLIC_KEY_FILE
+export DEFAULT_PASSWORD="$( wallet get file $WALLET_FILE_PREFIX/c2-rocky-default-password )"
+export GITHUB_ACCESS_TOKEN="$( wallet get file $WALLET_FILE_PREFIX/github-machine-account-access-token-default )"
+export IDRAC_PASSWORD="$( wallet get file $WALLET_FILE_PREFIX/c2-dell-idrac-password )"
+export IDRAC_USERNAME="$( wallet get file $WALLET_FILE_PREFIX/c2-dell-idrac-username )"
+export MUNGE_KEY_B64="$( wallet get file $WALLET_FILE_PREFIX/c2-munge-key-base64 )"
+export OOD_CERTBOT_DNS_GOOGLE_CREDENTIALS_JSON_B64="$( wallet get file $WALLET_FILE_PREFIX/c2-certbot-gcp-service-account-key-json-base64 )"
+export OOD_OIDC_CLIENT_ID="$( wallet get file $WALLET_FILE_PREFIX/c2-ood-oidc-client-id )"
+export OOD_OIDC_CLIENT_SECRET="$( wallet get file $WALLET_FILE_PREFIX/c2-ood-oidc-client-secret )"
+export SLURM_DB_ROOT_PASSWORD="$( wallet get file $WALLET_FILE_PREFIX/c2-slurm-db-root-password )"
+export SLURM_DB_SLURM_PASSWORD="$( wallet get file $WALLET_FILE_PREFIX/c2-slurm-db-slurm-password )"
+export SPLUNK_CLIENT_ADMIN_PASSWORD="$( wallet get file $WALLET_FILE_PREFIX/c2-splunk-client-admin-password )"
+export SPLUNK_CLIENT_TLS_KEY_PASSPHRASE="$( wallet get file $WALLET_FILE_PREFIX/c2-splunk-client-tls-key-passphrase )"
