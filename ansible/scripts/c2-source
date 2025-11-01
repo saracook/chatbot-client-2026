@@ -6,7 +6,7 @@ then
   return 1
 fi
 WALLET_FILE_PREFIX="password/its-rc/carina-nero"
-TEMP_DIR="$( mktemp -d -p /dev/shm )"
+TEMP_DIR="$( mktemp -d -p /dev/shm c2-env-${USER}-tmp.XXXXXXXXXX )"
 export ANSIBLE_SSH_PRIVATE_KEY="$( wallet get file $WALLET_FILE_PREFIX/c2-rocky-ansible-ssh-private-key )"
 export ANSIBLE_SSH_PUBLIC_KEY="$( wallet get file $WALLET_FILE_PREFIX/c2-rocky-ansible-ssh-public-key )"
 export ANSIBLE_SSH_PRIVATE_KEY_FILE="$TEMP_DIR/rocky.pem"
