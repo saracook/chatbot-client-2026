@@ -86,12 +86,21 @@
     - always
   when: inventory_hostname in groups['c2_krb5_ldap_client']
 
-- name: run role c2-splunk-client
-  ansible.builtin.include_role:
-    name: c2-splunk-client
-    apply:
+- block:
+    - name: run role c2-splunk-client
+      ansible.builtin.include_role:
+        name: c2-splunk-client
+        apply:
+          tags:
+            - splunk-client
       tags:
-        - splunk-client
-  tags:
-    - always
-  when: inventory_hostname in groups['c2_splunk_client']
+        - always
+    - name: run role c2-crowdstrike
+      ansible.builtin.include_role:
+        name: c2-crowdstrike
+        apply:
+          tags:
+            - crowdstrike
+      tags:
+        - always
+  when: inventory_hostname in groups['c2_minsec_node']

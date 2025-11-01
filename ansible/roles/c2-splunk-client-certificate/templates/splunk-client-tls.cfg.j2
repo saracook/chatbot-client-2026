@@ -17,6 +17,6 @@ CN = UF_SRC_Carina
 subjectAltName = @alt_names
 
 [alt_names]
-{% for host in groups['c2_splunk_client'] %}
+{% for host in groups['c2_minsec_node'] %}
 DNS.{{ loop.index }} = {{ host }}.{{ domain }}
 {% endfor %}
