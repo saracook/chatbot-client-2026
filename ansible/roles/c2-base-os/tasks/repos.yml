@@ -22,6 +22,23 @@
     group: root
     mode: '0644'
 
+# for packages falcon-sensor and wallet-client
+- name: install /etc/yum.repos.d/stanford.repo
+  ansible.builtin.copy:
+    content: |
+      # https://yum.stanford.edu/repos/stanford/stanford-EL9/stanford-EL9-x86_64.repo
+      [stanford]
+      name=Stanford RPMs for EL9 x86_64
+      baseurl=https://yum.stanford.edu/repos/stanford/stanford-EL9/stanford-EL9-x86_64
+      gpgcheck=1
+      enabled=0
+      countme=1
+      gpgkey=https://yum.stanford.edu/STANFORD-GPG-KEY
+    dest: /etc/yum.repos.d/stanford.repo
+    owner: root
+    group: root
+    mode: '0644'
+
 - name: install epel-release package
   ansible.builtin.dnf:
     name: epel-release
