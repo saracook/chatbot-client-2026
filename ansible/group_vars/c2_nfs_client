@@ -1,5 +1,11 @@
 nfs_server: 10.210.28.14
 nfs_mounts:
+  - src: "{{ nfs_server }}:/admin"
+    path: /admin
+    fstype: nfs4
+    opts: defaults,_netdev,sec=sys,sync
+    dump: 0
+    passno: 0
   - src: "{{ nfs_server }}:/home"
     path: /home/users
     fstype: nfs4
