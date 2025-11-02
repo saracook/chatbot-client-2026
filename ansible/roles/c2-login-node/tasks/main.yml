@@ -5,3 +5,11 @@
         - ood
   tags:
     - always
+
+- ansible.builtin.include_tasks:
+    file: user-slice-resource-limits.yml
+    apply:
+      tags:
+        - user-slice-resource-limits
+  tags:
+    - always

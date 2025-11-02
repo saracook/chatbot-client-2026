@@ -187,6 +187,7 @@ all:
         iso_pxe_initrd: rocky-10.0/images/pxeboot/initrd.img
     ansible_user: rocky
     default_user: rocky
+    default_user_uid: 1000
     default_user_gecos: Rocky Linux
     default_user_groups: [adm, systemd-journal]
     default_password: "{{ lookup('env', 'DEFAULT_PASSWORD') }}"

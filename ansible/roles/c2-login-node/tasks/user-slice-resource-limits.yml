@@ -1,0 +1,40 @@
+- name: create directory /etc/systemd/system/user-.slice.d
+  ansible.builtin.file:
+    path: /etc/systemd/system/user-.slice.d
+    state: directory
+
+- name: install /etc/systemd/system/user-.slice.d/10-resource-limits.conf
+  ansible.builtin.copy:
+    content: |
+      [Slice]
+      MemoryHigh=512MB
+      MemoryMax=1G
+      CPUQuota=25%
+      TasksMax=200
+    dest: /etc/systemd/system/user-.slice.d/10-resource-limits.conf
+  register: urlcnf
+
+- name: create directories /etc/systemd/system/user-*.slice.d
+  ansible.builtin.file:
+    path: /etc/systemd/system/user-{{ item }}.slice.d
+    state: directory
+  loop: [ 0 , "{{ default_user_uid }}" ]
+
+# exclude root and rocky users from resource limits
+- name: install /etc/systemd/system/user-*.slice.d/10-resource-limits.conf
+  ansible.builtin.copy:
+    content: |
+      [Slice]
+      #DisableControllers=cpu memory pids
+      MemoryHigh=infinity
+      MemoryMax=infinity
+      CPUQuota=
+      TasksMax=infinity
+    dest: /etc/systemd/system/user-{{ item }}.slice.d/10-resource-limits.conf
+  loop: [ 0 , "{{ default_user_uid }}" ]
+  register: xurlcnf
+
+- name: reload systemd configuration
+  ansible.builtin.systemd_service:
+    daemon_reload: yes
+  when: urlcnf is changed or xurlcnf is changed
