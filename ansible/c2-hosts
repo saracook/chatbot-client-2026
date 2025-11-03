@@ -1,5 +1,8 @@
 all:
   children:
+    c2_admin_node:
+      hosts:
+        c2-admin-01:
     c2_compute_node:
       children:
         c2_gpu_node:
@@ -39,14 +42,17 @@ all:
         c2-infra-04:
         c2-infra-05:
         c2-infra-06:
+    # nb: request add/remove from ldap acl
     c2_krb5_ldap_client:
       children:
+        c2_admin_node:
         c2_compute_node:
         c2_login_node:
         c2_open_ondemand:
         c2_slurm_controller:
     c2_kvm_guest:
       hosts:
+        c2-admin-01:
         c2-ghashr-01:
         c2-login-01:
         c2-login-02:
@@ -69,6 +75,7 @@ all:
         c2_open_ondemand:
     c2_nfs_client:
       children:
+        c2_admin_node:
         c2_compute_node:
         c2_login_node:
         c2_open_ondemand:
@@ -81,6 +88,7 @@ all:
         c2-prom-01:
     c2_pxe_client:
       hosts:
+        c2-admin-01:
         c2-comp-01:
         c2-comp-02:
         c2-comp-03:
@@ -107,6 +115,7 @@ all:
         c2-infra-01:
     c2_slurm_client:
       children:
+        c2_admin_node:
         c2_compute_node:
         c2_login_node:
         c2_open_ondemand:

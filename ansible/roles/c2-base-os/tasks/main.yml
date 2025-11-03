@@ -59,6 +59,7 @@
         - always
   when: inventory_hostname in groups['c2_nfs_client']
 
+# todo: rethink this grouping
 - block:
     - ansible.builtin.include_tasks:
         file: lmod.yml
@@ -74,7 +75,7 @@
             - ood
       tags:
         - always
-  when: inventory_hostname in ( groups['c2_compute_node'] + groups['c2_login_node'] + groups['c2_open_ondemand'] )
+  when: inventory_hostname in ( groups['c2_admin_node'] + groups['c2_compute_node'] + groups['c2_login_node'] + groups['c2_open_ondemand'] )
 
 - name: run role c2-krb5-ldap-client
   ansible.builtin.include_role:
@@ -104,3 +105,13 @@
       tags:
         - always
   when: inventory_hostname in groups['c2_minsec_node']
+
+- name: run role c2-slurm-client
+  ansible.builtin.include_role:
+    name: c2-slurm-client
+    apply:
+      tags:
+        - slurm-client
+  tags:
+    - always
+  when: inventory_hostname in groups['c2_slurm_client']

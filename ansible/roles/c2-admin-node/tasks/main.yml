@@ -1,7 +1,7 @@
 - ansible.builtin.include_tasks:
-    file: ansible.yml
+    file: admin-node.yml
     apply:
       tags:
-        - ansible
+        - admin-node
   tags:
     - always

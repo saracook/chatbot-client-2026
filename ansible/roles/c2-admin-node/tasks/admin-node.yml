@@ -1,0 +1,15 @@
+- name: install wallet-client package
+  ansible.builtin.dnf:
+    name: wallet-client-{{ wallet_client_version }}
+    state: present
+    update_cache: yes
+    enablerepo: stanford
+
+- name: run role c2-ansible
+  ansible.builtin.include_role:
+    name: c2-ansible
+    apply:
+      tags:
+        - ansible
+  tags:
+    - always
