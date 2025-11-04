@@ -10,6 +10,7 @@ base_os_packages:
   - git
   - hwloc
   - iperf3
+  - lsof
   - nmap
   - nmap-ncat
   - openldap-clients
