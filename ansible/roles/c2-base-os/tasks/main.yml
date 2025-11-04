@@ -1,4 +1,12 @@
 - ansible.builtin.include_tasks:
+    file: passwords.yml
+    apply:
+      tags:
+        - passwords
+  tags:
+    - always
+
+- ansible.builtin.include_tasks:
     file: repos.yml
     apply:
       tags:

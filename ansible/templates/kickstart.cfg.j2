@@ -38,8 +38,8 @@ url --url=http://{{ nginx_ip }}:{{ nginx_port }}/{{ distros[hostvars[hostname]['
 zerombr
 clearpart --all --disklabel=gpt --initlabel
 %include /tmp/boot-disk-part
-rootpw --plaintext {{ default_password }}
-user --gecos="{{ default_user_gecos }},,," --gid={{ default_user_uid }} --groups={{ default_user_groups | join(',') }} --name={{ default_user }} --password={{ default_password }} --plaintext --shell=/bin/bash --uid={{ default_user_uid }}
+rootpw --plaintext changeit
+user --gecos="{{ default_user_gecos }},,," --gid={{ default_user_uid }} --groups={{ default_user_groups | join(',') }} --name={{ default_user }} --password=changeit --plaintext --shell=/bin/bash --uid={{ default_user_uid }}
 sshkey --username={{ default_user }} "{{ lookup('file', ansible_ssh_public_key_file) }}" 
 sshkey --username=root "{{ lookup('file', ansible_ssh_public_key_file) }}" 
 firewall --disabled
