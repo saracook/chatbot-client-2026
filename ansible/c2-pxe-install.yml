@@ -70,3 +70,5 @@
   tasks:
     - name: ping pxe clients
       ansible.builtin.ping:
+
+- import_playbook: c2-clean-env.yml

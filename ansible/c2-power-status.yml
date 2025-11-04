@@ -21,3 +21,5 @@
 
     - debug:
         msg: "{{ pwrstatus.stdout }}"
+
+- import_playbook: c2-clean-env.yml

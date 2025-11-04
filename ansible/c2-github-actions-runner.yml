@@ -5,3 +5,5 @@
   become: yes
   roles:
     - role: c2-github-actions-runner
+
+- import_playbook: c2-clean-env.yml

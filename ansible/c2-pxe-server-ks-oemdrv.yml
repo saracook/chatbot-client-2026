@@ -6,3 +6,5 @@
   gather_facts: no
   roles:
     - role: c2-pxe-server-ks-oemdrv
+
+- import_playbook: c2-clean-env.yml

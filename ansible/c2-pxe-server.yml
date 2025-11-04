@@ -5,3 +5,5 @@
   become: yes
   roles:
     - role: c2-pxe-server
+
+- import_playbook: c2-clean-env.yml

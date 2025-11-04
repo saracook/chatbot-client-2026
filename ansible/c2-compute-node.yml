@@ -5,3 +5,5 @@
   become: yes
   roles:
     - role: c2-compute-node
+
+- import_playbook: c2-clean-env.yml

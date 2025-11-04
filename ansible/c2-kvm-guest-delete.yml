@@ -47,3 +47,5 @@
           loop:
             - boot
             - data
+
+- import_playbook: c2-clean-env.yml

@@ -1,0 +1,13 @@
+- name: remove ansible ssh key directory
+  hosts: all
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: remove ansible ssh key directory
+      ansible.builtin.file:
+        path: "{{ ansible_ssh_private_key_file | dirname }}"
+        state: absent
+      run_once: yes
+      changed_when: false
+      tags:
+        - always

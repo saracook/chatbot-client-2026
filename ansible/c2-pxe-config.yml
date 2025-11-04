@@ -8,3 +8,5 @@
     - name: run role c2-pxe-config
       ansible.builtin.include_role:
         name: c2-pxe-config
+
+- import_playbook: c2-clean-env.yml
