@@ -17,11 +17,12 @@
     validate: /var/ossec/bin/ossec-logcollector -t -c %s
   register: osccnf
 
+# file referenced in manage_agents -f option with format:
+# <ip>,<name>
+# eventual client.keys file has format:
+# 001 <name> <ip> <sha256>
 - name: generate ossec manage_agents key file (-f option argument)
   ansible.builtin.copy:
-    # file referenced in manage_agents -f option with format:
-    # <ip>,<name>
-    # eventual client.keys file has format (e.g.):
     content: |
       {{ ansible_host }},{{ inventory_hostname }}
     dest: /var/ossec/client.keys.manage_agents.input
