@@ -75,6 +75,25 @@
         mode: '0644'
   when: inventory_hostname in groups['c2_krb5_ldap_client']
 
+# for ossec-hids-server package:
+# https://www.ossec.net/download-ossec/#centos
+# https://updates.atomicorp.com/channels/atomic/rocky/9/x86_64/RPMS/atomic-release-1.0-23.el9.art.noarch.rpm
+- name: install /etc/yum.repos.d/atomic.repo
+  ansible.builtin.copy:
+    content: |
+      [atomic]
+      name = Rocky / Red Hat Enterprise Linux $releasever - atomic
+      mirrorlist = https://updates.atomicorp.com/channels/mirrorlist/atomic/rocky-$releasever-$basearch
+      enabled = 0
+      protect = 0
+      gpgkey = https://www.atomicorp.com/RPM-GPG-KEY.atomicorp.txt
+      gpgcheck = 1
+    dest: /etc/yum.repos.d/atomic.repo
+    owner: root
+    group: root
+    mode: '0644'
+  when: inventory_hostname in groups['c2_minsec_node']
+
 - block:
     # https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
     - name: install /etc/yum.repos.d/cuda-rhel9.repo

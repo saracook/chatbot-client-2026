@@ -1,0 +1,51 @@
+- name: install ossec-hids-server package
+  ansible.builtin.dnf:
+    name: ossec-hids-server-{{ ossec_hids_server_version }}
+    state: present
+    update_cache: yes
+    enablerepo: atomic
+
+- name: create directory /var/ossec/etc
+  ansible.builtin.file:
+    path: /var/ossec/etc
+    state: directory
+
+- name: install /var/ossec/etc/ossec.conf
+  ansible.builtin.template:
+    src: ossec.conf.j2
+    dest: /var/ossec/etc/ossec.conf
+    validate: /var/ossec/bin/ossec-logcollector -t -c %s
+  register: osccnf
+
+- name: generate ossec manage_agents key file (-f option argument)
+  ansible.builtin.copy:
+    # file referenced in manage_agents -f option with format:
+    # <ip>,<name>
+    # eventual client.keys file has format (e.g.):
+    content: |
+      {{ ansible_host }},{{ inventory_hostname }}
+    dest: /var/ossec/client.keys.manage_agents.input
+    mode: '0600'
+  register: oscmakf
+
+- name: remove /var/ossec/etc/client.keys
+  ansible.builtin.file:
+    path: /var/ossec/etc/client.keys
+    state: absent
+  when: oscmakf is changed
+
+- name: add agent for local system
+  ansible.builtin.command:
+    cmd: >
+      /var/ossec/bin/manage_agents
+      -a {{ ansible_host }}
+      -f /var/ossec/client.keys.manage_agents.input
+      -n {{ inventory_hostname }}
+  when: oscmakf is changed
+
+- name: start/restart and enable ossec-hids.service
+  ansible.builtin.systemd_service:
+    name: ossec-hids.service
+    state: "{{ 'restarted' if osccnf.changed or oscmakf.changed else 'started' }}"
+    enabled: yes
+    daemon_reload: yes

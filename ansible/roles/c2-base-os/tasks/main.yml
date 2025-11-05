@@ -112,6 +112,14 @@
             - crowdstrike
       tags:
         - always
+    - name: run role c2-ossec
+      ansible.builtin.include_role:
+        name: c2-ossec
+        apply:
+          tags:
+            - ossec
+      tags:
+        - always
   when: inventory_hostname in groups['c2_minsec_node']
 
 - name: run role c2-slurm-client
