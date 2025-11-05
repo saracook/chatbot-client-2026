@@ -25,4 +25,7 @@ base_os_packages:
   - traceroute
   - which
 
+base_os_epel_packages:
+  - htop
+
 lmod_modulepath: /software/modulefiles
