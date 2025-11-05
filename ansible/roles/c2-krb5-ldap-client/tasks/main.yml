@@ -37,3 +37,11 @@
         - sshd
   tags:
     - always
+
+- ansible.builtin.include_tasks:
+    file: sudo.yml
+    apply:
+      tags:
+        - sudo
+  tags:
+    - always
