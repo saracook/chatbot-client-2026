@@ -108,6 +108,7 @@
     mode: '00644'
   notify: restart httpd
 
+# https://osc.github.io/ood-documentation/latest/customizations.html#pinning-applications-to-the-dashboard
 - name: install /etc/ood/config/ondemand.d/ondemand.yml
   ansible.builtin.copy:
     content: |
