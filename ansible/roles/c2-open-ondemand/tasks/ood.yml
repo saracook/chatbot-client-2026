@@ -108,6 +108,17 @@
     mode: '00644'
   notify: restart httpd
 
+- name: install /etc/ood/config/ondemand.d/ondemand.yml
+  ansible.builtin.copy:
+    content: |
+      pinned_apps:
+        - 'sys/*'
+    dest: /etc/ood/config/ondemand.d/ondemand.yml
+    owner: root
+    group: root
+    mode: '00644'
+  notify: restart httpd
+
 - name: create directory /etc/ood/config/apps/dashboard/initializers
   ansible.builtin.file:
     path: /etc/ood/config/apps/dashboard/initializers
