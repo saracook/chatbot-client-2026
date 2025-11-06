@@ -22,3 +22,11 @@
         - ood
   tags:
     - always
+
+- ansible.builtin.include_tasks:
+    file: disk-config.yml
+    apply:
+      tags:
+        - disk-config
+  tags:
+    - always

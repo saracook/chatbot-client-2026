@@ -1,0 +1,50 @@
+---
+- name: Ensure mdadm package is present
+  ansible.builtin.dnf:
+    name: mdadm
+    state: present
+
+- name: Check if the RAID array is already set
+  ansible.builtin.stat:
+    path: /dev/md0
+  register: rdarray
+
+- name: Configure a RAID0 array and xfs filesystem
+  block:
+    - name: Clear disk meta data
+      ansible.builtin.command: >
+        wipefs --all --force 
+        {% for id in nvme_disk_ids %}
+        /dev/disk/by-id/{{ id }} 
+        {% endfor %}
+
+    - name: Build RAID0 array
+      ansible.builtin.command: >
+        mdadm --create /dev/md0 --level=0 --raid-devices={{ nvme_disk_ids | length }} 
+        {% for id in nvme_disk_ids %}
+        /dev/disk/by-id/{{ id }} 
+        {% endfor %}
+
+    - name: Create xfs filesystem on array
+      ansible.builtin.command: mkfs.xfs /dev/md0
+
+  when: not rdarray.stat.exists
+
+- name: Create /local/scratch directory
+  ansible.builtin.file:
+    path: "{{ local_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Mount /local/scratch on /dev/md0
+  ansible.posix.mount:
+    src: /dev/md0
+    path: "{{ local_dir }}"
+    state: mounted
+    fstype: xfs
+
+- name: Create /local/scratch directory
+  ansible.builtin.file:
+    path: "{{ local_dir }}"
+    state: directory
+    mode: '1777'
