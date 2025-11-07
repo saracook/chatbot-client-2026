@@ -24,7 +24,7 @@
     - always
 
 - ansible.builtin.include_tasks:
-    file: disk-config.yml
+    file: local-scratch.yml
     apply:
       tags:
         - disk-config

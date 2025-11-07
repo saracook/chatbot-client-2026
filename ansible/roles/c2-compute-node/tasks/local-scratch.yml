@@ -27,24 +27,23 @@
 
     - name: Create xfs filesystem on array
       ansible.builtin.command: mkfs.xfs /dev/md0
-
   when: not rdarray.stat.exists
 
 - name: Create /local/scratch directory
   ansible.builtin.file:
-    path: "{{ local_dir }}"
+    path: "{{ local_scratch_dir }}"
     state: directory
     mode: '0755'
 
 - name: Mount /local/scratch on /dev/md0
   ansible.posix.mount:
     src: /dev/md0
-    path: "{{ local_dir }}"
+    path: "{{ local_scratch_dir }}"
     state: mounted
     fstype: xfs
 
 - name: Create /local/scratch directory
   ansible.builtin.file:
-    path: "{{ local_dir }}"
+    path: "{{ local_scratch_dir }}"
     state: directory
     mode: '1777'
