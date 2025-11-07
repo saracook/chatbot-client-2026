@@ -200,6 +200,7 @@ edie-pi-cnsd:x:2000251:edie,dolfp,kpohl,nzahr,sassoon,rfama,jdehoney,eadeli,evam
 edie-pi-csfa:x:2000249:edie,dolfp,kpohl,jdehoney,nzahr,sassoon,rfama,eadeli,evamoe,blane,yxinwang
 edie-pi-nabsf:x:2000250:edie,dolfp,kpohl,jdehoney,nzahr,sassoon,rfama,eadeli,evamoe,yxinwang
 edie-pi-nca:x:2000252:edie,dolfp,kpohl,jdehoney,nzahr,sassoon,rfama,eadeli,evamoe,yxinwang
+edie-pi-thiv:x:2000253:edie,dolfp,kpohl,jdehoney,nzahr,sassoon,rfama,eadeli,evamoe,yxinwang,blane
 edie:x:1300731:
 eeh:x:1300105:
 efahle:x:1300610:
