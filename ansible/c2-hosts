@@ -57,6 +57,7 @@ all:
         c2-login-01:
         c2-login-02:
         c2-ood-01:
+        c2-ood-02:
         c2-prom-01:
         c2-slurmctl-01:
         c2-slurmdb-01:
@@ -83,6 +84,7 @@ all:
     c2_open_ondemand:
       hosts:
         c2-ood-01:
+        c2-ood-02:
     c2_prometheus:
       hosts:
         c2-prom-01:
@@ -103,6 +105,7 @@ all:
         c2-login-01:
         c2-login-02:
         c2-ood-01:
+        c2-ood-02:
         c2-prom-01:
         c2-slurmctl-01:
         c2-slurmdb-01:

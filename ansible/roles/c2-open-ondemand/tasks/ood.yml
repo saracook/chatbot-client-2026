@@ -47,7 +47,7 @@
       -out {{ apache_tls_crt }} \
       -nodes \
       -days 1024 \
-      -subj '/CN={{ public_name }}'
+      -subj '/CN={{ ood_domain }}'
     creates: "{{ apache_tls_crt }}"
 
 - name: configure mpm_event module

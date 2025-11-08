@@ -1,5 +1,5 @@
-ansible_host: 10.112.12.50
-kvm_host: c2-infra-02
+ansible_host: 10.112.12.53
+kvm_host: c2-infra-03
 # group c2_kvm_guest overrides
 vcpus: 16
 memory_gb: 64
@@ -9,7 +9,7 @@ interfaces:
   eth0:
     type: ethernet
     uuid: 24f493e7-5f6d-462b-b1cb-33b7c833cc48
-    mac_address: "52:54:00:fd:75:4b"
+    mac_address: "52:54:00:ac:02:d8"
     host_bridge: br3038
     address:
       - "{{ ansible_host }}/{{ network_access_prefix }}"
@@ -20,20 +20,20 @@ interfaces:
   eth1:
     type: ethernet
     uuid: 0c27c607-de65-4353-98aa-35907201b533
-    mac_address: "52:54:00:fe:47:6d"
+    mac_address: "52:54:00:bf:07:c2"
     host_bridge: br2009
     address:
-      - "10.210.28.50/22"
+      - "10.210.28.53/22"
     gateway: "{{ network_cluster_gateway }}"
     dns: "{{ network_cluster_dns }}"
     dns_search_domain: "{{ network_cluster_dns_search }}"
 
-ood_tier: prod
-# nb: configured to resolve to c2-ood-01.stanford.edu
+ood_tier: dev
+# nb: configured to resolve to c2-ood-02.stanford.edu
 #     in cloud dns zone carina-stanford-edu in project
 #     srcc-anthos-secure-prod.
-ood_domain: c2-ondemand.carina.stanford.edu
-ood_certbot_staging: false
-ood_dashboard_title: Carina OnDemand
-ood_oidc_client_id: "{{ lookup('env', 'OOD_PROD_OIDC_CLIENT_ID') }}"
-ood_oidc_client_secret: "{{ lookup('env', 'OOD_PROD_OIDC_CLIENT_SECRET') }}"
+ood_domain: c2-ondemand-dev.carina.stanford.edu
+ood_certbot_staging: true
+ood_dashboard_title: Carina OnDemand DEV
+ood_oidc_client_id: "{{ lookup('env', 'OOD_DEV_OIDC_CLIENT_ID') }}"
+ood_oidc_client_secret: "{{ lookup('env', 'OOD_DEV_OIDC_CLIENT_SECRET') }}"
