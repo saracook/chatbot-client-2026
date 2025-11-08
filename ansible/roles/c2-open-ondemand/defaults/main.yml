@@ -2,6 +2,7 @@ ood_version: 4.0
 ood_rpm: ondemand-release-web-{{ ood_version }}-1.{{ distros[distro]['el'] }}.noarch.rpm
 ood_file_upload_max_bytes: 136577024
 ood_download_dir_max_bytes: 1073741824
+ood_dashboard_title: 'Carina OnDemand'
 
 ood_dev_users:
   - addiso
