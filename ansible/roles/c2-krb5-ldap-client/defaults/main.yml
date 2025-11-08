@@ -15,6 +15,3 @@ sssd_packages:
 # group: users
 sssd_domain_override_gid: 100
 sssd_access_ldap_group: carina:users
-
-sshd_users_group: carina_users
-sshd_admins_group: carina_admins
