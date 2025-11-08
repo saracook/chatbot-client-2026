@@ -27,3 +27,5 @@ interfaces:
     gateway: "{{ network_cluster_gateway }}"
     dns: "{{ network_cluster_dns }}"
     dns_search_domain: "{{ network_cluster_dns_search }}"
+
+ood_tier: prod
