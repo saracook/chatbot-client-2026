@@ -1,4 +1,3 @@
-# todo: request that this index be created!
 splunk_client_index: src_carina_unix
 splunk_deployment_server_port: 8089
 splunk_deployment_server: ciaspdmprd01.{{ domain }}

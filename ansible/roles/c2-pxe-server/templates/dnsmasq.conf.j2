@@ -1,14 +1,31 @@
+conf-dir=/etc/dnsmasq.d/,*.conf
+
 user=root
 group=root
+
 no-resolv
-# todo: add leading domains to server to only send queries to this
-#       server for those domains.
+no-hosts
+
+# domains
+domain={{ network_access_domain }},{{ network_access_cidr }},local
+domain={{ network_mgmt_domain }},{{ network_mgmt_cidr }},local
+domain={{ network_cluster_domain }},{{ network_cluster_cidr }},local
+
+# {{ network_access_domain }} resolvers
 {% for ns in network_access_dns %}
 {# exclude dnsmasq itself when forwarding queries #}
 {% if ns != ansible_host %}
-server={{ ns }}
+server=/{{ network_access_domain }}/{{ ns }}
 {% endif %}
 {% endfor %}
+
+# powerscale smartconnect zone delegation
+server=/{{ powerscale_h700_mgmt_smartconnect_zone }}/{{ powerscale_h700_mgmt_smartconnect_sip }}
+server=/{{ powerscale_h700_cluster_smartconnect_zone }}/{{ powerscale_h700_cluster_smartconnect_sip }}
+server=/{{ powerscale_a300_mgmt_smartconnect_zone }}/{{ powerscale_a300_mgmt_smartconnect_sip }}
+server=/{{ powerscale_a300_cluster_smartconnect_zone }}/{{ powerscale_a300_cluster_smartconnect_sip }}
+
+# dhcp and pxe
 dhcp-range={{ network_access_addr }},static,{{ network_access_mask }},30m
 # option 3 = gateway
 dhcp-option=3,{{ network_access_gateway }}
@@ -16,13 +33,8 @@ dhcp-option=3,{{ network_access_gateway }}
 dhcp-option=6,{{ network_access_dns | join(',') }}
 #dhcp-boot=pxelinux.0
 dhcp-boot=shimx64.efi
-# todo: revisit these later for private subnets
-#domain={{ domain }},{{ network_access_cidr }},local
-#domain={{ domain }}
-#dhcp-fqdn
-#domain-needed
-#bogus-priv
-#address=/{{ inventory_hostname }}.{{ domain }}/{{ ansible_host }}
+
+# dhcp pxe clients
 {% for client in groups['c2_pxe_client'] %}
 {% for item in hostvars[client]['interfaces'] | dict2items if item.value.type == 'ethernet' %}
 {% if loop.index == 1 %}
@@ -30,15 +42,19 @@ dhcp-host={{ item.value.mac_address }},{{ hostvars[client]['ansible_host'] }},{{
 {% endif %}
 {% endfor %}
 {% endfor %}
-# srv records for slurm configless
+
+# slurm configless srv records
 {% set scp = 0 %}
 {% for sc in groups['c2_slurm_controller'] %}
-srv-host=_slurmctld._tcp.{{ domain }},{{ hostvars[sc]['ansible_host'] }},6817,{{ scp }},0
+srv-host=_slurmctld._tcp.{{ network_access_domain }},{{ hostvars[sc]['ansible_host'] }},6817,{{ scp }},0
 {% set scp = scp + 10 %}
 {% endfor %}
+
+# tftp
 enable-tftp
 tftp-mtu={{ network_mtu }}
 tftp-root=/srv
-conf-dir=/etc/dnsmasq.d/,*.conf
+
+# logging
 log-queries
 log-facility=/var/log/dnsmasq.log

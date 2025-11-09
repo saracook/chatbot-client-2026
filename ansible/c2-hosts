@@ -135,28 +135,31 @@ all:
     ansible_ssh_private_key_file: "{{ lookup('env', 'ANSIBLE_SSH_PRIVATE_KEY_FILE') }}"
     ansible_ssh_public_key_file: "{{ lookup('env', 'ANSIBLE_SSH_PUBLIC_KEY_FILE') }}"
     ansible_managed: "This file is managed by Ansible. Changes to it may be overwritten."
+    # todo: remove this in favor of network_access_domain
     domain: stanford.edu
     timezone: America/Los_Angeles
     locale: en_US.UTF-8
     ntp_server: time.stanford.edu
-    network_access_vlan: 3038
     network_trunk_vlans: [2008,2009]
     network_mtu: 9000
     network_vpn_cidrs:
       - 10.130.0.0/16
       - 10.131.0.0/16
+    network_access_vlan: 3038
+    network_access_domain: stanford.edu
     network_access_addr: 10.112.12.0
     network_access_prefix: 22
     network_access_cidr: "{{ network_access_addr }}/{{ network_access_prefix }}"
     network_access_mask: "{{ network_access_cidr | ansible.utils.ipaddr('netmask') }}"
     network_access_gateway: 10.112.12.1
     network_access_dns:
-      # todo: srv records for slurm configless via dnsmasq
       - 10.112.12.2
       - 171.64.1.234
       - 171.67.1.234
     network_access_dns_search:
-      - "{{ domain }}"
+      - "{{ network_access_domain }}"
+    network_mgmt_vlan: 2008
+    network_mgmt_domain: mgmt.carina
     network_mgmt_addr: 10.210.24.0
     network_mgmt_prefix: 22
     network_mgmt_cidr: "{{ network_mgmt_addr }}/{{ network_mgmt_prefix }}"
@@ -165,7 +168,9 @@ all:
     network_mgmt_dns:
       - 10.210.24.2
     network_mgmt_dns_search:
-      - "{{ domain }}"
+      - "{{ network_access_domain }}"
+    network_cluster_vlan: 2009
+    network_cluster_domain: cluster.carina
     network_cluster_addr: 10.210.28.0
     network_cluster_prefix: 22
     network_cluster_cidr: "{{ network_cluster_addr }}/{{ network_cluster_prefix }}"
@@ -174,7 +179,15 @@ all:
     network_cluster_dns:
       - 10.210.28.2
     network_cluster_dns_search:
-      - "{{ domain }}"
+      - "{{ network_access_domain }}"
+    powerscale_h700_mgmt_smartconnect_zone: h700.{{ network_mgmt_domain }}
+    powerscale_h700_mgmt_smartconnect_sip: 10.210.24.20
+    powerscale_h700_cluster_smartconnect_zone: h700.{{ network_cluster_domain }}
+    powerscale_h700_cluster_smartconnect_sip: 10.210.28.20
+    powerscale_a300_mgmt_smartconnect_zone: a300.{{ network_mgmt_domain }}
+    powerscale_a300_mgmt_smartconnect_sip: 10.210.24.25
+    powerscale_a300_cluster_smartconnect_zone: a300.{{ network_cluster_domain }}
+    powerscale_a300_cluster_smartconnect_sip: 10.210.28.25
     # default distro. must be one of the keys in distros.
     # override in host/group vars to select a different version.
     distro: rocky_10_0
