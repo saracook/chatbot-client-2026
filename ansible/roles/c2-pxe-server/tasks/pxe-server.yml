@@ -41,6 +41,7 @@
     owner: root
     group: root
     mode: '0644'
+    validate: /usr/sbin/dnsmasq --conf-file=%s --test
   register: dnsmasqconf
   tags: dnsmasq
 
