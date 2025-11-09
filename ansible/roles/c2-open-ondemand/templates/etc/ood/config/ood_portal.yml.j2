@@ -1,5 +1,5 @@
 ---
-servername: "{{ public_name }}"
+servername: "{{ ood_domain }}"
 
 ssl:
   - 'SSLCertificateKeyFile {{ apache_tls_key }}'
@@ -11,13 +11,13 @@ auth:
 
 oidc_uri: '/oidc'
 oidc_provider_metadata_url: 'https://login.stanford.edu/.well-known/openid-configuration'
-oidc_client_id: "{{ lookup('env', 'OOD_OIDC_CLIENT_ID') }}"
-oidc_client_secret: "{{ lookup('env', 'OOD_OIDC_CLIENT_SECRET') }}"
+oidc_client_id: "{{ ood_oidc_client_id }}"
+oidc_client_secret: "{{ ood_oidc_client_secret }}"
 oidc_settings:
   OIDCPKCEMethod: 'S256'
   OIDCSSLValidateServer: 'Off'
 
-logout_redirect: "/oidc?logout=https%3A%2F%2F{{ public_name }}"
+logout_redirect: "/oidc?logout=https%3A%2F%2F{{ ood_domain }}"
 
 host_regex: "({{ groups['c2_compute_node'] | join("|") }})\\.{{ domain | replace(".","\\\\.") }}"
 node_uri: '/node'
