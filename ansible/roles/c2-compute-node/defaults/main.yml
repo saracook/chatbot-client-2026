@@ -20,5 +20,5 @@
 proot_binary_url: https://gitlab.com/proot/proot/-/jobs/2370229659/artifacts/raw/dist/proot
 proot_binary_sha256: b7f2adf5a225000a164f4905aabefeebe11c4c1d5bedff5e1fe8866c48dd70d2
 
-### defaults for disk-config task ###
-local_scratch_dir: "/local/scratch"
+local_scratch_dev: /dev/md0
+local_scratch_dir: /local/scratch

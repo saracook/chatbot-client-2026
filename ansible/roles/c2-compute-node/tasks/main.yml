@@ -27,6 +27,6 @@
     file: local-scratch.yml
     apply:
       tags:
-        - disk-config
+        - local-scratch
   tags:
     - always
