@@ -14,6 +14,14 @@
     - always
 
 - ansible.builtin.include_tasks:
+    file: splunk-forwarder.yml
+    apply:
+      tags:
+        - splunk-forwarder
+  tags:
+    - always
+
+- ansible.builtin.include_tasks:
     file: rstudio-server.yml
     apply:
       tags:

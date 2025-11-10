@@ -17,3 +17,12 @@ code_server_rpms:
   el10:
     url: https://github.com/coder/code-server/releases/download/v{{ code_server_version }}/code-server-{{ code_server_version }}-amd64.rpm
     sha256: 3761f147ffd36e3b3fa3d26b5c90f555f5ebe0c1e39fa49e7ee292012b860862
+
+# el9 and el10 rpms are the same
+splunk_forwarder_rpms:
+  el9:
+    url: https://web.stanford.edu/dept/its/support/splunk/install/splunkforwarder-9.1.2-b6b9c8185839.x86_64.rpm
+    sha256: b5d65d5fa078dbc65315aea9b76c27bea8a66e2f2dc847902d8c8b8267693620
+  el10:
+    url: https://web.stanford.edu/dept/its/support/splunk/install/splunkforwarder-9.1.2-b6b9c8185839.x86_64.rpm
+    sha256: b5d65d5fa078dbc65315aea9b76c27bea8a66e2f2dc847902d8c8b8267693620
