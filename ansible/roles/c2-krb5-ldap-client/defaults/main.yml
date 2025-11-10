@@ -5,7 +5,7 @@ krb5_packages:
 krb5_conf_url: https://web.stanford.edu/dept/its/support/kerberos/dist/krb5.conf
 krb5_conf_sha256: 6dcae01b2193986d7e449c1a48ade21cdefe7f962a8330da50fc78ecd2a367c8
 
-canonical_hostname: "{{ inventory_hostname }}.{{ domain }}"
+canonical_hostname: "{{ inventory_hostname }}.{{ network_access_domain }}"
 
 sssd_packages:
   - sssd

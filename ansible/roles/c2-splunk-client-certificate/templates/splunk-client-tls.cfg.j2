@@ -18,5 +18,5 @@ subjectAltName = @alt_names
 
 [alt_names]
 {% for host in groups['c2_minsec_node'] %}
-DNS.{{ loop.index }} = {{ host }}.{{ domain }}
+DNS.{{ loop.index }} = {{ host }}.{{ network_access_domain }}
 {% endfor %}
