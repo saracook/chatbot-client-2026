@@ -30,7 +30,7 @@
     fstype: xfs
     dev: "{{ local_scratch_dev }}"
 
-- name: Create {{ local_scratch_dir }} directory
+- name: Create directory {{ local_scratch_dir }}
   ansible.builtin.file:
     path: "{{ local_scratch_dir }}"
     state: directory
@@ -43,7 +43,7 @@
     state: mounted
     fstype: xfs
 
-- name: Create {{ local_scratch_dir }} directory
+- name: Set permissions on directory {{ local_scratch_dir }}
   ansible.builtin.file:
     path: "{{ local_scratch_dir }}"
     state: directory
