@@ -1,0 +1,50 @@
+- name: Check for existence of {{ local_scratch_dev }}
+  ansible.builtin.shell:
+    cmd: |
+      mdadm --query --detail {{ local_scratch_dev }} >/dev/null 2>&1
+  register: mdq
+  ignore_errors: true
+  changed_when: false
+
+- name: Create RAID0 array on {{ local_scratch_dev }} with four extra NVME disks
+  block:
+
+    - name: Clear disk meta data
+      ansible.builtin.command: >
+        wipefs --all --force
+        {% for id in nvme_disk_ids %}
+        /dev/disk/by-id/{{ id }}
+        {% endfor %}
+
+    - name: Build RAID0 array
+      ansible.builtin.command: >
+        mdadm --create {{ local_scratch_dev }} --level=0 --raid-devices={{ nvme_disk_ids | length }}
+        {% for id in nvme_disk_ids %}
+        /dev/disk/by-id/{{ id }}
+        {% endfor %}
+
+  when: mdq.rc != 0
+
+- name: Create xfs filesystem on {{ local_scratch_dev }}
+  community.general.filesystem:
+    fstype: xfs
+    dev: "{{ local_scratch_dev }}"
+
+- name: Create {{ local_scratch_dir }} directory
+  ansible.builtin.file:
+    path: "{{ local_scratch_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Mount {{ local_scratch_dir }} on {{ local_scratch_dev }}
+  ansible.posix.mount:
+    src: "{{ local_scratch_dev }}"
+    path: "{{ local_scratch_dir }}"
+    state: mounted
+    fstype: xfs
+
+- name: Create {{ local_scratch_dir }} directory
+  ansible.builtin.file:
+    path: "{{ local_scratch_dir }}"
+    state: directory
+    mode: '1777'
