@@ -24,8 +24,7 @@
       ansible.builtin.fail:
       when: not splkrtcatlscrt.stat.exists
 
-# todo: rpm is manually installed in c2-local repo.
-#       install rpm in role c2-rpm-repo-server .
+# nb: rpm is installed in c2-local repo in role c2-rpm-repo-server
 - name: install splunkforwarder package
   ansible.builtin.dnf:
     name: splunkforwarder-9.1.2

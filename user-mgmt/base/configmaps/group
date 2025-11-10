@@ -196,10 +196,12 @@ eadeli-pi-nmgd:x:2000210:eadeli,klposton,shrik,schuetzn,mabbasi,kwx04,xtiange
 eadeli-pi-tefoa:x:2000207:eadeli,ansonz,shrik,schuetzn
 eadeli:x:1300163:
 ebeharry:x:1300635:
+edie-pi-cnsd2126:x:2000254:edie,dolfp,kpohl,jdehoney,nzahr,sassoon,rfama,eadeli,evamoe,yxinwang,blane
 edie-pi-cnsd:x:2000251:edie,dolfp,kpohl,nzahr,sassoon,rfama,jdehoney,eadeli,evamoe,yxinwang
 edie-pi-csfa:x:2000249:edie,dolfp,kpohl,jdehoney,nzahr,sassoon,rfama,eadeli,evamoe,blane,yxinwang
 edie-pi-nabsf:x:2000250:edie,dolfp,kpohl,jdehoney,nzahr,sassoon,rfama,eadeli,evamoe,yxinwang
 edie-pi-nca:x:2000252:edie,dolfp,kpohl,jdehoney,nzahr,sassoon,rfama,eadeli,evamoe,yxinwang
+edie-pi-thiv:x:2000253:edie,dolfp,kpohl,jdehoney,nzahr,sassoon,rfama,eadeli,evamoe,yxinwang,blane
 edie:x:1300731:
 eeh:x:1300105:
 efahle:x:1300610:

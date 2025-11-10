@@ -49,12 +49,12 @@
       --dns-google-credentials {{ certbot_dns_google_credentials_file }} \
       --dns-google-project {{ certbot_dns_google_project }} \
       --dns-google-propagation-seconds {{ certbot_dns_google_propagation_seconds }} \
-      --domain {{ public_name }} \
+      --domain {{ ood_domain }} \
       --email {{ certbot_email }} \
       --no-eff-email \
       --non-interactive \
       --preferred-challenges dns-01 \
-      {% if certbot_staging is defined and certbot_staging %}
+      {% if ood_certbot_staging is defined and ood_certbot_staging %}
       --reinstall \
       --staging
       {% else %}

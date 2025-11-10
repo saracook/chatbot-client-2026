@@ -1,6 +1,6 @@
 [sssd]
 services = nss, pam
-domains = stanford.edu
+domains = {{ network_access_domain }}
 
 [nss]
 filter_users = root, {{ default_user }}, all

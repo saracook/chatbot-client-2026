@@ -1,12 +1,12 @@
 ---
 - name: install /etc/sudoers.d/admins
-  copy:
+  ansible.builtin.copy:
     content: "{{ item.content }}"
     dest: "/etc/sudoers.d/{{ item.file }}"
     owner: root
     group: root
     mode: '0440'
-    validate: "/usr/sbin/visudo -cf %s"
+    validate: /usr/sbin/visudo -cf %s
   loop:
     - file: admins
       content: |

@@ -1,15 +1,14 @@
-# todo: request that this index be created!
 splunk_client_index: src_carina_unix
 splunk_deployment_server_port: 8089
-splunk_deployment_server: ciaspdmprd01.{{ domain }}
+splunk_deployment_server: ciaspdmprd01.{{ network_access_domain }}
 splunk_indexer_servers_port: 9996
 splunk_indexer_servers:
-  - ciaspidxprd01.{{ domain }}
-  - ciaspidxprd02.{{ domain }}
-  - ciaspidxprd03.{{ domain }}
-  - ciaspidxprd04.{{ domain }}
-  - ciaspidxprd05.{{ domain }}
-  - ciaspidxprd06.{{ domain }}
+  - ciaspidxprd01.{{ network_access_domain }}
+  - ciaspidxprd02.{{ network_access_domain }}
+  - ciaspidxprd03.{{ network_access_domain }}
+  - ciaspidxprd04.{{ network_access_domain }}
+  - ciaspidxprd05.{{ network_access_domain }}
+  - ciaspidxprd06.{{ network_access_domain }}
 splunk_client_admin_username: admin
 splunk_client_admin_password: "{{ lookup('env', 'SPLUNK_CLIENT_ADMIN_PASSWORD') }}"
 splunk_client_tls_key: "/var/tmp/c2-splunk-client-tls-crt/splunk.key"

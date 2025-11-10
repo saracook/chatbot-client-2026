@@ -1,4 +1,4 @@
-nfs_server: 10.210.28.14
+nfs_server: h700.cluster.carina
 nfs_mounts:
   - src: "{{ nfs_server }}:/admin"
     path: /admin

@@ -3,6 +3,14 @@ ood_rpm: ondemand-release-web-{{ ood_version }}-1.{{ distros[distro]['el'] }}.no
 ood_file_upload_max_bytes: 136577024
 ood_download_dir_max_bytes: 1073741824
 
+# defined in inventory:
+# ood_tier
+# ood_domain
+# ood_certbot_staging
+# ood_dashboard_title
+# ood_oidc_client_id
+# ood_oidc_client_secret
+
 ood_dev_users:
   - addiso
   - btempero
@@ -13,18 +21,14 @@ ood_dev_users:
   - rvrollin
   - saracook
 
-public_name: "{{ ood_domain }}"
-
-apache_tls_key: /etc/pki/tls/private/{{ public_name }}.pem
-apache_tls_crt: /etc/pki/tls/certs/{{ public_name }}.pem
+apache_tls_key: /etc/pki/tls/private/{{ ood_domain }}.pem
+apache_tls_crt: /etc/pki/tls/certs/{{ ood_domain }}.pem
 apache_webroot: /var/www/html
 
 certbot_email: srcc-support@stanford.edu
-certbot_tls_key: /etc/letsencrypt/live/{{ public_name }}/privkey.pem
-certbot_tls_crt: /etc/letsencrypt/live/{{ public_name }}/fullchain.pem
+certbot_tls_key: /etc/letsencrypt/live/{{ ood_domain }}/privkey.pem
+certbot_tls_crt: /etc/letsencrypt/live/{{ ood_domain }}/fullchain.pem
 certbot_plugin_venv: /opt/certbot-plugin-venv
-# todo: toggle this to false for production
-certbot_staging: true
 certbot_dns_google_plugin_package: certbot-dns-google
 certbot_dns_google_project: srcc-anthos-secure-prod
 certbot_dns_google_credentials_file: /dev/shm/certbot-dns-google-credentials.json

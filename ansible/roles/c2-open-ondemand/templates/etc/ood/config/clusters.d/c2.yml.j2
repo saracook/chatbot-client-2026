@@ -13,7 +13,7 @@ v2:
         module purge
         export HOME="/home/users/$SLURM_JOB_USER"
         %s
-      set_host: 'host="$(hostname -s).{{ domain }}"'
+      set_host: 'host="$(hostname -s).{{ network_access_domain }}"'
     vnc:
       script_wrapper: |
         module purge
@@ -21,4 +21,4 @@ v2:
         export PATH="/opt/TurboVNC/bin:$PATH"
         export WEBSOCKIFY_CMD="/usr/bin/websockify"
         %s
-      set_host: 'host="$(hostname -s).{{ domain }}"'
+      set_host: 'host="$(hostname -s).{{ network_access_domain }}"'

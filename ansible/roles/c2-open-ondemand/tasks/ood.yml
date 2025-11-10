@@ -47,7 +47,7 @@
       -out {{ apache_tls_crt }} \
       -nodes \
       -days 1024 \
-      -subj '/CN={{ public_name }}'
+      -subj '/CN={{ ood_domain }}'
     creates: "{{ apache_tls_crt }}"
 
 - name: configure mpm_event module
@@ -66,6 +66,15 @@
   ansible.builtin.template:
     src: opt/ood/ood-portal-generator/templates/ood-portal.conf.erb.j2
     dest: /opt/ood/ood-portal-generator/templates/ood-portal.conf.erb
+    owner: root
+    group: root
+    mode: '00644'
+  notify: restart httpd
+
+- name: install /etc/ood/config/nginx_stage.yml
+  ansible.builtin.template:
+    src: etc/ood/config/nginx_stage.yml.j2
+    dest: /etc/ood/config/nginx_stage.yml
     owner: root
     group: root
     mode: '00644'
@@ -202,3 +211,17 @@
     state: link
     force: yes
   loop: "{{ ood_dev_users }}"
+
+- name: create directory /var/www/ood/public
+  ansible.builtin.file:
+    path: /var/www/ood/public
+    state: directory
+
+- name: install /var/www/ood/public/logo.png
+  ansible.builtin.copy:
+    src: var/www/ood/public/logo.png
+    dest: /var/www/ood/public/logo.png
+    owner: root
+    group: root
+    mode: '00644'
+  notify: restart httpd
