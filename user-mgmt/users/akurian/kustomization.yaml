@@ -1,0 +1,56 @@
+# ./users/akurian/kustomization.yaml
+namespace: akurian
+
+resources:
+- ../../base/user
+- ../../base/configmaps
+
+patches:
+- target:
+    kind: Namespace
+    name: default
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: akurian
+- target:
+    kind: PersistentVolume
+    name: cephfs-static-home
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cephfs-static-home-akurian
+    - op: replace
+      path: /spec/csi/volumeHandle
+      value: cephfs-static-home-akurian
+- target:
+    kind: PersistentVolume
+    name: cephfs-static-pi
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cephfs-static-pi-akurian
+    - op: replace
+      path: /spec/csi/volumeHandle
+      value: cephfs-static-pi-akurian
+- target:
+    kind: PersistentVolumeClaim
+    name: cephfs-static-home
+  patch: |-
+    - op: replace
+      path: /spec/volumeName
+      value: cephfs-static-home-akurian
+- target:
+    kind: PersistentVolumeClaim
+    name: cephfs-static-pi
+  patch: |-
+    - op: replace
+      path: /spec/volumeName
+      value: cephfs-static-pi-akurian
+- target:
+    kind: Service
+    name: jupyter
+  patch: |-
+    - op: replace
+      path: /spec/selector/hub.jupyter.org~1username
+      value: akurian
