@@ -1,0 +1,6 @@
+- name: generate random mac address for kvm guests
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - ansible.builtin.debug:
+        msg: "{{ '52:54:00' | community.general.random_mac }}"
