@@ -15,6 +15,12 @@ SlurmUser=slurm
 StateSaveLocation=/var/spool/slurmctld
 TaskPlugin=task/affinity,task/cgroup
 
+# PROLOG/EPILOG
+Prolog=/etc/slurm/scripts/prolog.sh
+TaskProlog=/etc/slurm/scripts/taskprolog.sh
+Epilog=/etc/slurm/scripts/epilog.sh
+PrologEpilogTimeout=600
+
 # TIMERS
 InactiveLimit=0
 KillWait=30
