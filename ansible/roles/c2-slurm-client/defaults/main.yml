@@ -1,6 +1,7 @@
-slurm_user: slurm
-slurm_uid: 6000
-slurm_group: "{{ slurm_user }}"
-slurm_gid: "{{ slurm_uid }}"
+# defined in global variables:
+# slurm_user
+# slurm_uid
+# slurm_group
+# slurm_gid
 
 munged_threads: 10

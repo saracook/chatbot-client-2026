@@ -216,6 +216,10 @@ all:
     default_password: "{{ lookup('env', 'DEFAULT_PASSWORD') }}"
     slurm_version: 25.05.3
     slurm_cluster_name: c2
+    slurm_user: slurm
+    slurm_uid: 6000
+    slurm_group: "{{ slurm_user }}"
+    slurm_gid: "{{ slurm_uid }}"
     nginx_ip: "{{ hostvars[groups['c2_pxe_server'][0]]['ansible_host'] }}"
     nginx_port: 8000
     rpm_repo_ip: "{{ hostvars[groups['c2_rpm_repo_server'][0]]['ansible_host'] }}"
