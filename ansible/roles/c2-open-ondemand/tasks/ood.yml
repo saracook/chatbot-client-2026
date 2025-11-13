@@ -275,4 +275,19 @@
     src: /var/www/ood/public/maintenance/assets
     dest: /var/www/ood/public/assets/
     state: link
-  
+
+# enable announcements https://osc.github.io/ood-documentation/latest/customizations.html#announcements
+- name: create directory /etc/ood/config/announcements.d/
+  ansible.builtin.file:
+    path: /etc/ood/config/announcements.d/
+    state: directory
+    
+- name: install /etc/ood/config/announcements.d/carina_announcement.yml
+  ansible.builtin.copy:
+    src: etc/ood/config/announcements.d/carina_announcement.yml
+    dest: /etc/ood/config/announcements.d/carina_announcement.yml
+    owner: root
+    group: root
+    mode: '00644'
+  notify: restart httpd
+
