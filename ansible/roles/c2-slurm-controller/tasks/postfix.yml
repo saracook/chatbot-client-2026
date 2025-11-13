@@ -2,6 +2,7 @@
   ansible.builtin.dnf:
     name:
       - postfix
+      - postfix-lmdb
       - s-nail
     state: present
     update_cache: yes

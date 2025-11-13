@@ -1,6 +1,7 @@
 - name: install packages
   ansible.builtin.dnf:
     name:
+      - http-parser
       - json-c
       - libyaml
       - munge

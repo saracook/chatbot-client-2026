@@ -214,7 +214,7 @@ all:
     default_user_gecos: Rocky Linux
     default_user_groups: [adm, systemd-journal]
     default_password: "{{ lookup('env', 'DEFAULT_PASSWORD') }}"
-    slurm_version: 25.05.3
+    slurm_version: 25.11.0
     slurm_cluster_name: c2
     slurm_user: slurm
     slurm_uid: 6000
