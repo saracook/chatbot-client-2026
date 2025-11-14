@@ -272,8 +272,8 @@
 
 - name: symlink /var/www/ood/public/maintenance/assets to /var/www/ood/public/assets/
   ansible.builtin.file:
-    src: /var/www/ood/public/maintenance/assets
-    dest: /var/www/ood/public/assets/
+    src: /var/www/ood/public/assets/
+    dest: /var/www/ood/public/maintenance/assets
     state: link
 
 # enable announcements https://osc.github.io/ood-documentation/latest/customizations.html#announcements
