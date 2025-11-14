@@ -225,3 +225,69 @@
     group: root
     mode: '00644'
   notify: restart httpd
+  
+# new custom css/js https://osc.github.io/ood-documentation/latest/customizations.html#custom-css-files   
+- name: create directory /var/www/ood/public/assets/css
+  ansible.builtin.file:
+    path: /var/www/ood/public/assets/css
+    state: directory
+    
+- name: install /var/www/ood/public/assets/css/custom.css
+  ansible.builtin.copy:
+    src: var/www/ood/public/assets/js/custom.css
+    dest: /var/www/ood/public/assets/js/custom.css
+    owner: root
+    group: root
+    mode: '00644'
+  notify: restart httpd
+
+- name: create directory /var/www/ood/public/assets/js
+  ansible.builtin.file:
+    path: /var/www/ood/public/assets/js
+    state: directory
+
+- name: install /var/www/ood/public/assets/js/custom.js
+  ansible.builtin.copy:
+    src: var/www/ood/public/assets/js/custom.js
+    dest: /var/www/ood/public/assets/js/custom.js
+    owner: root
+    group: root
+    mode: '00644'
+  notify: restart httpd
+
+# enable custom css/js in maintenance mode https://osc.github.io/ood-documentation/latest/customizations.html#maintenance-mode
+- name: create directory /var/www/ood/public/maintenance/
+  ansible.builtin.file:
+    path: /var/www/ood/public/maintenance/
+    state: directory
+    
+- name: install /var/www/ood/public/maintenance/index.html
+  ansible.builtin.copy:
+    src: var/www/ood/public/maintenance/index.html
+    dest: /var/www/ood/public/maintenance/index.html
+    owner: root
+    group: root
+    mode: '00644'
+  notify: restart httpd
+
+- name: symlink /var/www/ood/public/maintenance/assets to /var/www/ood/public/assets/
+  ansible.builtin.file:
+    src: /var/www/ood/public/assets/
+    dest: /var/www/ood/public/maintenance/assets
+    state: link
+
+# enable announcements https://osc.github.io/ood-documentation/latest/customizations.html#announcements
+- name: create directory /etc/ood/config/announcements.d/
+  ansible.builtin.file:
+    path: /etc/ood/config/announcements.d/
+    state: directory
+    
+- name: install /etc/ood/config/announcements.d/carina_announcement.yml
+  ansible.builtin.copy:
+    src: etc/ood/config/announcements.d/carina_announcement.yml
+    dest: /etc/ood/config/announcements.d/carina_announcement.yml
+    owner: root
+    group: root
+    mode: '00644'
+  notify: restart httpd
+
