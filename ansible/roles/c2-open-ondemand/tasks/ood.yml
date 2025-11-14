@@ -234,8 +234,8 @@
 
 - name: install /var/www/ood/public/assets/css/custom.css
   ansible.builtin.copy:
-    src: var/www/ood/public/assets/js/custom.css
-    dest: /var/www/ood/public/assets/js/custom.css
+    src: var/www/ood/public/assets/css/custom.css
+    dest: /var/www/ood/public/assets/css/custom.css
     owner: root
     group: root
     mode: '00644'
