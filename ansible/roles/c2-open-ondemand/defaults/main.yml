@@ -11,6 +11,52 @@ ood_download_dir_max_bytes: 1073741824
 # ood_oidc_client_id
 # ood_oidc_client_secret
 
+# there should be one of these for every base directory in
+# ood_{files,templates} below
+ood_dirs:
+  - /etc/ood/config/announcements.d
+  - /etc/ood/config/apps/bc_desktop/submit
+  - /etc/ood/config/apps/dashboard/initializers
+  - /etc/ood/config/apps/dashboard/views/widgets
+  - /etc/ood/config/apps/shell
+  - /etc/ood/config/clusters.d
+  - /etc/ood/config/ondemand.d
+  - /var/www/ood/public/assets/css
+  - /var/www/ood/public/assets/js
+  - /var/www/ood/public/maintenance
+
+# https://osc.github.io/ood-documentation/latest/customizations.html#announcements
+# https://osc.github.io/ood-documentation/latest/customizations.html#custom-css-files
+# https://osc.github.io/ood-documentation/latest/customizations.html#maintenance-mode
+# https://osc.github.io/ood-documentation/latest/customizations.html#pinning-applications-to-the-dashboard
+
+# these should exist in files/ exactly as specified here
+ood_files:
+  - etc/ood/config/announcements.d/carina_announcement.yml
+  - var/www/ood/public/assets/css/custom.css
+  - var/www/ood/public/assets/js/custom.js
+  - var/www/ood/public/logo.png
+  - var/www/ood/public/maintenance/index.html
+
+# these should exist in templates/ with a .j2 extension
+ood_templates:
+  - etc/httpd/conf.d/mpm_event.conf
+  - etc/ood/config/apps/bc_desktop/c2.yml
+  - etc/ood/config/apps/bc_desktop/submit/c2.yml.erb
+  - etc/ood/config/apps/dashboard/env
+  - etc/ood/config/apps/dashboard/initializers/ood.rb
+  - etc/ood/config/apps/dashboard/views/widgets/_carina_splash.html
+  - etc/ood/config/apps/shell/env
+  - etc/ood/config/clusters.d/c2.yml
+  - etc/ood/config/nginx_stage.yml
+  - etc/ood/config/ondemand.d/dashboard.yml
+  - etc/ood/config/ondemand.d/stanford.yml
+  - etc/ood/config/ood_portal.yml
+  - opt/ood/ood-portal-generator/templates/ood-portal.conf.erb
+
+# resolved in template _carina_splash.html
+ood_feedback_form_url: https://docs.google.com/forms/d/e/1FAIpQLSc11mS0VmAOGIRcVmz4XDN6a83Q6VlThYkJXUfWGmsYiUnKxg/viewform?usp=header
+
 ood_dev_users:
   - addiso
   - btempero
