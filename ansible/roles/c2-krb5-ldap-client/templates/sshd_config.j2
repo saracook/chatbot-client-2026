@@ -21,10 +21,6 @@ Subsystem sftp /usr/libexec/openssh/sftp-server
 # gssapi plus duo or password plus duo
 AuthenticationMethods gssapi-keyex,keyboard-interactive gssapi-with-mic,keyboard-interactive password,keyboard-interactive
 
-# allow all users to login only from cluster network or vpn
-Match Address *,!127.0.0.1,!::1,!{{ network_access_cidr }},!{{ network_vpn_cidrs | join(",!") }}
-    DenyUsers *
-
 # allow {{ default_user }} user to use public key authentication only without duo
 Match User {{ default_user }}
     PubKeyAuthentication yes
@@ -38,20 +34,20 @@ Match Group carina_admins
     PubKeyAuthentication yes
     AuthenticationMethods gssapi-keyex,keyboard-interactive gssapi-with-mic,keyboard-interactive publickey,keyboard-interactive password,keyboard-interactive
 
-{% if inventory_hostname in groups['c2_compute_node'] %}
-# allow unprivileged users to login to compute nodes only from cluster network
-Match Group carina_users,!carina_admins Address *,!127.0.0.1,!::1,!{{ network_access_cidr }}
+# allow all users to login only from cluster network or vpn
+Match Address *,!127.0.0.1,!::1,!{{ network_access_cidr }},!{{ network_vpn_cidrs | join(",!") }}
     DenyUsers *
-{% endif %}
 
-{% if inventory_hostname in groups['c2_open_ondemand'] and ood_tier != 'prod' %}
+{% if inventory_hostname in groups['c2_compute_node'] %}
+# allow unprivileged users to login to compute nodes only from access network
+Match Group carina_users,!carina_admins Address *,!127.0.0.1,!::1,!{{ network_access_cidr }}
+    ForceCommand /usr/sbin/nologin
+{% elif inventory_hostname in groups['c2_open_ondemand'] and ood_tier == 'prod' %}
 # allow carina_bprogers group to login to non-prod ood nodes
 Match Group carina_bprogers,!carina_admins
-    AllowUsers *
-{% endif %}
-
-{% if inventory_hostname not in ( groups['c2_compute_node'] + groups['c2_login_node'] ) %}
+    ForceCommand /usr/sbin/nologin
+{% elif inventory_hostname not in ( groups['c2_compute_node'] + groups['c2_login_node'] + groups['c2_open_ondemand'] ) %}
 # allow only admins to login to nodes other than login and compute nodes
 Match Group carina_users,!carina_admins
-    DenyUsers *
+    ForceCommand /usr/sbin/nologin
 {% endif %}
