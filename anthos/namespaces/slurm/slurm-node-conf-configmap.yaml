@@ -226,7 +226,7 @@ data:
     PartitionName=gpu Nodes=secure-gpu-[1-6,15-18] Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=3 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
     PartitionName=gpu-long Nodes=secure-gpu-[7,19-20] Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=5-00:00:00 DefaultTime=0-02:00:00
     PartitionName=nigam-a100 Nodes=secure-gpu-9 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
-    PartitionName=boussard-a100 Nodes=secure-gpu-10 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
+    PartitionName=boussard-a100 Nodes=secure-gpu-10 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=4-00:00:00 DefaultTime=0-02:00:00
     PartitionName=ogevaert-a100 Nodes=secure-gpu-11 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=7-00:00:00 DefaultTime=0-02:00:00
     PartitionName=studdert-compute Nodes=secure-17 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=7-00:00:00 DefaultTime=0-02:00:00
     PartitionName=nigam-v100 Nodes=secure-gpu-12 Priority=50 DefMemPerCPU=500 Shared=NO MaxNodes=1 MaxTime=2-00:00:00 DefaultTime=0-02:00:00
