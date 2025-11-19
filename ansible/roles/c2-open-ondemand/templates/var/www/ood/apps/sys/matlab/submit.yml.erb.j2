@@ -20,5 +20,6 @@ script:
     <% if fs_gpu.to_i == 1 %>
     '--gpus', 1,
     <% end %>
+    '--time', '<%= bc_num_hours.to_i * 60 %>',
     '--qos', 'normal'
   ]
