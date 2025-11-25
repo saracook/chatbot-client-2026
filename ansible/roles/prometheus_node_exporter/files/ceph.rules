@@ -1,5 +1,75 @@
 - name: Ceph Alerts
   rules:
+    - alert: CephHealthStatusWarn
+      expr: ceph_health_status == 1
+      for: 10m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Ceph Status Changed to WARM State"
+        description: "Ceph is reporting HEALTH_WARN. Review 'ceph health detail'."
+        priority: P3
+
+    - alert: CephHealthStatusErr
+      expr: ceph_health_status == 2
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Ceph Status Changed to ERROR State"
+        description: "Ceph is reporting HEALTH_ERR. Run 'ceph health detail' immediately"
+        priority: P2
+
+    - alert: CephOSDDown
+      expr: sum(ceph_osd_up == 0) > 0
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Ceph OSD(s) down"
+        description: "There are {{ $value }} OSDs down in the cluster."
+        priority: P2
+    
+    - alert: CephOSDDownButIn
+      expr: sum((ceph_osd_up == 0) and (ceph_osd_in == 1)) > 0
+      for: 10m
+      labels:
+        severity: critical
+      annotations:
+        summary: "OSD down but still IN"
+        description: "Some OSDs are down but still marked IN the cluster."
+        priority: P3
+
+    - alert: CephOSDNearlyFull
+      expr: (ceph_osd_stat_bytes_used / ceph_osd_stat_bytes) > 0.85
+      for: 15m
+      labels:
+        severity: warning
+      annotations:
+        summary: "OSD usage high (>85%)"
+        description: "Some OSDs are over 85% full."
+        priority: P3
+    
+    - alert: CephClusterHighUsage
+      expr: (ceph_cluster_total_used_bytes / ceph_cluster_total_bytes) > 0.85
+      for: 30m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Ceph cluster usage > 85%"
+        description: "Cluster-wide usage is above 85%. Consider adding capacity or cleaning up."
+        priority: P3
+    
+    - alert: CephPGDegraded
+      expr: sum(ceph_pg_degraded) > 0
+      for: 10m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Ceph has degraded PGs"
+        description: "There are degraded placement groups in the cluster."
+        priority: P3
+
     - alert: HostUnusualDiskReadLatency
       expr: rate(diskio_read_time{job!="ceph"}[1m]) / rate(diskio_reads{job!="ceph"}[1m]) > 0.1 and rate(diskio_reads{job!="ceph"}[1m]) > 0
       for: 2m
