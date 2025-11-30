@@ -7,6 +7,14 @@
     - always
 
 - ansible.builtin.include_tasks:
+    file: hostname.yml
+    apply:
+      tags:
+        - hostname
+  tags:
+    - always
+
+- ansible.builtin.include_tasks:
     file: repos.yml
     apply:
       tags:
