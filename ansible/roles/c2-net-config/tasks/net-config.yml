@@ -1,3 +1,9 @@
+- name: remove directory /etc/systemd/network
+  ansible.builtin.file:
+    path: /etc/systemd/network
+    state: absent
+  when: clean is defined and clean
+
 - name: create directory /etc/systemd/network
   ansible.builtin.file:
     path: /etc/systemd/network
