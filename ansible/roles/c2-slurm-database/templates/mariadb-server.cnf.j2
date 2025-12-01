@@ -1,14 +1,13 @@
-[server]
-
 [mysqld]
-datadir=/var/lib/mysql
-socket=/var/lib/mysql/mysql.sock
-log_error=/var/log/mariadb/mariadb.log
-pid_file=/run/mariadb/mariadb.pid
-bind_address=0.0.0.0
-innodb_buffer_pool_size={{ innodb_buffer_pool_size_gb }}G
-innodb_lock_wait_timeout={{ innodb_lock_wait_timeout_sec }}
+bind_address = 0.0.0.0
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+datadir = /var/lib/mysql
+init-connect = 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci'
+innodb_buffer_pool_size = {{ innodb_buffer_pool_size_gb }}G
+innodb_lock_wait_timeout = {{ innodb_lock_wait_timeout_sec }}
+log_error = /var/log/mariadb/mariadb.log
+pid_file = /run/mariadb/mariadb.pid
+socket = /var/lib/mysql/mysql.sock
 
 [mariadb]
-
-[mariadb-10.11]

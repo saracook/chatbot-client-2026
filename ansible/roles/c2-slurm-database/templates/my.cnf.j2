@@ -1,11 +1,12 @@
 [client]
-host=localhost
-user=root
-password={{ slurm_db_root_password }}
-default-character-set=utf8
+default-character-set = utf8mb4
+host = localhost
+password = {{ slurm_db_root_password }}
+user = root
 
 [mysql]
-pager=less -niSX
+default-character-set = utf8mb4
+pager = less -niSX
 
 [mysqldump]
-quote-names=false
+quote-names = false

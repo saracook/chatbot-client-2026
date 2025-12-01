@@ -1,7 +1,6 @@
 - name: install packages
   ansible.builtin.dnf:
     name:
-      - http-parser
       - json-c
       - libyaml
       - munge
@@ -11,6 +10,16 @@
     state: present
     update_cache: yes
     enablerepo: c2-local
+  tags:
+    - packages
+
+- name: install packages for el9/slurmrestd
+  ansible.builtin.dnf:
+    name:
+      - http-parser
+    state: present
+    update_cache: yes
+  when: distros[distro]['version'] == '9.6'
   tags:
     - packages
 
