@@ -25,8 +25,6 @@ interfaces:
     address:
       - "10.210.28.50/22"
     gateway: "{{ network_cluster_gateway }}"
-    dns: "{{ network_cluster_dns }}"
-    dns_search_domain: "{{ network_cluster_dns_search }}"
 
 ood_tier: prod
 # nb: configured to resolve to c2-ood-01.stanford.edu

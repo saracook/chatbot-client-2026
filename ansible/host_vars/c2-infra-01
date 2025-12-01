@@ -44,8 +44,6 @@ interfaces:
     address:
       - "10.210.24.2/22"
     gateway: "{{ network_mgmt_gateway }}"
-    dns: "{{ network_mgmt_dns }}"
-    dns_search_domain: "{{ network_mgmt_dns_search }}"
   bond0.2009:
     type: vlan
     vlan_id: 2009
@@ -54,5 +52,3 @@ interfaces:
     address:
       - "10.210.28.2/22"
     gateway: "{{ network_cluster_gateway }}"
-    dns: "{{ network_cluster_dns }}"
-    dns_search_domain: "{{ network_cluster_dns_search }}"

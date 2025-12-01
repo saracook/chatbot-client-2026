@@ -26,8 +26,10 @@ method=manual
 address{{ loop.index }}={{ addr }}
 {% endfor %}
 gateway={{ hostvars[hostname]['interfaces'][interface]['gateway'] }}
+{% if 'dns' in hostvars[hostname]['interfaces'][interface] %}
 dns={{ hostvars[hostname]['interfaces'][interface]['dns'] | join(";") }};
 dns-search={{ hostvars[hostname]['interfaces'][interface]['dns_search_domain'] | join(";") }};
+{% endif %}
 {% if 'default_route' not in hostvars[hostname]['interfaces'][interface] or not hostvars[hostname]['interfaces'][interface]['default_route'] %}
 never-default=true
 {% endif %}

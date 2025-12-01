@@ -163,10 +163,6 @@ all:
     network_mgmt_cidr: "{{ network_mgmt_addr }}/{{ network_mgmt_prefix }}"
     network_mgmt_mask: "{{ network_mgmt_cidr | ansible.utils.ipaddr('netmask') }}"
     network_mgmt_gateway: 10.210.24.2
-    network_mgmt_dns:
-      - 10.210.24.2
-    network_mgmt_dns_search:
-      - "{{ network_access_domain }}"
     network_cluster_vlan: 2009
     network_cluster_domain: cluster.carina
     network_cluster_addr: 10.210.28.0
@@ -174,10 +170,6 @@ all:
     network_cluster_cidr: "{{ network_cluster_addr }}/{{ network_cluster_prefix }}"
     network_cluster_mask: "{{ network_cluster_cidr | ansible.utils.ipaddr('netmask') }}"
     network_cluster_gateway: 10.210.28.2
-    network_cluster_dns:
-      - 10.210.28.2
-    network_cluster_dns_search:
-      - "{{ network_access_domain }}"
     powerscale_h700_mgmt_smartconnect_zone: h700.{{ network_mgmt_domain }}
     powerscale_h700_mgmt_smartconnect_sip: 10.210.24.20
     powerscale_h700_cluster_smartconnect_zone: h700.{{ network_cluster_domain }}

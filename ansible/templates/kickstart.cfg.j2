@@ -71,7 +71,7 @@ install \
 <(echo 'PasswordAuthentication no') \
 /etc/ssh/sshd_config.d/90-no-passwd-authn.conf 
 
-# install systemd link files to name network interfaces
+# install systemd link files to explicitly name ethernet network interfaces
 mkdir -p /etc/systemd/network
 {% for item in hostvars[hostname]['interfaces'] | dict2items if item.value.type == 'ethernet' %}
 
