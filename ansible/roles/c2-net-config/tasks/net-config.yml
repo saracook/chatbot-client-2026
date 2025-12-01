@@ -1,3 +1,21 @@
+- name: create directory /etc/systemd/network
+  ansible.builtin.file:
+    path: /etc/systemd/network
+    state: directory
+
+- name: install systemd link files to explicitly name ethernet network interfaces
+  ansible.builtin.copy:
+    content: |
+      [Match]
+      MACAddress={{ item.value.mac_address }}
+
+      [Link]
+      Name={{ item.key }}
+    dest: /etc/systemd/network/70-{{ item.key }}.link
+  when: item.value.type == 'ethernet'
+  loop: "{{ interfaces | dict2items }}"
+  register: sdlnkfiles
+
 - name: remove directory /etc/NetworkManager/system-connections
   ansible.builtin.file:
     path: /etc/NetworkManager/system-connections
