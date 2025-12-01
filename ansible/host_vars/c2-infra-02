@@ -31,6 +31,12 @@ interfaces:
     bond_xmit_hash_policy: layer2
     bond_miimon: 100
     bridge: br3038
+  bond0.2008:
+    type: vlan
+    vlan_id: 2008
+    uuid: ff01806e-b5ce-4d4f-9477-d1021c81f311
+    parent: bond0
+    bridge: br2008
   bond0.2009:
     type: vlan
     vlan_id: 2009
@@ -46,11 +52,15 @@ interfaces:
     dns: "{{ network_access_dns }}"
     dns_search_domain: "{{ network_access_dns_search }}"
     default_route: yes
+  br2008:
+    type: bridge
+    uuid: ff528e25-f398-41bb-a530-8259e6fb53af
+    address:
+      - "10.210.24.3/22"
+    gateway: "{{ network_mgmt_gateway }}"
   br2009:
     type: bridge
     uuid: 6b343013-4e98-4ec1-babe-72165373a79f
     address:
       - "10.210.28.3/22"
     gateway: "{{ network_cluster_gateway }}"
-    dns: "{{ network_cluster_dns }}"
-    dns_search_domain: "{{ network_cluster_dns_search }}"

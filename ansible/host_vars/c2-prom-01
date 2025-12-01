@@ -26,5 +26,3 @@ interfaces:
     address:
       - "10.210.28.51/22"
     gateway: "{{ network_cluster_gateway }}"
-    dns: "{{ network_cluster_dns }}"
-    dns_search_domain: "{{ network_cluster_dns_search }}"
