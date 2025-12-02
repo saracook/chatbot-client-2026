@@ -1,32 +1,49 @@
-- name: check for required secrets environment variables
-  hosts: all
+- name: check for required secrets and install ssh keys
+  hosts: localhost
   connection: local
   gather_facts: no
   tasks:
-    - name: check for required secrets environment variables
-      fail:
-        msg: required secret environment variable {{ item }} is not set!
-      when: lookup('env', item) | default('', true) | length == 0
-      loop:
-        - ANSIBLE_SSH_PRIVATE_KEY_FILE
-        - ANSIBLE_SSH_PUBLIC_KEY_FILE
-        - CROWDSTRIKE_FALCON_CID
-        - DEFAULT_PASSWORD
-        - GITHUB_ACCESS_TOKEN
-        - IDRAC_PASSWORD
-        - IDRAC_USERNAME
-        - MUNGE_KEY_B64
-        - OOD_CERTBOT_DNS_GOOGLE_CREDENTIALS_JSON_B64
-        - OOD_DEV_OIDC_CLIENT_ID
-        - OOD_DEV_OIDC_CLIENT_SECRET
-        - OOD_PROD_OIDC_CLIENT_ID
-        - OOD_PROD_OIDC_CLIENT_SECRET
-        - ROOT_INFRA_SSH_PRIVATE_KEY
-        - ROOT_INFRA_SSH_PUBLIC_KEY
-        - SLURM_DB_ROOT_PASSWORD
-        - SLURM_DB_SLURM_PASSWORD
-        - SPLUNK_CLIENT_ADMIN_PASSWORD
-        - SPLUNK_CLIENT_TLS_KEY_PASSPHRASE
-      run_once: yes
+    - block:
+        - name: check for required secrets environment variables
+          ansible.builtin.fail:
+            msg: required secret environment variable {{ item }} is not set!
+          when: lookup('env', item) | default('', true) | length == 0
+          loop:
+            - ANSIBLE_SSH_PRIVATE_KEY
+            - ANSIBLE_SSH_PUBLIC_KEY
+            - CROWDSTRIKE_FALCON_CID
+            - DEFAULT_PASSWORD
+            - GITHUB_ACCESS_TOKEN
+            - IDRAC_PASSWORD
+            - IDRAC_USERNAME
+            - MUNGE_KEY_B64
+            - OOD_CERTBOT_DNS_GOOGLE_CREDENTIALS_JSON_B64
+            - OOD_DEV_OIDC_CLIENT_ID
+            - OOD_DEV_OIDC_CLIENT_SECRET
+            - OOD_PROD_OIDC_CLIENT_ID
+            - OOD_PROD_OIDC_CLIENT_SECRET
+            - ROOT_INFRA_SSH_PRIVATE_KEY
+            - ROOT_INFRA_SSH_PUBLIC_KEY
+            - SLURM_DB_ROOT_PASSWORD
+            - SLURM_DB_SLURM_PASSWORD
+            - SPLUNK_CLIENT_ADMIN_PASSWORD
+            - SPLUNK_CLIENT_TLS_KEY_PASSPHRASE
+        - name: create directory /dev/shm/c2-ansible
+          ansible.builtin.file:
+            path: /dev/shm/c2-ansible
+            state: directory
+            mode: '00700'
+        - name: install /dev/shm/c2-ansible/rocky.pem
+          ansible.builtin.copy:
+            content: |
+              {{ lookup('env', 'ANSIBLE_SSH_PRIVATE_KEY') }}
+            dest: /dev/shm/c2-ansible/rocky.pem
+            mode: '00600'
+        - name: install /dev/shm/c2-ansible/rocky.pub
+          ansible.builtin.copy:
+            content: |
+              {{ lookup('env', 'ANSIBLE_SSH_PUBLIC_KEY') }}
+            dest: /dev/shm/c2-ansible/rocky.pub
+            mode: '00644'
       tags:
         - always
