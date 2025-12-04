@@ -191,6 +191,15 @@ all:
         iso_sha256: aed9449cf79eb2d1c365f4f2561f923a80451b3e8fdbf595889b4cf0ac6c58b8
         iso_pxe_linux: rocky-9.6/images/pxeboot/vmlinuz
         iso_pxe_initrd: rocky-9.6/images/pxeboot/initrd.img
+      rocky_9_7:
+        el: el9
+        version: '9.7'
+        version_major: '9'
+        name: rocky-9.7
+        iso_url: http://dl.rockylinux.org/pub/rocky/9.7/isos/x86_64/Rocky-9.7-x86_64-minimal.iso
+        iso_sha256: 23a1ac1175d8ccada7195863914ef1237f584ff25f73bd53da410d5fffd882b0
+        iso_pxe_linux: rocky-9.7/images/pxeboot/vmlinuz
+        iso_pxe_initrd: rocky-9.7/images/pxeboot/initrd.img
       rocky_10_0:
         el: el10
         version: '10.0'
@@ -200,6 +209,15 @@ all:
         iso_sha256: de75c2f7cc566ea964017a1e94883913f066c4ebeb1d356964e398ed76cadd12
         iso_pxe_linux: rocky-10.0/images/pxeboot/vmlinuz
         iso_pxe_initrd: rocky-10.0/images/pxeboot/initrd.img
+      rocky_10_1:
+        el: el10
+        version: '10.1'
+        version_major: '10'
+        name: rocky-10.1
+        iso_url: http://dl.rockylinux.org/pub/rocky/10.1/isos/x86_64/Rocky-10.1-x86_64-minimal.iso
+        iso_sha256: 5aafc2c86e606428cd7c5802b0d28c220f34c181a57eefff2cc6f65214714499
+        iso_pxe_linux: rocky-10.1/images/pxeboot/vmlinuz
+        iso_pxe_initrd: rocky-10.1/images/pxeboot/initrd.img
     ansible_user: rocky
     default_user: rocky
     default_user_uid: 1000
