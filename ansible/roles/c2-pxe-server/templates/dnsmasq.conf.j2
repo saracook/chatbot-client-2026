@@ -7,7 +7,7 @@ no-resolv
 no-hosts
 
 # domains
-domain={{ network_access_domain }},{{ network_access_cidr }},local
+domain={{ network_access_domain }},{{ network_access_cidr }}
 domain={{ network_mgmt_domain }},{{ network_mgmt_cidr }},local
 domain={{ network_cluster_domain }},{{ network_cluster_cidr }},local
 
@@ -15,7 +15,7 @@ domain={{ network_cluster_domain }},{{ network_cluster_cidr }},local
 {% for ns in network_access_dns %}
 {# exclude dnsmasq itself when forwarding queries #}
 {% if ns != ansible_host %}
-server=/{{ network_access_domain }}/{{ ns }}
+server={{ ns }}
 {% endif %}
 {% endfor %}
 
