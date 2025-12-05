@@ -66,7 +66,6 @@ NodeName={{ node }} CPUs={{ hostvars[node]['cpus'] }} RealMemory={{ hostvars[nod
 
 # PARTITIONS
 PartitionName=DEFAULT SelectTypeParameters=CR_Core_Memory
-PartitionName=dev Nodes=ALL Default=YES MaxTime=12:00:00 State=UP
 
 #
 # General partitions
@@ -83,6 +82,7 @@ PartitionName=normal \
     OverSubscribe=NO
     PreemptMode=OFF \
     PriorityTier=50 \
+    Default=YES
     Nodes=c2-comp-[01-05]
 
 PartitionName=long\
@@ -99,7 +99,7 @@ PartitionName=boussard-a100 \
     MaxTime=4-00:00:00 DefaultTime=0-02:00:00 \
     Priority=50 
     DefMemPerCPU=500
-    Shared=NO
+    OverSubscribe=NO
     MaxNodes=1
     Nodes=boussard-a100
 
@@ -107,7 +107,7 @@ PartitionName=mrivas-v100 \
     MaxTime=2-00:00:00 DefaultTime=0-02:00:00 \
     Priority=50 
     DefMemPerCPU=500
-    Shared=NO
+    OverSubscribe=NO
     MaxNodes=1
     Nodes=mrivas-v100
 
@@ -115,7 +115,7 @@ PartitionName=nigam-a100 \
     MaxTime=2-00:00:00 DefaultTime=0-02:00:00 \
     Priority=50 
     DefMemPerCPU=500
-    Shared=NO
+    OverSubscribe=NO
     MaxNodes=1
     Nodes=nigam-a100
 
@@ -123,7 +123,7 @@ PartitionName=nigam-h100 \
     MaxTime=7-00:00:00 DefaultTime=0-02:00:00 \
     Priority=50 
     DefMemPerCPU=500
-    Shared=NO
+    OverSubscribe=NO
     MaxNodes=1
     Nodes=nigam-h100
 
@@ -131,7 +131,7 @@ PartitionName=nigam-v100 \
     MaxTime=2-00:00:00 DefaultTime=0-02:00:00 \
     Priority=50 
     DefMemPerCPU=500
-    Shared=NO
+    OverSubscribe=NO
     MaxNodes=1
     Nodes=nigam-v100
 
@@ -139,7 +139,7 @@ PartitionName=ogevaert-a100 \
     MaxTime=7-00:00:00 DefaultTime=0-02:00:00 \
     Priority=50 
     DefMemPerCPU=500
-    Shared=NO
+    OverSubscribe=NO
     MaxNodes=1
     Nodes=ogevaert-a100
 
@@ -147,6 +147,6 @@ PartitionName=studdert-compute \
     MaxTime=7-00:00:00 DefaultTime=0-02:00:00 \
     Priority=50 
     DefMemPerCPU=500
-    Shared=NO
+    OverSubscribe=NO
     MaxNodes=1
     Nodes=studdert-a100
