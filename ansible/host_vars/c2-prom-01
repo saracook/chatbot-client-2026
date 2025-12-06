@@ -4,7 +4,7 @@ kvm_host: c2-infra-02
 vcpus: 16
 memory_gb: 64
 swapfile_gb: 8
-data_disk_gb: 128
+data_disk_gb: 256
 
 interfaces:
   eth0:

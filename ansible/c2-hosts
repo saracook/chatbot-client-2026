@@ -180,7 +180,7 @@ all:
     powerscale_a300_cluster_smartconnect_sip: 10.210.28.25
     # default distro. must be one of the keys in distros.
     # override in host/group vars to select a different version.
-    distro: rocky_10_0
+    distro: rocky_9_6
     distros:
       rocky_9_6:
         el: el9
