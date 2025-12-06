@@ -6,8 +6,8 @@ set -e
 
 HOMEBASE="/home/users"
 SACCTMGR="/usr/bin/sacctmgr"
-DEFACCT="users"
-DEFPART="dev"
+SDEFACCT="users"
+SDEFPART="dev"
 
 # skip for root/*.root users
 [ "$( echo $PAM_USER | cut -d '.' -f 2 )" = 'root' ] && exit 0
@@ -25,14 +25,14 @@ fi
 # skip slurm user accounting if slurm not installed
 [ -x $SACCTMGR ] || exit 0
 
-# ensure that slurm default users account exists
-if [ -z "$( $SACCTMGR -nP list account name=$DEFACCT format=account )" ]
+# ensure that slurm default user account exists
+if [ -z "$( $SACCTMGR -nP list account name=$SDEFACCT format=account )" ]
 then
-  $SACCTMGR -i create account name=$DEFACCT
+  $SACCTMGR -i create account name=$SDEFACCT
 fi
 
 # ensure that slurm user is associated with default users account
-if [ -z "$( $SACCTMGR -nP list user name=$PAM_USER defaultaccount=$DEFACCT format=user )" ]
+if [ -z "$( $SACCTMGR -nP list user name=$PAM_USER defaultaccount=$SDEFACCT format=user )" ]
 then
-  $SACCTMGR -i add user name=$PAM_USER account=$DEFACCT defaultaccount=$DEFACCT partition=$DEFPART
+  $SACCTMGR -i add user name=$PAM_USER account=$SDEFACCT defaultaccount=$SDEFACCT partition=$SDEFPART
 fi
