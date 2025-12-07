@@ -1,0 +1,43 @@
+global:
+  scrape_interval: {{ prometheus_scrape_interval_seconds }}s
+  query_log_file: {{ prometheus_log_dir }}/query.log
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ['localhost:9090']
+  - job_name: node_exporter
+    static_configs:
+      - targets:
+{% for host in groups['all'] %}
+{% if host == inventory_hostname %}
+        - localhost:9100
+{% else %}
+        - {{ hostvars[host]['ansible_host'] }}:9100
+{% endif %}
+{% endfor %}
+  - job_name: slurm_jobs
+    metrics_path: /metrics/jobs
+    static_configs:
+      - targets:
+        - {{ hostvars[groups['c2_slurm_controller'][0]]['ansible_host'] }}:6817
+  - job_name: slurm_nodes
+    metrics_path: /metrics/nodes
+    static_configs:
+      - targets:
+        - {{ hostvars[groups['c2_slurm_controller'][0]]['ansible_host'] }}:6817
+  - job_name: slurm_partitions
+    metrics_path: /metrics/partitions
+    static_configs:
+      - targets:
+        - {{ hostvars[groups['c2_slurm_controller'][0]]['ansible_host'] }}:6817
+  - job_name: slurm_jobs-users-accts
+    metrics_path: /metrics/jobs-users-accts
+    static_configs:
+      - targets:
+        - {{ hostvars[groups['c2_slurm_controller'][0]]['ansible_host'] }}:6817
+  - job_name: slurm_scheduler
+    metrics_path: /metrics/scheduler
+    static_configs:
+      - targets:
+        - {{ hostvars[groups['c2_slurm_controller'][0]]['ansible_host'] }}:6817

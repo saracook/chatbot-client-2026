@@ -1,0 +1,7 @@
+- ansible.builtin.include_tasks:
+    file: grafana.yml
+    apply:
+      tags:
+        - grafana
+  tags:
+    - always

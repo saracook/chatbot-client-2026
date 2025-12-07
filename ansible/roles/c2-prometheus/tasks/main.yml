@@ -1,0 +1,7 @@
+- ansible.builtin.include_tasks:
+    file: prometheus.yml
+    apply:
+      tags:
+        - prometheus
+  tags:
+    - always
