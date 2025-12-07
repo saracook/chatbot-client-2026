@@ -41,7 +41,7 @@ AccountingStorageType=accounting_storage/slurmdbd
 AccountingStorageHost={{ groups['c2_slurm_database'][0] }}
 AccountingStoragePort=6819
 AccountingStorageTRES=gres/gpu
-AccountingStorageEnforce=qos,safe
+AccountingStorageEnforce=limits,qos,safe
 # todo: review these
 #AcctGatherNodeFreq=300
 #AcctGatherEnergyType=acct_gather_energy/rapl
