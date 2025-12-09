@@ -1,0 +1,56 @@
+<%- apps = recently_used_apps -%>
+<%- unless apps.empty? -%>
+<div class="recently-used-apps dash-section">
+  <div class="recently-used-apps-header">
+    <h2><%= t('dashboard.recently_used_apps_title') %></h2>
+    <div class="row">
+          <%-
+        # 1. Determine the correct column class before the loop starts
+        column_class = case apps.count
+                       when 1
+                         # If 1 app, center it and make it larger
+                         "col-12"
+                       when 2
+                         # If 2 apps, make them each half-width
+                         "col-sm-12 col-md-6"
+                       else # 3 or more apps
+                         # If 4+ apps, use 4 columns per row on medium screens,
+                         # and 2 columns per row on small screens.
+                         "col-sm-12 col-md-6"
+                       end
+      -%>
+    <%- apps.each do |app| -%>
+      <%- link = app.link -%>
+      <%- tile_data = link.tile -%>
+      <%-
+        params = app.attributes.map{|attribute| ["batch_connect_session_context[#{attribute.id}]", attribute.value]}.to_h
+      -%>
+      <div class="<%= column_class %> app-launcher-container">
+        <div class="app-launcher app-launcher-hover" data-bs-toggle="launcher-button">
+          <%=
+            button_to(
+              batch_connect_session_contexts_path(token: app.token),
+              class: ['launcher-click', tile_data[:border_color]],
+              data: {:method => "post"},
+              params: params,
+              title: (displayable_settings?(app)? 'Parameters' : nil),
+              data: {
+                bs_content: recent_settings(app),
+                bs_toggle: 'popover',
+	            bs_placement: 'bottom',
+	            bs_html: 'true',
+                bs_trigger: 'hover'
+              }
+            ) do
+          %>
+
+            <%= render partial: "/widgets/pinned_apps/app_content", locals: { link: link } %>
+
+          <% end %>
+        </div>
+      </div>
+    <%- end -%>
+    </div>
+  </div>
+  </div>
+<%- end -%>

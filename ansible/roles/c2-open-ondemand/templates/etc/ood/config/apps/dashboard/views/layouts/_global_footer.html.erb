@@ -1,0 +1,484 @@
+
+
+
+<style>
+
+.dash-section {
+    overflow:auto;
+}
+
+.col-md-4{
+.dash-section {
+    margin-bottom:14px;
+    h2 {
+        font-size:18px;
+    }
+}
+.active-sessions-content {
+    font-size:16px;
+    .card-heading{
+        .float-end{
+            font-size:14px;
+        }
+    }
+    .card-body .session-details{
+        display:none;
+    }
+    
+}
+
+.recently-used-apps {
+    .app-launcher .launcher-click {
+    border: 1px solid #651C32;
+    border-left: 10px solid;
+    border-radius:6px;
+    box-shadow:none;
+}
+.app-launcher{
+    border-radius:6px;
+    height:auto;
+    box-shadow:none;
+}
+.app-launcher .app-icon {
+    float: left;
+    margin: 0;
+    padding: 0;
+    height: 50px;
+    width:auto;
+}
+.app-launcher .app-title{
+    text-align: left;
+    padding:6px 0;
+}
+}
+}
+.app-launcher .launcher-click{
+    border: 16px solid #651C32;
+}
+.app-launcher .launcher-click.matlab.tile {
+    border-color:#08609d;
+}
+.app-launcher .launcher-click.vscode.tile {
+    border-color:#0098FF;
+}
+
+.dash-section {
+    margin-bottom:18px;
+    h2 {
+        font-size:24px;
+    }
+}
+
+.app-launcher .launcher-click.rstudio.tile {
+    border-color:#75aadb;
+}
+
+
+.dash-section small{
+    font-size:75%;
+}
+
+.su-global-footer {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #8c1515;
+    color: #fff
+    font-family: "Source Sans Pro", "Source Sans 3", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+@media only screen and (min-width:768px) {
+    .su-global-footer {
+        padding-top: 26px;
+        padding-bottom: 26px
+    }
+}
+
+@media only screen and (min-width:1500px) {
+    .su-global-footer {
+        padding-top: 27px;
+        padding-bottom: 27px
+    }
+}
+
+.su-global-footer a {
+    color: #fff;
+    text-decoration: none
+}
+
+.su-global-footer a:focus,
+.su-global-footer a:hover {
+    color: #fff;
+    text-decoration: underline
+}
+
+.su-global-footer nav {
+    margin-bottom: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center
+}
+
+@media only screen and (min-width:576px) {
+    .su-global-footer nav {
+        display: block;
+        margin-bottom: 13px
+    }
+}
+
+.su-global-footer__container {
+    margin: 0 auto
+}
+
+@media only screen and (min-width:0) {
+    .su-global-footer__container {
+        max-width: calc(100% - 40px);
+        width: calc(100% - 40px)
+    }
+}
+
+@media only screen and (min-width:576px) {
+    .su-global-footer__container {
+        max-width: calc(100% - 60px);
+        width: calc(100% - 60px)
+    }
+}
+
+@media only screen and (min-width:768px) {
+    .su-global-footer__container {
+        max-width: calc(100% - 100px);
+        width: calc(100% - 100px)
+    }
+}
+
+@media only screen and (min-width:992px) {
+    .su-global-footer__container {
+        max-width: calc(100% - 160px);
+        width: calc(100% - 160px)
+    }
+}
+
+@media only screen and (min-width:1200px) {
+    .su-global-footer__container {
+        max-width: calc(100% - 200px);
+        width: calc(100% - 200px)
+    }
+}
+
+@media only screen and (min-width:1500px) {
+    .su-global-footer__container {
+        max-width: 1500px;
+        width: calc(100% - 200px)
+    }
+}
+
+@media only screen and (min-width:992px) {
+    .su-global-footer__container {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex
+    }
+}
+
+.su-global-footer__brand {
+    padding-top: 5px;
+    margin-bottom: 8px;
+    text-align: center
+}
+
+@media only screen and (min-width:768px) {
+    .su-global-footer__brand {
+        margin-bottom: 9px
+    }
+}
+
+@media only screen and (min-width:1500px) {
+    .su-global-footer__brand {
+        margin-bottom: 10px
+    }
+}
+
+.su-global-footer__brand a {
+    display: inline-block;
+    font-family: Stanford, "Source Serif Pro", Georgia, Times, Times New Roman, serif;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    text-decoration: none;
+    line-height: .75;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    letter-spacing: 0;
+    -webkit-font-feature-settings: "liga";
+    -ms-font-feature-settings: "liga" 1;
+    font-feature-settings: "liga";
+    -webkit-font-variant-ligatures: discretionary-ligatures;
+    font-variant-ligatures: discretionary-ligatures;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #fff;
+    font-size: 34px
+}
+
+.su-global-footer__brand a:focus,
+.su-global-footer__brand a:hover {
+    text-decoration: none
+}
+
+@media only screen and (min-width:0) and (max-width:575px) {
+    .su-global-footer__brand a {
+        font-size: 32px
+    }
+}
+
+.su-global-footer__content {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1
+}
+
+@media (min-width:576px) and (max-width:991px) {
+    .su-global-footer__content {
+        text-align: center
+    }
+}
+
+@media only screen and (min-width:992px) {
+    .su-global-footer__content {
+        padding-left: 45px
+    }
+}
+
+@media only screen and (min-width:1200px) {
+    .su-global-footer__content {
+        padding-left: 52px;
+    }
+}
+
+.su-global-footer__link-a11y {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    -webkit-clip-path: inset(100%);
+    clip-path: inset(100%);
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px
+}
+
+.su-global-footer__menu {
+    margin: 0 0 10px;
+    padding: 0;
+    font-size: 15px;
+    list-style-type: none
+}
+
+.su-global-footer__menu li {
+    margin: 0;
+    padding: .25em 0;
+    display: block
+}
+
+@media only screen and (min-width:576px) and (max-width:767px) {
+    .su-global-footer__menu li {
+        margin-right: 10px
+    }
+}
+
+@media only screen and (min-width:576px) {
+    .su-global-footer__menu li {
+        display: inline-block;
+        line-height: 1.1
+    }
+}
+
+@media only screen and (min-width:768px) {
+    .su-global-footer__menu li {
+        margin-right: 20px
+    }
+}
+
+@media only screen and (min-width:992px) {
+    .su-global-footer__menu li {
+        margin-right: 28px;
+        padding: 0;
+        text-align: left
+    }
+}
+
+.su-global-footer__menu li:last-child {
+    margin-right: 0
+}
+
+@media only screen and (min-width:0) and (max-width:575px) {
+    .su-global-footer__menu--global {
+        padding-right: 19px
+    }
+}
+
+@media (min-width:768px) and (max-width:1499px) {
+    .su-global-footer__menu--global {
+        font-size: 17px
+    }
+}
+
+@media only screen and (min-width:1500px) {
+    .su-global-footer__menu--global {
+        font-size: 18px
+    }
+}
+
+@media only screen and (min-width:0) and (max-width:575px) {
+    .su-global-footer__menu--policy {
+        padding-left: 19px
+    }
+}
+
+@media only screen and (min-width:576px) and (max-width:767px) {
+    .su-global-footer__menu--policy {
+        font-size: 14px
+    }
+}
+
+@media only screen and (min-width:576px) {
+    .su-global-footer__menu--policy a {
+        font-weight: 400
+    }
+}
+
+@media (min-width:768px) and (max-width:1199px) {
+    .su-global-footer__menu--policy {
+        font-size: 15px
+    }
+}
+
+@media only screen and (min-width:1200px) {
+    .su-global-footer__menu--policy {
+        font-size: 16px
+    }
+}
+
+.su-global-footer__copyright {
+    font-size: 14px;
+    text-align: center;
+    color: white;
+}
+
+@media only screen and (min-width:0) and (max-width:575px) {
+    .su-global-footer__copyright {
+        font-size: 13px
+    }
+}
+
+.su-global-footer__copyright span {
+    white-space: nowrap
+}
+
+@media only screen and (min-width:992px) {
+    .su-global-footer__copyright {
+        text-align: left
+    }
+}
+
+.su-global-footer--bright {
+    background-color: #b1040e
+}
+
+.su-global-footer--dark {
+    background-color: #2e2d29
+}
+</style>
+
+<section class="su-global-footer su-global-footer--dark">
+  <div class="su-global-footer__container" title="Common Stanford resources">
+    <div class="su-global-footer__brand">
+      <a class="su-logo" href="https://www.stanford.edu">
+        Stanford
+        <br>
+        University
+      </a>
+    </div>
+    <div class="su-global-footer__content">
+      <nav aria-label="global footer menu">
+        <ul class="su-global-footer__menu su-global-footer__menu--global">
+          <li>
+            <a href="https://www.stanford.edu">
+              Stanford Home
+              <span class="su-global-footer__link-a11y">(link is external)</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://visit.stanford.edu/plan/">
+              Maps &amp; Directions
+              <span class="su-global-footer__link-a11y">(link is external)</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.stanford.edu/search/">
+              Search Stanford
+              <span class="su-global-footer__link-a11y">(link is external)</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://emergency.stanford.edu">
+              Emergency Info
+              <span class="su-global-footer__link-a11y">(link is external)</span>
+            </a>
+          </li>
+        </ul>
+        <ul class="su-global-footer__menu su-global-footer__menu--policy">
+          <li>
+            <a href="https://www.stanford.edu/site/terms/" title="Terms of use for sites">
+              Terms of Use
+              <span class="su-global-footer__link-a11y">(link is external)</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.stanford.edu/site/privacy/" title="Privacy and cookie policy">
+              Privacy
+              <span class="su-global-footer__link-a11y">(link is external)</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://uit.stanford.edu/security/copyright-infringement" title="Report alleged copyright infringement">
+              Copyright
+              <span class="su-global-footer__link-a11y">(link is external)</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://adminguide.stanford.edu/chapter-1/subchapter-5/policy-1-5-4" title="Ownership and use of Stanford trademarks and images">
+              Trademarks
+              <span class="su-global-footer__link-a11y">(link is external)</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://studentservices.stanford.edu/more-resources/student-policies/non-academic/non-discrimination" title="Non-discrimination policy">
+              Non-Discrimination
+              <span class="su-global-footer__link-a11y">(link is external)</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.stanford.edu/site/accessibility" title="Report web accessibility issues">
+              Accessibility
+              <span class="su-global-footer__link-a11y">(link is external)</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="su-global-footer__copyright">
+        <span>© Stanford University.</span>
+        <span>&nbsp; Stanford, California 94305.</span>
+      </div>
+    </div>
+  </div>
+</section>
