@@ -37,20 +37,39 @@ ood_files:
   - var/www/ood/public/assets/js/custom.js
   - var/www/ood/public/logo.png
   - var/www/ood/public/maintenance/index.html
+  -	var/www/ood/apps/sys/code-server/icon.png
+  -	var/www/ood/public/carina-logo-white.png 
 
 # these should exist in templates/ with a .j2 extension
 ood_templates:
   - etc/httpd/conf.d/mpm_event.conf
   - etc/ood/config/apps/bc_desktop/c2.yml
   - etc/ood/config/apps/bc_desktop/submit/c2.yml.erb
+  - etc/ood/config/apps/dashboard/app/assets/stylesheets/_variables.scss
+  - etc/ood/config/apps/dashboard/app/assets/stylesheets/application.scss
+  - etc/ood/config/apps/dashboard/app/assets/stylesheets/sara_tweaks.scss
   - etc/ood/config/apps/dashboard/env
   - etc/ood/config/apps/dashboard/initializers/ood.rb
-  - etc/ood/config/apps/dashboard/views/widgets/_carina_splash.html
+  - etc/ood/config/apps/dashboard/locales/en.yml
+  - etc/ood/config/apps/dashboard/views/layouts/_global_footer.html.erb
+  - etc/ood/config/apps/dashboard/views/layouts/_google_fonts.erb
+  - etc/ood/config/apps/dashboard/views/layouts/application.html.erb
+  - etc/ood/config/apps/dashboard/views/layouts/nav/_brandbar.html.erb
+  - etc/ood/config/apps/dashboard/views/layouts/nav/_user.html.erb
+  - etc/ood/config/apps/dashboard/views/support_ticket/email/_email.text.erb
+  - etc/ood/config/apps/dashboard/views/widgets/_carina_splash.html.erb
+  - etc/ood/config/apps/dashboard/views/widgets/_dash_list.html.erb
+  - etc/ood/config/apps/dashboard/views/widgets/_pinned_apps.html.erb
+  - etc/ood/config/apps/dashboard/views/widgets/_recently_used_apps.html.erb
+  - etc/ood/config/apps/dashboard/views/widgets/pinned_apps/_app.html.erb
+  - etc/ood/config/apps/dashboard/views/widgets/recently_used_apps/_app.html.erb
+  - etc/ood/config/apps/dashboard/views/widgets/_sessions.html.erb
   - etc/ood/config/apps/shell/env
   - etc/ood/config/clusters.d/c2.yml
   - etc/ood/config/nginx_stage.yml
   - etc/ood/config/ondemand.d/dashboard.yml
   - etc/ood/config/ondemand.d/stanford.yml
+  - etc/ood/config/ondemand.d/support_tickets.yml
   - etc/ood/config/ood_portal.yml
   - opt/ood/ood-portal-generator/templates/ood-portal.conf.erb
 
