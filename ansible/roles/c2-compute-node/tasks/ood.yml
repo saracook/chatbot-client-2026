@@ -39,6 +39,27 @@
     dest: /usr/share/applications/SAS94.desktop
     mode: '00644'
 
+- name: create directory /usr/share/xfce4/backdrops
+  ansible.builtin.file:
+    path: /usr/share/xfce4/backdrops
+    state: directory
+
+- name: install /usr/share/xfce4/backdrops/carina-desktop.svg
+  ansible.builtin.copy:
+    src: usr/share/xfce4/backdrops/carina-desktop.svg
+    dest: /usr/share/xfce4/backdrops/carina-desktop.svg
+
+- name: create directory /etc/xdg/xfce4/xfconf/xfce-perchannel-xml
+  ansible.builtin.file:
+    path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml
+    state: directory
+
+- name: install /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+  ansible.builtin.copy:
+    src: etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+    dest: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+
+# todo: update stata module file to inject per-group license
 - name: install /usr/local/sbin/proot
   ansible.builtin.get_url:
     url: "{{ proot_binary_url }}"
