@@ -1,1 +1,110 @@
 <!-- /public/assets/css/custom.css -->
+.dash-section {
+    overflow: auto;
+}
+
+.col-md-4 {
+    .dash-section {
+        margin-bottom: 14px;
+
+        h2 {
+            font-size: 18px;
+        }
+    }
+
+    .active-sessions-content {
+        font-size: 16px;
+
+        .card-heading {
+            .float-end {
+                font-size: 14px;
+            }
+        }
+
+        .card-body .session-details {
+            display: none;
+        }
+
+    }
+
+    .recently-used-apps {
+        .app-launcher .launcher-click {
+            border: 1px solid #D4D1D1;
+            border-left: 10px solid;
+            border-radius: 6px;
+            box-shadow: none;
+
+            &.matlab {
+                border-left-color: #08609d;
+            }
+
+            &.jupyter {
+                border-left-color: #F37626;
+            }
+
+            &.vscode {
+                border-left-color: #0098FF;
+            }
+
+            &.rstudio {
+                border-left-color: #75aadb;
+            }
+        }
+
+        .app-launcher {
+            border-radius: 6px;
+            height: auto;
+            box-shadow: none;
+        }
+
+        .app-launcher .app-icon {
+            float: left;
+            margin: 0;
+            padding: 0;
+            height: 50px;
+            width: auto;
+        }
+
+        .app-launcher .app-title {
+            text-align: left;
+            padding: 6px 0;
+        }
+
+        .app-description {
+            display: none;
+        }
+    }
+}
+
+.app-launcher .launcher-click {
+    border: 16px solid #651C32;
+
+    &.matlab {
+        border-color: #08609d;
+    }
+
+    &.jupyter {
+        border-color: #F37626;
+    }
+
+    &.vscode {
+        border-color: #0098FF;
+    }
+
+    &.rstudio {
+        border-color: #75aadb;
+    }
+}
+
+
+.dash-section {
+    margin-bottom: 18px;
+
+    h2 {
+        font-size: 24px;
+    }
+}
+
+.dash-section small {
+    font-size: 75%;
+}
