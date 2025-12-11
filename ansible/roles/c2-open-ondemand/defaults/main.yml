@@ -47,9 +47,9 @@ ood_files:
   - var/www/ood/public/assets/js/custom.js
   - var/www/ood/public/logo.png
   - var/www/ood/public/maintenance/index.html
-  -	var/www/ood/apps/sys/code-server/icon.png
+  - var/www/ood/apps/sys/code-server/icon.png
   - var/www/ood/apps/sys/bc_desktop/icon.png
-  -	var/www/ood/public/carina-logo-white.png 
+  - var/www/ood/public/carina-logo-white.png
 
 # these should exist in templates/ with a .j2 extension
 ood_templates:
