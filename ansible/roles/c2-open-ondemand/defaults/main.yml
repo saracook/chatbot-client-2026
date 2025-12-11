@@ -15,7 +15,7 @@ ood_download_dir_max_bytes: 1073741824
 # ood_{files,templates} below
 ood_dirs:
   - /etc/ood/config/announcements.d
-  - etc/ood/config/apps/bc_desktop/
+  - /etc/ood/config/apps/bc_desktop/
   - /etc/ood/config/apps/bc_desktop/submit
   - /etc/ood/config/apps/dashboard/app/assets/stylesheets
   - /etc/ood/config/apps/dashboard/initializers
@@ -33,6 +33,7 @@ ood_dirs:
   - /var/www/ood/public/assets/css
   - /var/www/ood/public/assets/js
   - /var/www/ood/public/maintenance
+  - /var/www/ood/apps/sys/bc_desktop
 
 # https://osc.github.io/ood-documentation/latest/customizations.html#announcements
 # https://osc.github.io/ood-documentation/latest/customizations.html#custom-css-files
@@ -47,7 +48,7 @@ ood_files:
   - var/www/ood/public/logo.png
   - var/www/ood/public/maintenance/index.html
   -	var/www/ood/apps/sys/code-server/icon.png
-  - etc/ood/config/apps/bc_desktop/icon.png
+  - var/www/ood/apps/sys/bc_desktop/icon.png
   -	var/www/ood/public/carina-logo-white.png 
 
 # these should exist in templates/ with a .j2 extension
@@ -61,7 +62,7 @@ ood_templates:
   - etc/ood/config/apps/dashboard/app/assets/stylesheets/sara_tweaks.scss
   - etc/ood/config/apps/dashboard/env
   - etc/ood/config/apps/dashboard/initializers/ood.rb
-  - etc/ood/config/apps/dashboard/locales/en.yml
+  - etc/ood/config/apps/dashboard/locales/en.yml.erb
   - etc/ood/config/apps/dashboard/views/layouts/_global_footer.html.erb
   - etc/ood/config/apps/dashboard/views/layouts/_google_fonts.erb
   - etc/ood/config/apps/dashboard/views/layouts/application.html.erb
