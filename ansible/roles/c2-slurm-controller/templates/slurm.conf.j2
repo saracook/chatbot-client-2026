@@ -71,23 +71,26 @@ PartitionName=DEFAULT SelectTypeParameters=CR_Core_Memory
 # General partitions
 #
 PartitionName=dev \
-    DefaultTime=0-01:00:00   MaxTime=0-02:00:00 \
-    OverSubscribe=No
+    DefaultTime=0-01:00:00 \
+    MaxTime=0-02:00:00 \
+    OverSubscribe=No \
     PreemptMode=OFF \
     PriorityTier=50 \
-    Nodes=c2-comp-[01-05]
+    Nodes=c2-comp-[01-05] 
 
 PartitionName=normal \
-    DefaultTime=0-02:00:00   MaxTime=2-00:00:00 \
-    OverSubscribe=NO
+    DefaultTime=0-02:00:00 \
+    MaxTime=2-00:00:00 \
+    OverSubscribe=NO \
     PreemptMode=OFF \
     PriorityTier=50 \
-    Default=YES
+    Default=YES \
     Nodes=c2-comp-[01-05]
 
 PartitionName=long\
-    DefaultTime=0-02:00:00   MaxTime=5-00:00:00 \
-    OverSubscribe=NO
+    DefaultTime=0-02:00:00 \
+    MaxTime=2-00:00:00 \
+    OverSubscribe=NO \
     PreemptMode=OFF \
     PriorityTier=50 \
     Nodes=c2-comp-[01-05]
@@ -95,58 +98,47 @@ PartitionName=long\
 #
 # Owner partitions
 #
-PartitionName=boussard-a100 \
-    MaxTime=4-00:00:00 DefaultTime=0-02:00:00 \
-    Priority=50 
-    DefMemPerCPU=500
-    OverSubscribe=NO
-    MaxNodes=1
+PartitionName=boussard \
+    DefaultTime=0-02:00:00 \
+    MaxTime=4-00:00:00 \
+    Priority=50 \
+    DefMemPerCPU=500 \
+    OverSubscribe=NO \
+    MaxNodes=1 \
     Nodes=boussard-a100
 
-PartitionName=mrivas-v100 \
-    MaxTime=2-00:00:00 DefaultTime=0-02:00:00 \
-    Priority=50 
-    DefMemPerCPU=500
-    OverSubscribe=NO
-    MaxNodes=1
+PartitionName=mrivas \
+    DefaultTime=0-02:00:00 \
+    MaxTime=2-00:00:00 \
+    Priority=50 \
+    DefMemPerCPU=500 \
+    OverSubscribe=NO \
+    MaxNodes=1 \
     Nodes=mrivas-v100
 
-PartitionName=nigam-a100 \
-    MaxTime=2-00:00:00 DefaultTime=0-02:00:00 \
-    Priority=50 
-    DefMemPerCPU=500
-    OverSubscribe=NO
-    MaxNodes=1
-    Nodes=nigam-a100
+PartitionName=nigam \
+    DefaultTime=0-02:00:00 \
+    MaxTime=2-00:00:00 \
+    Priority=50 \
+    DefMemPerCPU=500 \
+    OverSubscribe=NO \
+    MaxNodes=1 \
+    Nodes=nigam-a100,nigam-h100,nigam-v100
 
-PartitionName=nigam-h100 \
-    MaxTime=7-00:00:00 DefaultTime=0-02:00:00 \
-    Priority=50 
-    DefMemPerCPU=500
-    OverSubscribe=NO
-    MaxNodes=1
-    Nodes=nigam-h100
+PartitionName=ogevaert \
+    DefaultTime=0-02:00:00 \
+    MaxTime=7-00:00:00 \
+    Priority=50 \
+    DefMemPerCPU=500 \
+    OverSubscribe=NO \
+    MaxNodes=1 \
+    Nodes=ogevaert-a100 
 
-PartitionName=nigam-v100 \
-    MaxTime=2-00:00:00 DefaultTime=0-02:00:00 \
-    Priority=50 
-    DefMemPerCPU=500
-    OverSubscribe=NO
-    MaxNodes=1
-    Nodes=nigam-v100
-
-PartitionName=ogevaert-a100 \
-    MaxTime=7-00:00:00 DefaultTime=0-02:00:00 \
-    Priority=50 
-    DefMemPerCPU=500
-    OverSubscribe=NO
-    MaxNodes=1
-    Nodes=ogevaert-a100
-
-PartitionName=studdert-compute \
-    MaxTime=7-00:00:00 DefaultTime=0-02:00:00 \
-    Priority=50 
-    DefMemPerCPU=500
-    OverSubscribe=NO
-    MaxNodes=1
-    Nodes=studdert-a100
+PartitionName=studdert \
+    DefaultTime=0-02:00:00 \
+    MaxTime=7-00:00:00 \
+    Priority=50 \
+    DefMemPerCPU=500 \
+    OverSubscribe=NO \
+    MaxNodes=1 \
+    Nodes=studdert-a100 
