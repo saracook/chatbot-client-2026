@@ -23,18 +23,6 @@
     mode: '00644'
   register: sdsc
 
-- name: Install prolog/epilog scripts
-  ansible.builtin.copy:
-    src: files/etc/slurm/scripts/{{ item }} 
-    dest: /etc/slurm/scripts
-    owner: "{{ slurm_user }}"
-    group: "{{ slurm_group }}"
-    mode: '0755'
-  loop:
-    - prolog.sh
-    - taskprolog.sh
-    - epilog.sh
-
 - name: start/restart and enable slurmd.service
   ansible.builtin.systemd_service:
     name: slurmd.service
