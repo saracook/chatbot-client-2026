@@ -76,6 +76,8 @@ PartitionName=dev \
     OverSubscribe=No \
     PreemptMode=OFF \
     PriorityTier=50 \
+    QOS=dev \
+    Default=YES \
     Nodes=c2-comp-[01-05] 
 
 PartitionName=normal \
@@ -84,7 +86,7 @@ PartitionName=normal \
     OverSubscribe=NO \
     PreemptMode=OFF \
     PriorityTier=50 \
-    Default=YES \
+    QOS=normal \
     Nodes=c2-comp-[01-05]
 
 PartitionName=long\
@@ -93,6 +95,7 @@ PartitionName=long\
     OverSubscribe=NO \
     PreemptMode=OFF \
     PriorityTier=50 \
+    QOS=long \
     Nodes=c2-comp-[01-05]
 
 #
