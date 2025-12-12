@@ -11,5 +11,5 @@ prometheus_data_dir: /srv/prometheus/data
 prometheus_log_dir: /srv/prometheus/log
 prometheus_exec_file: /usr/local/sbin/prometheus
 prometheus_config_file: /etc/prometheus/prometheus.yml
-prometheus_retention_hours: 168 # 1 week
+prometheus_retention_hours: 2160 # 90 days
 prometheus_scrape_interval_seconds: 15
