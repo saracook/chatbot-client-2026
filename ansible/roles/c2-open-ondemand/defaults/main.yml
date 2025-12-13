@@ -67,6 +67,7 @@ ood_templates:
   - etc/ood/config/apps/dashboard/views/layouts/application.html.erb
   - etc/ood/config/apps/dashboard/views/layouts/nav/_brandbar.html.erb
   - etc/ood/config/apps/dashboard/views/layouts/nav/_user.html.erb
+  - etc/ood/config/apps/dashboard/views/layouts/nav/_styles.html.erb
   - etc/ood/config/apps/dashboard/views/support_ticket/email/_email.text.erb
   - etc/ood/config/apps/dashboard/views/widgets/_carina_splash.html
   - etc/ood/config/apps/dashboard/views/widgets/_dash_list.html.erb
@@ -79,7 +80,7 @@ ood_templates:
   - etc/ood/config/nginx_stage.yml
   - etc/ood/config/ondemand.d/dashboard.yml
   - etc/ood/config/ondemand.d/stanford.yml
-  - etc/ood/config/ondemand.d/support_tickets.erb.yml
+  - etc/ood/config/ondemand.d/support_tickets.yml.erb
   - etc/ood/config/ood_portal.yml
   - opt/ood/ood-portal-generator/templates/ood-portal.conf.erb
 
