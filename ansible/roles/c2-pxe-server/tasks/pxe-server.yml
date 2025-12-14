@@ -34,25 +34,11 @@
     group: root
     mode: '0644'
 
-- name: install /etc/dnsmasq.conf
-  ansible.builtin.template:
-    src: dnsmasq.conf.j2
-    dest: /etc/dnsmasq.conf
-    owner: root
-    group: root
-    mode: '0644'
-    validate: /usr/sbin/dnsmasq --conf-file=%s --test
-  register: dnsmasqconf
-  tags: dnsmasq
-
-- name: restart dnsmasq
-  ansible.builtin.systemd_service:
-    name: dnsmasq.service
-    state: restarted
-    enabled: yes
-    daemon_reload: yes
-  when: dnsmasqconf is changed
-  tags: dnsmasq
+- name: run role c2-dnsmasq
+  ansible.builtin.include_role:
+    name: c2-dnsmasq
+  tags:
+    - always
 
 - name: install /srv/pxelinux.0
   ansible.builtin.copy:
@@ -130,6 +116,8 @@
 - name: run role c2-pxe-config
   ansible.builtin.include_role:
     name: c2-pxe-config
+  tags:
+    - always
 
 - name: install /etc/nginx/nginx.conf
   ansible.builtin.template:

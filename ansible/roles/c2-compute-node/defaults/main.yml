@@ -1,3 +1,35 @@
+compute_ssh_host_keys:
+  - envvar: COMPUTE_NODE_SSH_ECDSA_PRIVATE_KEY
+    file: /etc/ssh/ssh_host_ecdsa_key
+    owner: root
+    group: ssh_keys
+    mode: '00640'
+  - envvar: COMPUTE_NODE_SSH_ECDSA_PUBLIC_KEY
+    file: /etc/ssh/ssh_host_ecdsa_key.pub
+    owner: root
+    group: root
+    mode: '00644'
+  - envvar: COMPUTE_NODE_SSH_ED25519_PRIVATE_KEY
+    file: /etc/ssh/ssh_host_ed25519_key
+    owner: root
+    group: ssh_keys
+    mode: '00640'
+  - envvar: COMPUTE_NODE_SSH_ED25519_PUBLIC_KEY
+    file: /etc/ssh/ssh_host_ed25519_key.pub
+    owner: root
+    group: root
+    mode: '00644'
+  - envvar: COMPUTE_NODE_SSH_RSA_PRIVATE_KEY
+    file: /etc/ssh/ssh_host_rsa_key
+    owner: root
+    group: ssh_keys
+    mode: '00640'
+  - envvar: COMPUTE_NODE_SSH_RSA_PUBLIC_KEY
+    file: /etc/ssh/ssh_host_rsa_key.pub
+    owner: root
+    group: root
+    mode: '00644'
+
 # obtain the proot release binary (e.g. v5.3.1):
 # proceed to pipelines:
 # https://gitlab.com/proot/proot/-/pipelines

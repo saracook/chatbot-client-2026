@@ -13,12 +13,15 @@
     - debug:
         var: pxe_clients
 
-- name: configure pxe clients to net boot
+- name: configure dnsmasq and set pxe clients to net boot
   hosts: c2_pxe_server
   become: yes
   gather_facts: no
   tasks:
-    - name: configure pxe clients to net boot
+    - name: configure dnsmasq
+      ansible.builtin.include_role:
+        name: c2-dnsmasq
+    - name: set pxe clients to net boot
       ansible.builtin.include_role:
         name: c2-pxe-config
       vars:

@@ -5,7 +5,7 @@ SlurmctldHost={{ host }}({{ hostvars[host]['ansible_host'] }})
 ProctrackType=proctrack/cgroup
 PrologFlags=Contain
 ReturnToService=1
-SlurmctldParameters=enable_configless
+SlurmctldParameters=enable_configless,reconfig_on_restart
 SlurmctldPidFile=/var/run/slurm/slurmctld.pid
 SlurmctldPort=6817
 SlurmdPidFile=/var/run/slurm/slurmd.pid
@@ -14,6 +14,12 @@ SlurmdSpoolDir=/var/spool/slurmd
 SlurmUser=slurm
 StateSaveLocation=/var/spool/slurmctld
 TaskPlugin=task/affinity,task/cgroup
+
+# PROLOG/EPILOG
+Prolog=prolog.sh
+TaskProlog=taskprolog.sh
+Epilog=epilog.sh
+PrologEpilogTimeout=600
 
 # TIMERS
 InactiveLimit=0
