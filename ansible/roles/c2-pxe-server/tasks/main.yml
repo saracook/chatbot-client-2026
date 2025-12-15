@@ -1,4 +1,12 @@
 - ansible.builtin.include_tasks:
+    file: firewall.yml
+    apply:
+      tags:
+        - firewall
+  tags:
+    - always
+
+- ansible.builtin.include_tasks:
     file: pxe-server.yml
     apply:
       tags:
