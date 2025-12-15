@@ -50,6 +50,9 @@
             }
         }
 
+        div.text-center{
+            display: flex;
+        }
         .app-launcher {
             border-radius: 6px;
             height: auto;
@@ -58,15 +61,17 @@
 
         .app-launcher .app-icon {
             float: left;
-            margin: 0;
-            padding: 0;
+            margin: 6px 12px 6px 0;
+            padding:  0;
             height: 50px;
             width: auto;
+            align-self: center
         }
 
         .app-launcher .app-title {
             text-align: left;
-            padding: 6px 0;
+            font-size: 14px;
+            align-self: center
         }
 
         .app-description {
