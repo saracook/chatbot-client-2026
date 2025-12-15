@@ -67,7 +67,6 @@ ood_templates:
   - etc/ood/config/apps/dashboard/views/layouts/application.html.erb
   - etc/ood/config/apps/dashboard/views/layouts/nav/_brandbar.html.erb
   - etc/ood/config/apps/dashboard/views/layouts/nav/_user.html.erb
-  - etc/ood/config/apps/dashboard/views/layouts/nav/_styles.html.erb
   - etc/ood/config/apps/dashboard/views/support_ticket/email/_email.text.erb
   - etc/ood/config/apps/dashboard/views/widgets/_carina_splash.html
   - etc/ood/config/apps/dashboard/views/widgets/_dash_list.html.erb
