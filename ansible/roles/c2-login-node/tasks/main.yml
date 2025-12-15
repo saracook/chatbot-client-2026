@@ -1,4 +1,12 @@
 - ansible.builtin.include_tasks:
+    file: ssh.yml
+    apply:
+      tags:
+        - ssh
+  tags:
+    - always
+
+- ansible.builtin.include_tasks:
     file: ood.yml
     apply:
       tags:

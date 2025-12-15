@@ -33,6 +33,19 @@
     - slurm
   register: sctldcnf
 
+- name: Install prolog/epilog scripts
+  ansible.builtin.template:
+    src: "{{ item }}.sh.j2"
+    dest: /etc/slurm/{{ item }}.sh
+    owner: "{{ slurm_user }}"
+    group: "{{ slurm_group }}"
+    mode: '0755'
+  loop:
+    - prolog
+    - taskprolog
+    - epilog
+  register: sctldscrpt
+
 #- name: install /etc/systemd/system/slurmctld.service
 #  ansible.builtin.template:
 #    src: slurmctld.service.j2
@@ -55,6 +68,6 @@
   ansible.builtin.systemd_service:
     name: slurmctld.service
     #state: "{{ 'restarted' if sctldcnf.changed or sctldsrv.changed or sctldsc.changed else 'started' }}"
-    state: "{{ 'restarted' if sctldcnf.changed or sctldsc.changed else 'started' }}"
+    state: "{{ 'restarted' if sctldcnf.changed or sctldsc.changed or sctldscrpt.changed else 'started' }}"
     enabled: yes
     daemon_reload: yes

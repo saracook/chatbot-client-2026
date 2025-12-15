@@ -1,4 +1,4 @@
-- name: check for required secrets and install ssh keys
+- name: check for required secrets and install ansible ssh keys
   hosts: localhost
   connection: local
   gather_facts: no
@@ -11,11 +11,23 @@
           loop:
             - ANSIBLE_SSH_PRIVATE_KEY
             - ANSIBLE_SSH_PUBLIC_KEY
+            - COMPUTE_NODE_SSH_ECDSA_PRIVATE_KEY
+            - COMPUTE_NODE_SSH_ECDSA_PUBLIC_KEY
+            - COMPUTE_NODE_SSH_ED25519_PRIVATE_KEY
+            - COMPUTE_NODE_SSH_ED25519_PUBLIC_KEY
+            - COMPUTE_NODE_SSH_RSA_PRIVATE_KEY
+            - COMPUTE_NODE_SSH_RSA_PUBLIC_KEY
             - CROWDSTRIKE_FALCON_CID
             - DEFAULT_PASSWORD
             - GITHUB_ACCESS_TOKEN
             - IDRAC_PASSWORD
             - IDRAC_USERNAME
+            - LOGIN_NODE_SSH_ECDSA_PRIVATE_KEY
+            - LOGIN_NODE_SSH_ECDSA_PUBLIC_KEY
+            - LOGIN_NODE_SSH_ED25519_PRIVATE_KEY
+            - LOGIN_NODE_SSH_ED25519_PUBLIC_KEY
+            - LOGIN_NODE_SSH_RSA_PRIVATE_KEY
+            - LOGIN_NODE_SSH_RSA_PUBLIC_KEY
             - MUNGE_KEY_B64
             - OOD_CERTBOT_DNS_GOOGLE_CREDENTIALS_JSON_B64
             - OOD_DEV_OIDC_CLIENT_ID

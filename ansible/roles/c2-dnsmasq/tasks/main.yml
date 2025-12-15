@@ -1,0 +1,7 @@
+- ansible.builtin.include_tasks:
+    file: dnsmasq.yml
+    apply:
+      tags:
+        - dnsmasq
+  tags:
+    - always
