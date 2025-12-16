@@ -132,8 +132,9 @@ all:
         c2-slurmdb-01:
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    ansible_ssh_private_key_file: /dev/shm/c2-ansible/rocky.pem
-    ansible_ssh_public_key_file: /dev/shm/c2-ansible/rocky.pub
+    ansible_ssh_key_dir: /dev/shm/c2-ansible
+    ansible_ssh_private_key_file: "{{ ansible_ssh_key_dir }}/rocky.pem"
+    ansible_ssh_public_key_file: "{{ ansible_ssh_key_dir }}/rocky.pub"
     ansible_managed: "This file is managed by Ansible. Changes to it may be overwritten."
     timezone: America/Los_Angeles
     locale: en_US.UTF-8
