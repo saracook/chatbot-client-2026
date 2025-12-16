@@ -72,4 +72,77 @@ NodeName={{ node }} CPUs={{ hostvars[node]['cpus'] }} RealMemory={{ hostvars[nod
 
 # PARTITIONS
 PartitionName=DEFAULT SelectTypeParameters=CR_Core_Memory
-PartitionName=dev Nodes=ALL Default=YES MaxTime=12:00:00 State=UP
+
+#
+# General partitions
+#
+PartitionName=dev \
+    DefaultTime=0-01:00:00 \
+    MaxTime=0-02:00:00 \
+    OverSubscribe=No \
+    PreemptMode=OFF \
+    PriorityTier=50 \
+    QOS=dev \
+    Default=YES \
+    Nodes=c2-comp-[01-05] 
+
+PartitionName=normal \
+    DefaultTime=0-02:00:00 \
+    MaxTime=2-00:00:00 \
+    OverSubscribe=NO \
+    PreemptMode=OFF \
+    PriorityTier=50 \
+    QOS=normal \
+    Nodes=c2-comp-[01-05]
+
+PartitionName=long \
+    DefaultTime=0-02:00:00 \
+    MaxTime=5-00:00:00 \
+    OverSubscribe=NO \
+    PreemptMode=OFF \
+    PriorityTier=50 \
+    QOS=long \
+    Nodes=c2-comp-[01-05]
+
+#
+# Owner partitions
+#
+PartitionName=boussard \
+    DefaultTime=0-02:00:00 \
+    MaxTime=4-00:00:00 \
+    Priority=50 \
+    OverSubscribe=NO \
+    MaxNodes=1 \
+    #Nodes=c1-comp-boussard-a100-01
+
+PartitionName=mrivas \
+    DefaultTime=0-02:00:00 \
+    MaxTime=2-00:00:00 \
+    Priority=50 \
+    OverSubscribe=NO \
+    MaxNodes=1 \
+    #Nodes=c1-comp-mrivas-v100-01
+
+PartitionName=nigam \
+    DefaultTime=0-02:00:00 \
+    MaxTime=2-00:00:00 \
+    Priority=50 \
+    OverSubscribe=NO \
+    MaxNodes=1 \
+    #Nodes=c1-comp-nigam-a100-01,c1-comp-nigam-h100-01,c1-comp-nigam-v100-01
+
+PartitionName=ogevaert \
+    DefaultTime=0-02:00:00 \
+    MaxTime=7-00:00:00 \
+    Priority=50 \
+    OverSubscribe=NO \
+    MaxNodes=1 \
+    #Nodes=c1-comp-ogevaert-a100-01
+
+PartitionName=studdert \
+    DefaultTime=0-02:00:00 \
+    MaxTime=7-00:00:00 \
+    Priority=50 \
+    OverSubscribe=NO \
+    MaxNodes=1 \
+    #Nodes=c1-comp-studdert-a100-01
