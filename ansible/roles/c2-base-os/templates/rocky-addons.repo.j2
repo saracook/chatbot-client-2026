@@ -36,7 +36,7 @@ enabled=0
 metadata_expire=6h
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-{{ distros[distro]['version_major'] }}
 
-{% if distros[distro]['version'] == '9.6' %}
+{% if distros[distro]['el'] == 'el9' %}
 [resilientstorage]
 name=Rocky Linux $releasever - Resilient Storage
 mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=ResilientStorage-$releasever$rltype

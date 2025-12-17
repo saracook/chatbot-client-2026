@@ -19,7 +19,7 @@
       - http-parser
     state: present
     update_cache: yes
-  when: distros[distro]['version'] == '9.6'
+  when: distros[distro]['el'] == 'el9'
   tags:
     - packages
 

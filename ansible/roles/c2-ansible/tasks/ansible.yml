@@ -1,12 +1,12 @@
 - name: set ansible_install_version for el9
   ansible.builtin.set_fact:
     ansible_install_version: '8.7.0'
-  when: distros[distro]['version'] == '9.6'
+  when: distros[distro]['el'] == 'el9'
 
 - name: set ansible_install_version for el10
   ansible.builtin.set_fact:
     ansible_install_version: '12.1.0'
-  when: distros[distro]['version'] == '10.0'
+  when: distros[distro]['el'] == 'el10'
 
 # nb: package python3-pip installed in role c2-base-os
 - name: install ansible {{ ansible_install_version }}
