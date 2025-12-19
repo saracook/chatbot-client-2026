@@ -52,7 +52,11 @@ def get_workgroup(wg_name, cert, key):
         print(f"an error occurred: {e}")
 
 
+<<<<<<< HEAD
 def create_workgroup(wg_name, pi_sunet, members, cert, key):
+=======
+def create_workgroup(wg_name, members, cert, key):
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
     """
     Function to create a new Workgroup (POST) via the Workgroup manager API
     This function is a bit involved, as it handles multiple steps.
@@ -79,7 +83,11 @@ def create_workgroup(wg_name, pi_sunet, members, cert, key):
         wclient = WorkgroupClient(client)
         if f'{wg_name}' not in wclient:
             new_workgroup = wclient.create(
+<<<<<<< HEAD
                 name=f'{wg_name}', description=f'Carina 2.0 cluster: {pi_sunet} project')
+=======
+                name=f'{wg_name}', description='API test')
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
         else:
             print("Workgroup already exists.. Exiting now.")
             exit(7)
@@ -136,9 +144,12 @@ def get_fs(url_param):
     """
     Function to get directory contents via the PowerScale API
     """
+<<<<<<< HEAD
 
     dell_credential_check()
 
+=======
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
     username = "root"
     try:
         response = requests.get(
@@ -153,15 +164,24 @@ def get_fs_quota(pi_sunet, project):
     """
     Function to get the quota of a directory.
     """
+<<<<<<< HEAD
 
     dell_credential_check()
 
     username = "root"
+=======
+    username = "root"
+    password = f"{dell_root_pw}"
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
     json_payload = {
         "path": f"/ifs/carina-prod/projects/{pi_sunet}/{project}"}
     try:
         response = requests.get(
+<<<<<<< HEAD
             f'https://h700.mgmt.carina:8080/platform/1/quota/quotas', params=json_payload, verify=False, auth=(username, DELL_ROOT_PW), timeout=30)
+=======
+            f'https://h700.mgmt.carina:8080/platform/1/quota/quotas', params=json_payload, verify=False, auth=(username, password), timeout=30)
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
         print(f"Status Code: {response.status_code}")
         print(response.json())
     except requests.exceptions.RequestException as e:
@@ -175,7 +195,11 @@ def create_dir(pi, project):
     isilon_username = "root"
     headers = {
         'x-isi-ifs-target-type': 'container',
+<<<<<<< HEAD
         'x-isi-ifs-access-control': '2770'
+=======
+        'x-isi-ifs-access-control': '3770'
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
     }
     directory_path = f'/ifs/carina-prod/projects/{pi}/{project}'
 
@@ -183,7 +207,11 @@ def create_dir(pi, project):
 
     try:
         response = requests.put(
+<<<<<<< HEAD
             f'https://h700.mgmt.carina:8080/namespace{directory_path}?recursive=true', verify=False, headers=headers, auth=(isilon_username, DELL_ROOT_PW), timeout=30)
+=======
+            f'https://h700.mgmt.carina:8080/namespace{directory_path}?recursive=true', verify=False, headers=headers, auth=(username, DELL_ROOT_PW), timeout=30)
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
         print(
             f'Succesfully created the project directory at /ifs/carina-prod/projects/{pi}/{project}')
     except requests.exceptions.RequestException as e:
@@ -203,11 +231,16 @@ def create_dir(pi, project):
     }
     try:
         quota = requests.post(
+<<<<<<< HEAD
             f'https://h700.mgmt.carina:8080/platform/8/quota/quotas/', json=quota_payload, verify=False, auth=(isilon_username, DELL_ROOT_PW), timeout=30)
+=======
+            f'https://h700.mgmt.carina:8080/platform/8/quota/quotas/', json=quota_payload, verify=False, auth=(username, DELL_ROOT_PW), timeout=30)
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
         print('Successfully set quota for new project directory to 1T')
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
 
+<<<<<<< HEAD
     # Update group permissions on project directory
     try:
         if project == "main":
@@ -220,11 +253,22 @@ def create_dir(pi, project):
         os.chown(local_project_path, uid, gid)
         print(
             f"Successfully changed group ownership of '{local_project_path}' to '{target_group_ownership}' (GID: {gid})")
+=======
+    try:
+        target_group_ownership = f"carina_{pi}-{project}"
+        local_dir_path = f"/projects/{pi}/{project}"
+        gid = grp.getgrnam(target_group_ownership).gr_gid
+        uid = -1  # Set UID to -1 to ignore making any user ownership change on the directory
+        os.chown(local_dir_path, uid, gid)
+        print(
+            f"Successfully changed group ownership of '{directory_path}' to '{target_group_ownership}' (GID: {gid})")
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
     except KeyError:
         print(f"Error: Group '{target_group_ownership}' not found.")
     except PermissionError:
         print("Error: Permission denied. You likely need superuser (root) privileges to change ownership.")
     except FileNotFoundError:
+<<<<<<< HEAD
         print(f"Error: Directory not found at '{local_project_path}'")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
@@ -244,6 +288,12 @@ def create_dir(pi, project):
     except OSError as e:
         print(f"An unexpected system error occurred: {e}")
 
+=======
+        print(f"Error: Directory not found at '{directory_path}'")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
 
 def update_quota(pi_sunet, project, soft_quota, hard_quota):
     """
@@ -252,10 +302,14 @@ def update_quota(pi_sunet, project, soft_quota, hard_quota):
     1) We need to query the quota id from the API in order to make a modification. A string (directory path) cannot be used.
     2) Once the quota id is stored in a variable, we use this to perform the actual update of the quota
     """
+<<<<<<< HEAD
 
     dell_credential_check()
 
     isilon_username = "root"
+=======
+    username = "root"
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
     payload = {
         "thresholds": {
             "hard": hard_quota,
@@ -269,7 +323,11 @@ def update_quota(pi_sunet, project, soft_quota, hard_quota):
         "path": f"/ifs/carina-prod/projects/{pi_sunet}/{project}"}
     try:
         response = requests.get(
+<<<<<<< HEAD
             f'https://h700.mgmt.carina:8080/platform/1/quota/quotas', params=directory_path, verify=False, auth=(isilon_username, DELL_ROOT_PW), timeout=30)
+=======
+            f'https://h700.mgmt.carina:8080/platform/1/quota/quotas', params=directory_path, verify=False, auth=(username, DELL_ROOT_PW), timeout=30)
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
         data = response.json()
         for keys in data['quotas']:
             quota_id = keys['id']
@@ -283,7 +341,11 @@ def update_quota(pi_sunet, project, soft_quota, hard_quota):
     # Now that we have the quota id we can properly update the quota information
     try:
         response = requests.put(
+<<<<<<< HEAD
             f'https://h700.mgmt.carina:8080/platform/1/quota/quotas/{quota_id}', json=payload, verify=False, auth=(isilon_username, DELL_ROOT_PW), timeout=30)
+=======
+            f'https://h700.mgmt.carina:8080/platform/1/quota/quotas/{quota_id}', json=payload, verify=False, auth=(username, DELL_ROOT_PW), timeout=30)
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
         print(f"Status Code: {response.status_code}")
         print(response.json())
     except requests.exceptions.RequestException as e:
@@ -291,7 +353,11 @@ def update_quota(pi_sunet, project, soft_quota, hard_quota):
 
 
 def dell_credential_check():
+<<<<<<< HEAD
     dell_password = os.getenv("DELL_ROOT_PASSWORD")
+=======
+    dell_password = os.getenv("DELL_ROOT_PW")
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
     if dell_password is None:
         print(f"Password not set for Isilon storage. Exiting now.. Please set this to continue")
         sys.exit(1)
@@ -369,7 +435,11 @@ def main():
 
     if args.create_wg:
         group = create_workgroup(
+<<<<<<< HEAD
             args.create_wg, args.pi_sunet, set(args.wg_member), args.certfile, args.keyfile)
+=======
+            args.create_wg, set(args.wg_member), args.certfile, args.keyfile)
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
 
     if args.add_wg:
         group = add_wg_member(args.wg, set(args.add_wg),

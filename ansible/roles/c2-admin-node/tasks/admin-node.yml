@@ -5,6 +5,7 @@
     update_cache: yes
     enablerepo: stanford
 
+<<<<<<< HEAD
 - name: install project manager script
   ansible.builtin.copy:
     src: "{{ item.src }}"
@@ -16,6 +17,9 @@
     - { src: 'files/project_manager/project_manager.py'}
     - { src: 'files/project_manager/requirements.txt'}
     
+=======
+<<<<<<< HEAD
+>>>>>>> 900229e (re-open WIP commit. First branch was tainted)
 - name: install new user home quota script
   ansible.builtin.template:
     src: "{{ item.src }}"
@@ -26,6 +30,15 @@
   loop:
     - { src: set-home-quota.j2, dest: /admin/bin/set-home-quota, mode: "0750" }
     - { src: set-home-quota.env.j2, dest: /admin/bin/set-home-quota.env, mode: "0600" }
+=======
+- name: install project manager script
+  ansible.builting.copy:
+    src: files/project_manager
+    dst: /admin/bin
+    owner: root
+    group: carina_admins
+    mode: "0750"
+>>>>>>> 6ed8d46 (re-open WIP commit. First branch was tainted)
 
 - name: run role c2-ansible
   ansible.builtin.include_role:
