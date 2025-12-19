@@ -1,5 +1,6 @@
 .dash-section {
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: visible;
 }
 
 .col-md-4 {
@@ -70,7 +71,6 @@
 
         .app-launcher .app-title {
             text-align: left;
-            font-size: 14px;
             align-self: center
         }
 
@@ -97,6 +97,9 @@
 
     &.rstudio {
         border-color: #75aadb;
+    }
+    &.sas {
+    border-color: #0766D1;
     }
 }
 

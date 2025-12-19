@@ -8,15 +8,10 @@
         # 1. Determine the correct column class before the loop starts
         column_class = case apps.count
                        when 1
-                         # If 1 app, center it and make it larger
+                         # If 1 app, full-width column
                          "col-12"
-                       when 2
-                         # If 2 apps, make them each half-width
-                         "col-sm-12 col-md-6"
-                       else # 3 or more apps
-                         # If 4+ apps, use 4 columns per row on medium screens,
-                         # and 2 columns per row on small screens.
-                         "col-sm-12 col-md-6"
+                       else # 2 or more apps - use half-width columns on xl screens and full-width on xs-l screens
+                         "col-xs-12 col-xl-6"
                        end
       -%>
     <%- apps.each do |app| -%>
