@@ -5,6 +5,14 @@
     update_cache: yes
     enablerepo: stanford
 
+- name: install project manager script
+  ansible.builting.copy:
+    src: files/project_manager
+    dst: /admin/bin
+    owner: root
+    group: carina_admins
+    mode: "0750"
+
 - name: run role c2-ansible
   ansible.builtin.include_role:
     name: c2-ansible
