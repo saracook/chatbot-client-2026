@@ -17,8 +17,8 @@
     src: sssd.conf.j2
     dest: /etc/sssd/sssd.conf
     owner: root
-    group: "{{ 'root' if distros[distro]['version'] == '9.6' else 'sssd' }}"
-    mode: "{{ '00600' if distros[distro]['version'] == '9.6' else '00640' }}"
+    group: "{{ 'root' if distros[distro]['el'] == 'el9' else 'sssd' }}"
+    mode: "{{ '00600' if distros[distro]['el'] == 'el9' else '00640' }}"
   register: sssdconf
 
 - name: start/restart and enable sssd.service

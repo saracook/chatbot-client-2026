@@ -132,8 +132,9 @@ all:
         c2-slurmdb-01:
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    ansible_ssh_private_key_file: /dev/shm/c2-ansible/rocky.pem
-    ansible_ssh_public_key_file: /dev/shm/c2-ansible/rocky.pub
+    ansible_ssh_key_dir: /var/tmp/c2-ansible
+    ansible_ssh_private_key_file: "{{ ansible_ssh_key_dir }}/rocky.pem"
+    ansible_ssh_public_key_file: "{{ ansible_ssh_key_dir }}/rocky.pub"
     ansible_managed: "This file is managed by Ansible. Changes to it may be overwritten."
     timezone: America/Los_Angeles
     locale: en_US.UTF-8
@@ -180,14 +181,14 @@ all:
     powerscale_a300_cluster_smartconnect_sip: 10.210.28.25
     # default distro. must be one of the keys in distros.
     # override in host/group vars to select a different version.
-    distro: rocky_9_6
+    distro: rocky_9_7
     distros:
       rocky_9_6:
         el: el9
         version: '9.6'
         version_major: '9'
         name: rocky-9.6
-        iso_url: http://dl.rockylinux.org/pub/rocky/9.6/isos/x86_64/Rocky-9.6-x86_64-minimal.iso
+        iso_url: http://dl.rockylinux.org/vault/rocky/9.6/isos/x86_64/Rocky-9.6-x86_64-minimal.iso
         iso_sha256: aed9449cf79eb2d1c365f4f2561f923a80451b3e8fdbf595889b4cf0ac6c58b8
         iso_pxe_linux: rocky-9.6/images/pxeboot/vmlinuz
         iso_pxe_initrd: rocky-9.6/images/pxeboot/initrd.img
@@ -205,7 +206,7 @@ all:
         version: '10.0'
         version_major: '10'
         name: rocky-10.0
-        iso_url: http://dl.rockylinux.org/pub/rocky/10.0/isos/x86_64/Rocky-10.0-x86_64-minimal.iso
+        iso_url: http://dl.rockylinux.org/vault/rocky/10.0/isos/x86_64/Rocky-10.0-x86_64-minimal.iso
         iso_sha256: de75c2f7cc566ea964017a1e94883913f066c4ebeb1d356964e398ed76cadd12
         iso_pxe_linux: rocky-10.0/images/pxeboot/vmlinuz
         iso_pxe_initrd: rocky-10.0/images/pxeboot/initrd.img

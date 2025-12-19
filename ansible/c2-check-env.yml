@@ -40,22 +40,22 @@
             - SLURM_DB_SLURM_PASSWORD
             - SPLUNK_CLIENT_ADMIN_PASSWORD
             - SPLUNK_CLIENT_TLS_KEY_PASSPHRASE
-        - name: create directory /dev/shm/c2-ansible
+        - name: create directory {{ ansible_ssh_key_dir }}
           ansible.builtin.file:
-            path: /dev/shm/c2-ansible
+            path: "{{ ansible_ssh_key_dir }}"
             state: directory
             mode: '00700'
-        - name: install /dev/shm/c2-ansible/rocky.pem
+        - name: install {{ ansible_ssh_key_dir }}/rocky.pem
           ansible.builtin.copy:
             content: |
               {{ lookup('env', 'ANSIBLE_SSH_PRIVATE_KEY') }}
-            dest: /dev/shm/c2-ansible/rocky.pem
+            dest: "{{ ansible_ssh_key_dir }}/rocky.pem"
             mode: '00600'
-        - name: install /dev/shm/c2-ansible/rocky.pub
+        - name: install "{{ ansible_ssh_key_dir }}/rocky.pub"
           ansible.builtin.copy:
             content: |
               {{ lookup('env', 'ANSIBLE_SSH_PUBLIC_KEY') }}
-            dest: /dev/shm/c2-ansible/rocky.pub
+            dest: "{{ ansible_ssh_key_dir }}/rocky.pub"
             mode: '00644'
       tags:
         - always

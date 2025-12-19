@@ -1,3 +1,0 @@
-# nb: we need xfce4 on compute nodes for the ood desktop
-#     application but it is not available in rocky 10.0 .
-distro: rocky_9_6
