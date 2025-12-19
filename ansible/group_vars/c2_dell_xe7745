@@ -20,6 +20,9 @@ real_memory_mb: "{{ mem_total_mb }}"
 mem_spec_limit_gb: 8
 # slurm.conf: MemSpecLimit
 mem_spec_limit_mb: "{{ mem_spec_limit_gb * 1024 }}"
+# slurm.conf: size of temporary disk storage in TmpFS in megabytes
+# Note - The output from lsblk must be used here.
+tmpdisk: 27900000
 # following are specific to gpu compute nodes
 gres_gpu_count: 8
 gres_gpu_type: nvidia_l40s
