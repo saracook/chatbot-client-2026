@@ -7,8 +7,8 @@
   ansible.builtin.copy:
     content: |
       [Slice]
-      MemoryHigh=512MB
-      MemoryMax=1G
+      MemoryHigh=256M
+      MemoryMax=512M
       CPUQuota=25%
       TasksMax=200
     dest: /etc/systemd/system/user-.slice.d/10-resource-limits.conf
