@@ -1,10 +1,20 @@
+pinned_apps:
+  - sys/jupyterlab
+  - sys/matlab
+  - sys/rstudio-server
+  - sys/code-server
+  - sys/bc_desktop
+# pinned_apps_group_by: category 
+
 dashboard_layout:
   rows:
     - columns:
-      - width: 12
+      - width: 8
         widgets:
           - carina_splash
           - pinned_apps
-pinned_apps:
- - 'sys/*' 
-pinned_apps_group_by: category
+      - width: 4
+        widgets:
+          - recently_used_apps
+          - sessions
+          - dash_list

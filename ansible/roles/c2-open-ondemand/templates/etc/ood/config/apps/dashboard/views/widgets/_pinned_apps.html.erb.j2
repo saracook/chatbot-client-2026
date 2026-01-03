@@ -1,5 +1,5 @@
 <%- if pinned_apps? -%>
- <div class="pinned-apps dash-section"  data-intro='Welcome to Open OnDemand on Carina!'>
+ <div class="pinned-apps dash-section" id="pinned-apps">
 <h2 class="pinned-apps d-flex align-items-baseline">
   <div>
     <%= t('dashboard.pinned_apps_title') %> 
@@ -14,6 +14,7 @@
 <%- else -%>
   <div class="row">
     <%= render partial: "/widgets/pinned_apps/app", collection: @pinned_apps %>
+    <%= render partial: "/widgets/sas_box" %>
   </div>
 <%- end -%>
 </div>
