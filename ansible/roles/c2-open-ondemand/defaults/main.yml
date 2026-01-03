@@ -15,21 +15,27 @@ ood_download_dir_max_bytes: 1073741824
 # ood_{files,templates} below
 ood_dirs:
   - /etc/ood/config/announcements.d
-  - /etc/ood/config/locales/
-  - /etc/ood/config/apps/bc_desktop/
+  - /etc/ood/config/locales
+  - /etc/ood/config/apps/bc_desktop
   - /etc/ood/config/apps/bc_desktop/submit
   - /etc/ood/config/apps/dashboard/initializers
   - /etc/ood/config/apps/dashboard/views/widgets/pinned_apps
   - /etc/ood/config/apps/dashboard/views/support_ticket/email
   - /etc/ood/config/apps/dashboard/views/layouts/nav
+  - /config/apps/dashboard/views/widgets/batch_connect/sessions/card
   - /etc/ood/config/apps/shell
   - /etc/ood/config/clusters.d
   - /etc/ood/config/ondemand.d
   - /var/www/ood/public/assets/css
   - /var/www/ood/public/assets/js
+  - /var/www/ood/public/assets/images
   - /var/www/ood/public/maintenance
   - /var/www/ood/apps/sys/bc_desktop
-  - /var/www/ood/apps/sys/dashboard/app/assets/stylesheets/
+  - /var/www/ood/apps/sys/dashboard/app/assets/stylesheets
+  - /var/www/ood/apps/sys/code-server
+  - /var/www/ood/apps/sys/jupyterlab
+  - /var/www/ood/apps/sys/rstudio-server
+  - /var/www/ood/apps/sys/matlab
 
 # https://osc.github.io/ood-documentation/latest/customizations.html#announcements
 # https://osc.github.io/ood-documentation/latest/customizations.html#custom-css-files
@@ -43,13 +49,18 @@ ood_files:
   - var/www/ood/public/assets/js/custom.js
   - var/www/ood/public/logo.png
   - var/www/ood/public/maintenance/index.html
+  - var/www/ood/public/assets/images/sas.png
+  - var/www/ood/public/assets/images/sas-logo.png
+  - var/www/ood/apps/sys/matlab/icon.png
+  - var/www/ood/apps/sys/rstudio-server/icon.png
+  - var/www/ood/apps/sys/jupyterlab/icon.png
+  - var/www/ood/apps/sys/code-server/icon.png
 
 # these should exist in templates/ with a .j2 extension
 ood_templates:
   - etc/httpd/conf.d/mpm_event.conf
   - etc/ood/config/apps/bc_desktop/c2.yml
   - etc/ood/config/apps/bc_desktop/submit/c2.yml.erb
-  - etc/ood/config/apps/bc_desktop/manifest.yml
   - var/www/ood/apps/sys/dashboard/app/assets/stylesheets/_variables.scss
   - var/www/ood/apps/sys/dashboard/app/assets/stylesheets/application.scss
   - var/www/ood/apps/sys/dashboard/app/assets/stylesheets/stanford.scss
@@ -62,8 +73,11 @@ ood_templates:
   - etc/ood/config/apps/dashboard/views/layouts/nav/_brandbar.html.erb
   - etc/ood/config/apps/dashboard/views/layouts/nav/_user.html.erb
   - etc/ood/config/apps/dashboard/views/support_ticket/email/_email.text.erb
+  - etc/ood/config/apps/dashboard/views/batch_connect/sessions/card/_card_body.html.erb
+  - etc/ood/config/apps/dashboard/views/batch_connect/sessions/card/_card_head.html.erb
   - etc/ood/config/apps/dashboard/env
   - etc/ood/config/apps/dashboard/initializers/ood.rb
+  - etc/ood/config/apps/dashboard/views/widgets/pinned_apps/_app.html.erb
   - etc/ood/config/apps/dashboard/views/widgets/_carina_splash.html
   - etc/ood/config/apps/shell/env
   - etc/ood/config/clusters.d/c2.yml
