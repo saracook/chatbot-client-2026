@@ -50,6 +50,7 @@ ood_files:
   - var/www/ood/public/maintenance/index.html
   - var/www/ood/public/assets/images/sas.png
   - var/www/ood/public/assets/images/sas-logo.png
+  - var/www/ood/apps/sys/bc_desktop/icon.png
   - var/www/ood/apps/sys/matlab/icon.png
   - var/www/ood/apps/sys/rstudio-server/icon.png
   - var/www/ood/apps/sys/jupyterlab/icon.png
