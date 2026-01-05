@@ -5,7 +5,7 @@
 <%= render partial: 'shared/welcome' unless @user_configuration.disable_dashboard_welcome_message%>
 
 <%- dashboard_layout.fetch(:rows, []).each do |row| -%>
-<div class="row g-4">
+<div class="row gx-5 mt-4">
   <%- row.fetch(:columns, []).each do |col| -%>
   <div class='<%= "col-md-#{col[:width]}" %>'> <%# FIXME: what if width is not specified!? %>
     <%- Array(col.fetch(:widgets, [])).each do |widget| -%>
