@@ -358,7 +358,7 @@ def main():
 
     if args.create_wg:
         group = create_workgroup(
-            args.pi_sunet, args.create_wg, set(args.wg_member), args.certfile, args.keyfile)
+            args.create_wg, args.pi_sunet, set(args.wg_member), args.certfile, args.keyfile)
 
     if args.add_wg:
         group = add_wg_member(args.wg, set(args.add_wg),
