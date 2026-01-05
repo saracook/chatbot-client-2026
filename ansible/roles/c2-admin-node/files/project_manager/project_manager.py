@@ -52,7 +52,7 @@ def get_workgroup(wg_name, cert, key):
         print(f"an error occurred: {e}")
 
 
-def create_workgroup(wg_name, members, cert, key):
+def create_workgroup(wg_name, pi_sunet, members, cert, key):
     """
     Function to create a new Workgroup (POST) via the Workgroup manager API
     This function is a bit involved, as it handles multiple steps.
@@ -79,7 +79,7 @@ def create_workgroup(wg_name, members, cert, key):
         wclient = WorkgroupClient(client)
         if f'{wg_name}' not in wclient:
             new_workgroup = wclient.create(
-                name=f'{wg_name}', description='API test')
+                name=f'{wg_name}', description=f'Carina 2.0 cluster: {pi_sunet} project')
         else:
             print("Workgroup already exists.. Exiting now.")
             exit(7)
@@ -170,7 +170,7 @@ def create_dir(pi, project):
     isilon_username = "root"
     headers = {
         'x-isi-ifs-target-type': 'container',
-        'x-isi-ifs-access-control': '3770'
+        'x-isi-ifs-access-control': '2770'
     }
     directory_path = f'/ifs/carina-prod/projects/{pi}/{project}'
 
@@ -178,7 +178,7 @@ def create_dir(pi, project):
 
     try:
         response = requests.put(
-            f'https://h700.mgmt.carina:8080/namespace{directory_path}?recursive=true', verify=False, headers=headers, auth=(username, DELL_ROOT_PW), timeout=30)
+            f'https://h700.mgmt.carina:8080/namespace{directory_path}?recursive=true', verify=False, headers=headers, auth=(isilon_username, DELL_ROOT_PW), timeout=30)
         print(
             f'Succesfully created the project directory at /ifs/carina-prod/projects/{pi}/{project}')
     except requests.exceptions.RequestException as e:
@@ -198,27 +198,43 @@ def create_dir(pi, project):
     }
     try:
         quota = requests.post(
-            f'https://h700.mgmt.carina:8080/platform/8/quota/quotas/', json=quota_payload, verify=False, auth=(username, DELL_ROOT_PW), timeout=30)
+            f'https://h700.mgmt.carina:8080/platform/8/quota/quotas/', json=quota_payload, verify=False, auth=(isilon_username, DELL_ROOT_PW), timeout=30)
         print('Successfully set quota for new project directory to 1T')
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
 
+    # Update group permissions on project directory
     try:
         target_group_ownership = f"carina_{pi}-{project}"
-        local_dir_path = f"/projects/{pi}/{project}"
+        local_project_path = f"/projects/{pi}/{project}"
         gid = grp.getgrnam(target_group_ownership).gr_gid
         uid = -1  # Set UID to -1 to ignore making any user ownership change on the directory
-        os.chown(local_dir_path, uid, gid)
+        os.chown(local_project_path, uid, gid)
         print(
-            f"Successfully changed group ownership of '{directory_path}' to '{target_group_ownership}' (GID: {gid})")
+            f"Successfully changed group ownership of '{local_project_path}' to '{target_group_ownership}' (GID: {gid})")
     except KeyError:
         print(f"Error: Group '{target_group_ownership}' not found.")
     except PermissionError:
         print("Error: Permission denied. You likely need superuser (root) privileges to change ownership.")
     except FileNotFoundError:
-        print(f"Error: Directory not found at '{directory_path}'")
+        print(f"Error: Directory not found at '{local_project_path}'")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
+
+    # Fix permissions for parent pi folder
+    # TODO - See if there is a better way to handle this.
+    # Currently the API call is doing heavy lifting by recursively creating directories, but that comes at a cost of setting the wrong permissions on the parent directory.
+    try:
+        local_pi_path = f"/projects/{pi}"
+        os.chmod(local_pi_path, 0o755)
+        print(f"Successfully updated permissions for: {local_pi_path}")
+    except FileNotFoundError:
+        print(f"Error: The directory '{local_pi_path}' does not exist.")
+    except PermissionError:
+        print(
+            f"Error: You do not have sufficient privileges to modify '{local_pi_path}'. Ensure you are running as root.")
+    except OSError as e:
+        print(f"An unexpected system error occurred: {e}")
 
 
 def update_quota(pi_sunet, project, soft_quota, hard_quota):
@@ -228,7 +244,7 @@ def update_quota(pi_sunet, project, soft_quota, hard_quota):
     1) We need to query the quota id from the API in order to make a modification. A string (directory path) cannot be used.
     2) Once the quota id is stored in a variable, we use this to perform the actual update of the quota
     """
-    username = "root"
+    isilon_username = "root"
     payload = {
         "thresholds": {
             "hard": hard_quota,
@@ -242,7 +258,7 @@ def update_quota(pi_sunet, project, soft_quota, hard_quota):
         "path": f"/ifs/carina-prod/projects/{pi_sunet}/{project}"}
     try:
         response = requests.get(
-            f'https://h700.mgmt.carina:8080/platform/1/quota/quotas', params=directory_path, verify=False, auth=(username, DELL_ROOT_PW), timeout=30)
+            f'https://h700.mgmt.carina:8080/platform/1/quota/quotas', params=directory_path, verify=False, auth=(isilon_username, DELL_ROOT_PW), timeout=30)
         data = response.json()
         for keys in data['quotas']:
             quota_id = keys['id']
@@ -256,7 +272,7 @@ def update_quota(pi_sunet, project, soft_quota, hard_quota):
     # Now that we have the quota id we can properly update the quota information
     try:
         response = requests.put(
-            f'https://h700.mgmt.carina:8080/platform/1/quota/quotas/{quota_id}', json=payload, verify=False, auth=(username, DELL_ROOT_PW), timeout=30)
+            f'https://h700.mgmt.carina:8080/platform/1/quota/quotas/{quota_id}', json=payload, verify=False, auth=(isilon_username, DELL_ROOT_PW), timeout=30)
         print(f"Status Code: {response.status_code}")
         print(response.json())
     except requests.exceptions.RequestException as e:
@@ -264,7 +280,7 @@ def update_quota(pi_sunet, project, soft_quota, hard_quota):
 
 
 def dell_credential_check():
-    dell_password = os.getenv("DELL_ROOT_PW")
+    dell_password = os.getenv("DELL_ROOT_PASSWORD")
     if dell_password is None:
         print(f"Password not set for Isilon storage. Exiting now.. Please set this to continue")
         sys.exit(1)
@@ -342,7 +358,7 @@ def main():
 
     if args.create_wg:
         group = create_workgroup(
-            args.create_wg, set(args.wg_member), args.certfile, args.keyfile)
+            args.pi_sunet, args.create_wg, set(args.wg_member), args.certfile, args.keyfile)
 
     if args.add_wg:
         group = add_wg_member(args.wg, set(args.add_wg),
