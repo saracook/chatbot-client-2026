@@ -29,12 +29,7 @@ ood_dirs:
   - /var/www/ood/public/assets/js
   - /var/www/ood/public/assets/images
   - /var/www/ood/public/maintenance
-  - /var/www/ood/apps/sys/bc_desktop
   - /var/www/ood/apps/sys/dashboard/app/assets/stylesheets
-  - /var/www/ood/apps/sys/code-server
-  - /var/www/ood/apps/sys/jupyterlab
-  - /var/www/ood/apps/sys/rstudio-server
-  - /var/www/ood/apps/sys/matlab
 
 # https://osc.github.io/ood-documentation/latest/customizations.html#announcements
 # https://osc.github.io/ood-documentation/latest/customizations.html#custom-css-files
