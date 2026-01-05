@@ -16,13 +16,12 @@ ood_download_dir_max_bytes: 1073741824
 ood_dirs:
   - /etc/ood/config/announcements.d
   - /etc/ood/config/locales
-  - /etc/ood/config/apps/bc_desktop
   - /etc/ood/config/apps/bc_desktop/submit
   - /etc/ood/config/apps/dashboard/initializers
   - /etc/ood/config/apps/dashboard/views/widgets/pinned_apps
   - /etc/ood/config/apps/dashboard/views/support_ticket/email
   - /etc/ood/config/apps/dashboard/views/layouts/nav
-  - /config/apps/dashboard/views/widgets/batch_connect/sessions/card
+  - /etc/ood/config/apps/dashboard/views/widgets/batch_connect/sessions/card
   - /etc/ood/config/apps/shell
   - /etc/ood/config/clusters.d
   - /etc/ood/config/ondemand.d
