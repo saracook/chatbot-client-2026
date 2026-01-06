@@ -80,13 +80,9 @@ ood_templates:
   - etc/ood/config/ondemand.d/stanford.yml
   - etc/ood/config/ood_portal.yml
   - opt/ood/ood-portal-generator/templates/ood-portal.conf.erb
-  - var/www/ood/apps/sys/code-server/manifest.yml
   - var/www/ood/apps/sys/dashboard/app/assets/stylesheets/application.scss
   - var/www/ood/apps/sys/dashboard/app/assets/stylesheets/stanford.scss
   - var/www/ood/apps/sys/dashboard/app/assets/stylesheets/_variables.scss
-  - var/www/ood/apps/sys/jupyterlab/manifest.yml
-  - var/www/ood/apps/sys/matlab/manifest.yml
-  - var/www/ood/apps/sys/rstudio-server/manifest.yml
 
 # resolved in template _carina_splash.html
 ood_feedback_form_url: https://docs.google.com/forms/d/e/1FAIpQLSc11mS0VmAOGIRcVmz4XDN6a83Q6VlThYkJXUfWGmsYiUnKxg/viewform?usp=header
