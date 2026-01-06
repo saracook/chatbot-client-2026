@@ -40,6 +40,7 @@ ood_dirs:
 # these should exist in files/ exactly as specified here
 ood_files:
   - etc/ood/config/announcements.d/carina_announcement.yml
+  - var/www/ood/apps/sys/bc_desktop/icon.png
   - var/www/ood/public/carina-logo-white.png
   - var/www/ood/public/logo.png
   - var/www/ood/public/assets/css/custom.css
