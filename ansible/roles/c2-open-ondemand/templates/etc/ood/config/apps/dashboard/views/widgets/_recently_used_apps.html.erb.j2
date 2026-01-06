@@ -3,24 +3,15 @@
 <div class="recently-used-apps dash-section" id="recently-used-apps">
   <div class="recently-used-apps-header">
     <h2><%= t('dashboard.recently_used_apps_title') %></h2>
-    <div class="row">
-    <%-
-        # 1. Determine the correct column class before the loop starts
-        column_class = case apps.count
-          when 1
-            # If 1 app, full-width column
-            "col-12"
-          else # 2 or more apps - use half-width columns on xl screens and full-width on xs-l screens
-            "col-xs-12 col-xl-6"
-          end
-      -%>
+    <div class="row row-cols-1 row-cols-sm-2">
+
     <%- apps.each do |app| -%>
       <%- link = app.link -%>
       <%- tile_data = link.tile -%>
       <%-
         params = app.attributes.map{|attribute| ["batch_connect_session_context[#{attribute.id}]", attribute.value]}.to_h
       -%>
-      <div class="<%= column_class %> app-launcher-container">
+      <div class="col app-launcher-container">
         <div class="app-launcher app-launcher-hover" data-bs-toggle="launcher-button">
           <%=
             button_to(
