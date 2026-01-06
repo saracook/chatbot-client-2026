@@ -136,6 +136,9 @@ def get_fs(url_param):
     """
     Function to get directory contents via the PowerScale API
     """
+
+    dell_credential_check()
+
     username = "root"
     try:
         response = requests.get(
@@ -150,13 +153,15 @@ def get_fs_quota(pi_sunet, project):
     """
     Function to get the quota of a directory.
     """
+
+    dell_credential_check()
+
     username = "root"
-    password = f"{dell_root_pw}"
     json_payload = {
         "path": f"/ifs/carina-prod/projects/{pi_sunet}/{project}"}
     try:
         response = requests.get(
-            f'https://h700.mgmt.carina:8080/platform/1/quota/quotas', params=json_payload, verify=False, auth=(username, password), timeout=30)
+            f'https://h700.mgmt.carina:8080/platform/1/quota/quotas', params=json_payload, verify=False, auth=(username, DELL_ROOT_PW), timeout=30)
         print(f"Status Code: {response.status_code}")
         print(response.json())
     except requests.exceptions.RequestException as e:
@@ -205,7 +210,10 @@ def create_dir(pi, project):
 
     # Update group permissions on project directory
     try:
-        target_group_ownership = f"carina_{pi}-{project}"
+        if project == "main":
+            target_group_ownership = f"carina_{pi}"
+        else:
+            target_group_ownership = f"carina_{pi}-{project}"
         local_project_path = f"/projects/{pi}/{project}"
         gid = grp.getgrnam(target_group_ownership).gr_gid
         uid = -1  # Set UID to -1 to ignore making any user ownership change on the directory
@@ -244,6 +252,9 @@ def update_quota(pi_sunet, project, soft_quota, hard_quota):
     1) We need to query the quota id from the API in order to make a modification. A string (directory path) cannot be used.
     2) Once the quota id is stored in a variable, we use this to perform the actual update of the quota
     """
+
+    dell_credential_check()
+
     isilon_username = "root"
     payload = {
         "thresholds": {
