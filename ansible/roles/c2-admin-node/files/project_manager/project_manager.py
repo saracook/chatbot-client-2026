@@ -235,7 +235,7 @@ def create_dir(pi, project):
     try:
         local_pi_path = f"/projects/{pi}"
         os.chmod(local_pi_path, 0o755)
-        print(f"Successfully updated permissions for: {local_pi_path}")
+        print(f"Successfully updated permissions to 755 for: {local_pi_path}")
     except FileNotFoundError:
         print(f"Error: The directory '{local_pi_path}' does not exist.")
     except PermissionError:
