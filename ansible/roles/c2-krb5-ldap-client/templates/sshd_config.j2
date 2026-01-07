@@ -21,8 +21,9 @@ Subsystem sftp /usr/libexec/openssh/sftp-server
 # gssapi plus duo or password plus duo
 AuthenticationMethods gssapi-keyex,keyboard-interactive gssapi-with-mic,keyboard-interactive password,keyboard-interactive
 
-# allow {{ default_user }} user to use public key authentication only without duo
-Match User {{ default_user }}
+# allow {{ default_user }} and root users to use public key authentication only
+Match User {{ default_user }},root
+    PermitRootLogin prohibit-password
     PubKeyAuthentication yes
     PasswordAuthentication no
     KbdInteractiveAuthentication no
