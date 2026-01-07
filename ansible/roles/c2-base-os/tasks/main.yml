@@ -46,6 +46,15 @@
   tags:
     - always
 
+- ansible.builtin.include_tasks:
+    file: root-ssh.yml
+    apply:
+      tags:
+        - root-ssh
+  tags:
+    - always
+  when: inventory_hostname in ( groups['c2_admin_node'] + groups['c2_kvm_host'] + groups['c2_login_node'] )
+
 - name: run role c2-node-exporter
   ansible.builtin.include_role:
     name: c2-node-exporter
