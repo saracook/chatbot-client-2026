@@ -10,7 +10,7 @@
 -%>
 
 <div class="card-heading">
-  <div class="h5 card-header overflow-auto alert <%= alert_class %> <%= session.title.parameterize %>">
+  <div class="h5 <%= alert_class %> <%= session.title.parameterize %> card-header overflow-auto alert">
     <a href="<%= new_batch_connect_session_context_path(token: session.token) %>" class="alert-heading">
       <span class="card-text"><%= session.title %></span>
     </a>

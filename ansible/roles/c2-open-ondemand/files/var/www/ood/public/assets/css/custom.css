@@ -135,12 +135,12 @@
     &.alert-success {
         background-color: #d2e2d9;
         color: #1c2c23;
-        border-color: #99cec2;
+        border-color: #6FA287;
     }
 
     &.alert-info {
         background-color: #c6e1ea;
-        border-color: #6FA287;
+        border-color: #4298B5;
         color: #122a32;
     }
 
