@@ -27,6 +27,7 @@ ood_dirs:
   - /etc/ood/config/locales
   - /etc/ood/config/ondemand.d
   - /var/www/ood/apps/sys/dashboard/app/assets/stylesheets
+  - /var/www/ood/apps/sys/myjobs/app/assets/stylesheets
   - /var/www/ood/public/assets/css
   - /var/www/ood/public/assets/images
   - /var/www/ood/public/assets/js
@@ -79,11 +80,13 @@ ood_templates:
   - etc/ood/config/nginx_stage.yml
   - etc/ood/config/ondemand.d/dashboard.yml
   - etc/ood/config/ondemand.d/stanford.yml
+  - etc/ood/config/ondemand.d/support_ticket.yml
   - etc/ood/config/ood_portal.yml
   - opt/ood/ood-portal-generator/templates/ood-portal.conf.erb
   - var/www/ood/apps/sys/dashboard/app/assets/stylesheets/application.scss
   - var/www/ood/apps/sys/dashboard/app/assets/stylesheets/stanford.scss
   - var/www/ood/apps/sys/dashboard/app/assets/stylesheets/_variables.scss
+  - var/www/ood/apps/sys/myjobs/app/assets/stylesheets/application.scss
 
 # resolved in template _carina_splash.html
 ood_feedback_form_url: https://docs.google.com/forms/d/e/1FAIpQLSc11mS0VmAOGIRcVmz4XDN6a83Q6VlThYkJXUfWGmsYiUnKxg/viewform?usp=header
