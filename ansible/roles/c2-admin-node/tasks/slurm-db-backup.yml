@@ -35,6 +35,7 @@
     owner: root
     group: root
     mode: '00644'
+  register: sdbs
 
 - name: install /etc/systemd/system/slurm-db-backup.timer
   ansible.builtin.template:
@@ -43,10 +44,11 @@
     owner: root
     group: root
     mode: '00644'
+  register: sdbt
 
-- name: start/enable slurm-db-backup.timer
+- name: start/restart and enable slurm-db-backup.timer
   ansible.builtin.systemd_service:
     name: slurm-db-backup.timer
-    state: started
+    state: "{{ 'restarted' if sdbs.changed or sdbt.changed else 'started' }}"
     enabled: yes
     daemon_reload: yes
