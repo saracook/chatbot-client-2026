@@ -1,5 +1,6 @@
-# this enables ssh public key authentication between
-# kvm hosts for libvirt live migrations.
+# this enables root ssh public key authentication between:
+# - kvm hosts for libvirt live migrations
+# - login nodes and admin nodes (new-user script -> h700 api)
 
 - name: create directory /root/.ssh
   ansible.builtin.file:

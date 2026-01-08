@@ -23,6 +23,26 @@
     password: "{{ slurm_db_root_password }}"
     state: present
 
+- name: allow root access from admin nodes for db backup (ip)
+  community.mysql.mysql_user:
+    login_unix_socket: /var/lib/mysql/mysql.sock
+    host: "{{ hostvars[item]['ansible_host'] }}"
+    name: root
+    password: "{{ slurm_db_root_password }}"
+    priv: "*.*:ALL"
+    state: present
+  loop: "{{ groups['c2_admin_node'] }}"
+
+- name: allow root access from admin nodes for db backup (hostname)
+  community.mysql.mysql_user:
+    login_unix_socket: /var/lib/mysql/mysql.sock
+    host: "{{ item }}"
+    name: root
+    password: "{{ slurm_db_root_password }}"
+    priv: "*.*:ALL"
+    state: present
+  loop: "{{ groups['c2_admin_node'] }}"
+
 - name: install /root/.my.cnf
   ansible.builtin.template:
     src: my.cnf.j2
