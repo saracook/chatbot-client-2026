@@ -1,4 +1,4 @@
-.skiplink, .skiplink:hover, .skiplink:visited, .skiplinks, .skiplinks:hover, .skiplinks:visited {
+.skip-link, .skip-link:hover, .skip-link:visited, .skip-links, .skip-links:hover, .skip-links:visited {
     width: 1px;
     height: 1px;
     overflow: hidden;
@@ -6,7 +6,7 @@
     color: #fff;
 }
 
-.skiplink, .skiplinks {
+.skip-link, .skip-links {
     position: absolute;
     top: -500px;
     left: .8em;
