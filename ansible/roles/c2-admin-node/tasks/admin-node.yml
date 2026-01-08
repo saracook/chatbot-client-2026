@@ -7,8 +7,8 @@
 
 - name: install new user home quota script
   ansible.builtin.tempalate:
-    src: set-home-quota.sh.j2
-    dest: /admin/bin/set-home-quota/set-home-quota.sh
+    src: set-home-quota.j2
+    dest: /admin/bin/set-home-quota
     owner: root
     group: "carina_admins"
     mode: "0750"

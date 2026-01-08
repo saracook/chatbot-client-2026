@@ -22,7 +22,7 @@ then
   chmod 00700 $HOMEBASE/$PAM_USER
 fi
 
-ssh c2-admin-01 /admin/bin/set-home-quota/set-home-quota.sh $PAM_USER
+ssh c2-admin-01 /admin/bin/set-home-quota $PAM_USER
 
 # skip slurm user accounting if slurm not installed
 [ -x $SACCTMGR ] || exit 0
