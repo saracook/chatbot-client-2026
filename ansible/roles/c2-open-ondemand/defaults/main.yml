@@ -45,9 +45,10 @@ ood_files:
   - var/www/ood/public/carina-logo-white.png
   - var/www/ood/public/logo.png
   - var/www/ood/public/assets/css/custom.css
-  - var/www/ood/public/assets/js/custom.js
+  - var/www/ood/public/assets/js/tour.js
   - var/www/ood/public/assets/images/sas.png
   - var/www/ood/public/assets/images/sas-logo.png
+  - var/www/ood/public/assets/images/tour-splash.png
   - var/www/ood/public/maintenance/index.html
 
 

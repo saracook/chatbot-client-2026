@@ -1,4 +1,3 @@
-
 .col-md-4 {
     .dash-section {
         margin-bottom: 14px;
@@ -147,4 +146,50 @@
     .bg-success {
         background-color: #417865 !important;
     }
+}
+
+header .dropdown-menu.show {
+    z-index: 99999991;
+    /* Ensure dropdowns are above the intro.js overlay */
+}
+
+.introjs-tooltip {
+    min-width: 250px;
+    max-width: 450px !important;
+
+}
+
+.introjs-tour .introjs-button {
+    background-image: none;
+    background-color: white;
+    color: #006CB8;
+    border: 2px solid #006CB8;
+    border-radius: 5px;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+.introjs-tour .introjs-button:focus,
+.introjs-tour .introjs-button:hover,
+.introjs-tour .introjs-button:active {
+    border: 2px solid white;
+    background-color: white;
+    text-decoration: underline;
+    box-shadow: none;
+}
+
+.introjs-tour .introjs-button:focus {
+    border: 2px solid #00548f;
+    text-decoration: none;
+}
+
+.introjs-tour .introjs-prevbutton.introjs-button,
+.introjs-tour .introjs-prevbutton.introjs-button:focus,
+.introjs-tour .introjs-prevbutton.introjs-button:hover,
+.introjs-tour .introjs-prevbutton.introjs-button:active {
+    border-color: white;
+    opacity:1;
+}
+.introjs-tour .introjs-prevbutton.introjs-button{
+    opacity:.8;
 }
