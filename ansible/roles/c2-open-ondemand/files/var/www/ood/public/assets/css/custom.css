@@ -135,8 +135,16 @@
     font-size: 75%;
 }
 
+#main_container div.col-md-8 > h2 {
+    font-size: 24px;
+}
+#main_container div.col-md-8 > h2 small{
+    font-size: 75%;
+    text-align: right;
+    float:right;
+}
 .card-heading .card-header {
-    border-left: 8px solid;
+    border-left: 8px solid #651C32;
 
     &.matlab {
         border-left-color: #08609d;
