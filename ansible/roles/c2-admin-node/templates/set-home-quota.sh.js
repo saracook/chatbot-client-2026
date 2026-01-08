@@ -1,15 +1,28 @@
-#!/bin/bash 
+#!/bin/bash
+
+[ -n "$1" ] || exit 0
+
+# source isilon credentials
+DIR="$( cd "$( dirname "$( readlink -f "$0" )" )" && pwd )"
+. $DIR/creds.txt
+
+# check for existence of home directory
+[ -d /home/users/$1 ] || exit 0
+
+ISILON_HOMEBASE="/ifs/carina-prod/home"
+
+# determine if a quota is already set
+ISILON_QUOTA_COUNT=$(curl --get --data-urlencode "path=$ISILON_HOMEBASE/$1" -s -f -k -u "${ISILON_USER}:${ISILON_PASSWORD}" -X GET "https://h700.mgmt.carina:8080/platform/8/quota/quotas" -H "Content-Type: application/json" | jq '.quotas | length')
+
+[ $ISILON_QUOTA_COUNT -eq 0 ] || exit 0
 
 # Parameters for quota POST request
-# ssh c2-admin-01 /admin/bin/set-home-quota.sh
-ISILON_USER="root"
-ISILON_PASSWORD=$(wallet get file password/its-rc/carina-nero/c2-powerscale-h700-root-password)
 QUOTA_SIZE=26843545600 # 25Gb
 ISILON_URL="https://h700.mgmt.carina:8080/platform/8/quota/quotas"
 JSON_DATA=$(cat <<EOF
 {
-  "include_snapshots": False,
-  "path": "$HOMEBASE/$PAM_USER"
+  "include_snapshots": false,
+  "path": "$ISILON_HOMEBASE/$1",
   "thresholds": {
     "hard": $QUOTA_SIZE
   },
@@ -18,10 +31,7 @@ JSON_DATA=$(cat <<EOF
 EOF
 )
 
-# Set quota on home directory
-curl -k -u "${ISILON_USER}:${ISILON_PASSWORD}" \
-  -X POST \
-  -H "Content-Type: application/json" \
-  -d "$JSON_DATA" \
-  "$ISILON_URL"
+curl -s -f -k -u "${ISILON_USER}:${ISILON_PASSWORD}" -X POST "https://h700.mgmt.carina:8080/platform/8/quota/quotas" \
+     -H "Content-Type: application/json" \
+     -d "$JSON_DATA"
 
