@@ -20,7 +20,7 @@ ood_dirs:
   - /etc/ood/config/apps/dashboard/views/dashboard
   - /etc/ood/config/apps/dashboard/views/layouts/nav
   - /etc/ood/config/apps/dashboard/views/support_ticket/email
-  - /etc/ood/config/apps/dashboard/views/widgets/batch_connect/sessions/card
+  - /etc/ood/config/apps/dashboard/views/batch_connect/sessions/card
   - /etc/ood/config/apps/dashboard/views/widgets/pinned_apps
   - /etc/ood/config/apps/myjobs/app/views/layouts/nav
   - /etc/ood/config/apps/shell
