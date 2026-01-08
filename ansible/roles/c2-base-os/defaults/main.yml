@@ -5,6 +5,7 @@ base_os_packages:
   - udisks2
   - upower
   ## misc packages
+  - bc
   - bind-utils
   - dnf-plugins-core
   - git
