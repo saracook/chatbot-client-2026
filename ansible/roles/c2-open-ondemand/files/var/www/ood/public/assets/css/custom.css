@@ -1,1 +1,251 @@
-<!-- /public/assets/css/custom.css -->
+.skip-link, .skip-link:hover, .skip-link:visited, .skip-links, .skip-links:hover, .skip-links:visited {
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    color: #fff;
+}
+
+.skip-link, .skip-links {
+    position: absolute;
+    top: -500px;
+    left: .8em;
+    min-height: 1px;
+    transition: top .25s ease-in-out;
+    padding: 0;
+    background-color: #2e2d29;
+    font-size: 2rem;
+    font-weight: 400;
+    text-decoration: none;
+}
+.su-global-footer{
+    font-family: "Source Sans Pro", sans-serif;
+}
+.col-md-4 {
+    .dash-section {
+        margin-bottom: 14px;
+
+        h2 {
+            font-size: 18px;
+        }
+    }
+
+    .active-sessions-content {
+        font-size: 16px;
+
+        .card-heading {
+            .float-end {
+                font-size: 14px;
+            }
+        }
+
+        .card-body .session-details {
+            display: none;
+        }
+
+    }
+
+    .recently-used-apps {
+        .app-launcher .launcher-click {
+            border: 1px solid #D4D1D1;
+            border-left: 8px solid;
+            border-radius: 6px;
+            box-shadow: none;
+
+            &.matlab {
+                border-left-color: #08609d;
+            }
+
+            &.jupyter {
+                border-left-color: #F37626;
+            }
+
+            &.vscode {
+                border-left-color: #0098FF;
+            }
+
+            &.rstudio {
+                border-left-color: #75aadb;
+            }
+        }
+
+        div.text-center {
+            display: flex;
+        }
+
+        .app-launcher {
+            border-radius: 6px;
+            height: auto;
+            box-shadow: none;
+        }
+
+        .app-launcher .app-icon {
+            float: left;
+            margin: 6px 12px 6px 0;
+            padding: 0;
+            height: 50px;
+            width: auto;
+            align-self: center
+        }
+
+        .app-launcher .app-title {
+            text-align: left;
+            align-self: center
+        }
+
+        .app-description {
+            display: none;
+        }
+    }
+}
+
+.app-launcher .launcher-click {
+    border: 12px solid #651C32;
+
+    &.matlab {
+        border-color: #08609d;
+    }
+
+    &.jupyter {
+        border-color: #F37626;
+    }
+
+    &.vscode {
+        border-color: #0098FF;
+    }
+
+    &.rstudio {
+        border-color: #75aadb;
+    }
+
+    &.sas {
+        border-color: #0766D1;
+    }
+}
+
+.dash-section {
+    margin-bottom: 18px;
+
+    h2 {
+        font-size: 24px;
+    }
+}
+
+.dash-section small {
+    font-size: 75%;
+}
+
+#main_container div.col-md-8 > h2 {
+    font-size: 24px;
+}
+#main_container div.col-md-8 > h2 small{
+    font-size: 75%;
+    text-align: right;
+    float:right;
+}
+.card-heading .card-header {
+    border-left: 8px solid #651C32;
+
+    &.matlab {
+        border-left-color: #08609d;
+    }
+
+    &.jupyterlab {
+        border-left-color: #F37626;
+    }
+
+    &.vs-code {
+        border-left-color: #0098FF;
+    }
+
+    &.rstudio {
+        border-left-color: #75aadb;
+    }
+
+    &.alert-success {
+        background-color: #d2e2d9;
+        color: #1c2c23;
+        border-color: #6FA287;
+    }
+
+    &.alert-info {
+        background-color: #c6e1ea;
+        border-color: #4298B5;
+        color: #122a32;
+    }
+
+    .bg-success {
+        background-color: #417865 !important;
+    }
+}
+
+#main_container .btn-primary {
+  color: #fff;
+  background-color: #006cb8;
+  border-color: #006cb8;
+}
+
+#main_container .btn-success {
+  color: #fff;
+  background-color: #008566;
+  border-color: #008566;
+}
+
+#main_container .btn-danger {
+  color: #fff;
+  background-color: #B1040E;
+  border-color: #B1040E;
+}
+
+#main_container .btn-info {
+  color: #fff;
+  background-color: #007C92;
+  border-color: #007C92;
+}
+
+
+header .dropdown-menu.show {
+    z-index: 99999991;
+    /* Ensure dropdowns are above the intro.js overlay */
+}
+
+.introjs-tooltip {
+    min-width: 250px;
+    max-width: 450px !important;
+
+}
+
+.introjs-tour .introjs-button {
+    background-image: none;
+    background-color: white;
+    color: #006CB8;
+    border: 2px solid #006CB8;
+    border-radius: 5px;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+.introjs-tour .introjs-button:focus,
+.introjs-tour .introjs-button:hover,
+.introjs-tour .introjs-button:active {
+    border: 2px solid white;
+    background-color: white;
+    text-decoration: underline;
+    box-shadow: none;
+}
+
+.introjs-tour .introjs-button:focus {
+    border: 2px solid #00548f;
+    text-decoration: none;
+}
+
+.introjs-tour .introjs-prevbutton.introjs-button,
+.introjs-tour .introjs-prevbutton.introjs-button:focus,
+.introjs-tour .introjs-prevbutton.introjs-button:hover,
+.introjs-tour .introjs-prevbutton.introjs-button:active {
+    border-color: white;
+    opacity:1;
+}
+.introjs-tour .introjs-prevbutton.introjs-button{
+    opacity:.8;
+}
