@@ -1,3 +1,26 @@
+.skiplink, .skiplink:hover, .skiplink:visited, .skiplinks, .skiplinks:hover, .skiplinks:visited {
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    color: #fff;
+}
+
+.skiplink, .skiplinks {
+    position: absolute;
+    top: -500px;
+    left: .8em;
+    min-height: 1px;
+    transition: top .25s ease-in-out;
+    padding: 0;
+    background-color: #2e2d29;
+    font-size: 2rem;
+    font-weight: 400;
+    text-decoration: none;
+}
+.su-global-footer{
+    font-family: "Source Sans Pro", sans-serif;
+}
 .col-md-4 {
     .dash-section {
         margin-bottom: 14px;
@@ -147,6 +170,31 @@
         background-color: #417865 !important;
     }
 }
+
+#main_container .btn-primary {
+  color: #fff;
+  background-color: #006cb8;
+  border-color: #006cb8;
+}
+
+#main_container .btn-success {
+  color: #fff;
+  background-color: #008566;
+  border-color: #008566;
+}
+
+#main_container .btn-danger {
+  color: #fff;
+  background-color: #B1040E;
+  border-color: #B1040E;
+}
+
+#main_container .btn-info {
+  color: #fff;
+  background-color: #007C92;
+  border-color: #007C92;
+}
+
 
 header .dropdown-menu.show {
     z-index: 99999991;

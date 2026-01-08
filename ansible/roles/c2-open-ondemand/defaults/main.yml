@@ -63,6 +63,7 @@ ood_templates:
   - etc/ood/config/apps/dashboard/views/batch_connect/sessions/card/_card_head.html.erb
   - etc/ood/config/apps/dashboard/views/batch_connect/sessions/card/_created.html.erb
   - etc/ood/config/apps/dashboard/views/dashboard/index.html.erb
+  - etc/ood/config/apps/dashboard/views/dashboard/_sas_box.html.erb
   - etc/ood/config/apps/dashboard/views/layouts/application.html.erb
   - etc/ood/config/apps/dashboard/views/layouts/nav/_brandbar.html.erb
   - etc/ood/config/apps/dashboard/views/layouts/nav/_user.html.erb
@@ -73,7 +74,6 @@ ood_templates:
   - etc/ood/config/apps/dashboard/views/widgets/_carina_splash.html
   - etc/ood/config/apps/dashboard/views/widgets/_dash_list.html.erb
   - etc/ood/config/apps/dashboard/views/widgets/_recently_used_apps.html.erb
-  - etc/ood/config/apps/dashboard/views/widgets/_sas_box.html
   - etc/ood/config/apps/dashboard/views/widgets/_sessions.html.erb
   - etc/ood/config/apps/myjobs/app/views/layouts/nav/_styles.html.erb
   - etc/ood/config/apps/shell/env
@@ -85,8 +85,6 @@ ood_templates:
   - etc/ood/config/ondemand.d/support_ticket.yml
   - etc/ood/config/ood_portal.yml
   - opt/ood/ood-portal-generator/templates/ood-portal.conf.erb
-  - var/www/ood/apps/sys/dashboard/app/assets/stylesheets/application.scss
-  - var/www/ood/apps/sys/dashboard/app/assets/stylesheets/stanford.scss
   - var/www/ood/apps/sys/dashboard/app/assets/stylesheets/_variables.scss
 
 # resolved in template _carina_splash.html

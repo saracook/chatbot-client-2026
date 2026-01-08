@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const stepConfigs = [
         {
             title: 'Carina 2.0',
-            intro: '<img src="/pun/dev/dashboard/assets/images/tour-splash.png" alt="logo" class="py-2"><p>Take a tour of the new Carina OnDemand web interface</p>'
+            intro: '<img src="/public/assets/images/tour-splash.png" alt="logo" class="py-2"><p>Take a tour of the new Carina OnDemand web interface</p>'
         },
         {
             element: '#pinned-apps',
