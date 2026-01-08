@@ -6,12 +6,15 @@
     enablerepo: stanford
 
 - name: install project manager script
-  ansible.builting.copy:
-    src: files/project_manager
-    dst: /admin/bin
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: /admin/bin/project_manager
     owner: root
     group: carina_admins
     mode: "0750"
+  loop:
+    - { src: 'files/project_manager/project_manager.py'}
+    - { src: 'files/project_manager/requirements.txt'}
 
 - name: run role c2-ansible
   ansible.builtin.include_role:
