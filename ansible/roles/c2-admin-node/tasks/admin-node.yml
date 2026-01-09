@@ -5,6 +5,17 @@
     update_cache: yes
     enablerepo: stanford
 
+- name: install new user home quota script
+  ansible.builtin.tempalate:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: "carina_admins"
+    mode: "{{ item.mode }}"
+  loop:
+    - { src: set-home-quota.j2, dest: /admin/bin/set-home-quota, mode: "0750" }
+    - { src: set-home-quota.env.j2, dest: /admin/bin/set-home-quota.env, mode: "0600" }
+
 - name: run role c2-ansible
   ansible.builtin.include_role:
     name: c2-ansible

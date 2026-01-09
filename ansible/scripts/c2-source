@@ -37,3 +37,4 @@ export SLURM_DB_ROOT_PASSWORD="$( wallet get file $WALLET_FILE_PREFIX/c2-slurm-d
 export SLURM_DB_SLURM_PASSWORD="$( wallet get file $WALLET_FILE_PREFIX/c2-slurm-db-slurm-password )"
 export SPLUNK_CLIENT_ADMIN_PASSWORD="$( wallet get file $WALLET_FILE_PREFIX/c2-splunk-client-admin-password )"
 export SPLUNK_CLIENT_TLS_KEY_PASSPHRASE="$( wallet get file $WALLET_FILE_PREFIX/c2-splunk-client-tls-key-passphrase )"
+export POWERSCALE_H700_ADMIN_PASSWORD="$( wallet get file $WALLET_FILE_PREFIX/c2-powerscale-h700-admin-password )"
