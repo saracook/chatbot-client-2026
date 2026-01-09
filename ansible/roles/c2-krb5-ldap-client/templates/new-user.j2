@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# create home directory and on-board to slurm
+# create home directory, set home directory quota, and on-board to slurm
 
 set -e
 
@@ -9,10 +9,14 @@ SACCTMGR="/usr/bin/sacctmgr"
 SDEFACCT="users"
 SPARTLIST="dev,normal,long"
 
-# skip for root/*.root users
-[ "$( echo $PAM_USER | cut -d '.' -f 2 )" = 'root' ] && exit 0
-# skip for rocky user
-[ "$PAM_USER" = 'rocky' ] && exit 0
+# noop if not run as root
+[ $( id -u ) -eq 0 ] || exit
+# noop if PAM_USER isn't set or user doesn't exist
+[ -n "$PAM_USER" ] && id $PAM_USER &>/dev/null || exit
+# noop for root/*.root users
+[ "$( echo $PAM_USER | cut -d '.' -f 2 )" = 'root' ] && exit
+# noop for rocky user
+[ "$PAM_USER" = 'rocky' ] && exit
 
 # create user home directory
 if mountpoint -q $HOMEBASE && [ ! -d $HOMEBASE/$PAM_USER ]
@@ -22,6 +26,8 @@ then
   chmod 00700 $HOMEBASE/$PAM_USER
 fi
 
+# set quota on user home directory
+# todo: consider exposing powerscale onefs api to login nodes
 ssh c2-admin-01 /admin/bin/set-home-quota $PAM_USER
 
 # skip slurm user accounting if slurm not installed
