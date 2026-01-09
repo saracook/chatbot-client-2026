@@ -6,7 +6,7 @@
     enablerepo: stanford
 
 - name: install new user home quota script
-  ansible.builtin.tempalate:
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: root

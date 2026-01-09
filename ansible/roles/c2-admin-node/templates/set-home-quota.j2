@@ -24,7 +24,7 @@ ISILON_QUOTA_COUNT=$(curl \
                      --request GET \
                      --silent \
                      --user "${ISILON_USER}:${ISILON_PASSWORD}" \
-                     $ISILON_URL
+                     $ISILON_URL \
                      | jq '.quotas | length')
 [ $ISILON_QUOTA_COUNT -eq 0 ] || exit 0
 
