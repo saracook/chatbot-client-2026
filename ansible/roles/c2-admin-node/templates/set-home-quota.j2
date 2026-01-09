@@ -4,7 +4,8 @@
 
 # source isilon credentials
 DIR="$( cd "$( dirname "$( readlink -f "$0" )" )" && pwd )"
-. $DIR/creds.txt
+ME="$( basename "$( readlink -f "$0" )" )"
+. $DIR/$ME.env
 
 # check for existence of home directory
 [ -d /home/users/$1 ] || exit 0
