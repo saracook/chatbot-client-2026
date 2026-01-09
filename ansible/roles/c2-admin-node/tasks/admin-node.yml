@@ -13,7 +13,7 @@
     group: "carina_admins"
     mode: "{{ item.mode }}"
   loop:
-    - { src: set-home-quota.j2, dest: /admin/bin/set-home-quota, mode: "0750"}
+    - { src: set-home-quota.j2, dest: /admin/bin/set-home-quota, mode: "0750" }
     - { src: set-home-quota.env.j2, dest: /admin/bin/set-home-quota.env, mode: "0600" }
 
 - name: run role c2-ansible
