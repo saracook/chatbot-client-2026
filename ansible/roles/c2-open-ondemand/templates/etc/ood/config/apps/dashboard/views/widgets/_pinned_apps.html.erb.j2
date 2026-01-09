@@ -1,20 +1,21 @@
 <%- if pinned_apps? -%>
- <div class="pinned-apps dash-section"  data-intro='Welcome to Open OnDemand on Carina!'>
-<h2 class="pinned-apps d-flex align-items-baseline">
-  <div>
-    <%= t('dashboard.pinned_apps_title') %> 
-  </div>
-  <small class="flex-fill text-end">
-    <%= t('dashboard.pinned_apps_caption_html', all_apps_url: apps_index_path) %>
-  </small>
-</h2>
+ <div class="pinned-apps dash-section" id="pinned-apps">
+  <h2 class="pinned-apps d-flex align-items-baseline">
+    <div>
+      <%= t('dashboard.pinned_apps_title') %> 
+    </div>
+    <small class="flex-fill text-end">
+      <%= t('dashboard.pinned_apps_caption_html', all_apps_url: apps_index_path) %>
+    </small>
+  </h2>
 
-<%- if @user_configuration.pinned_apps_group_by.present? -%>
-  <%= render(partial: "/widgets/pinned_apps/group", collection: OodAppGroup.groups_for(apps: @pinned_apps, group_by: @user_configuration.pinned_apps_group_by.to_sym))  %>
-<%- else -%>
-  <div class="row">
-    <%= render partial: "/widgets/pinned_apps/app", collection: @pinned_apps %>
-  </div>
-<%- end -%>
+  <%- if @user_configuration.pinned_apps_group_by.present? -%>
+    <%= render(partial: "/widgets/pinned_apps/group", collection: OodAppGroup.groups_for(apps: @pinned_apps, group_by: @user_configuration.pinned_apps_group_by.to_sym))  %>
+  <%- else -%>
+    <div class="row gy-4 gx-5">
+      <%= render partial: "/widgets/pinned_apps/app", collection: @pinned_apps %>
+      <%= render partial: "dashboard/sas_box" %>
+    </div>
+  <%- end -%>
 </div>
 <%- end -%>

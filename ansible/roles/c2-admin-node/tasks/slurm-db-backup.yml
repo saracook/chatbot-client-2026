@@ -1,0 +1,54 @@
+- name: install mariadb package
+  ansible.builtin.dnf:
+    name: mariadb
+    state: present
+    update_cache: yes
+
+- name: install /root/.my.cnf
+  ansible.builtin.template:
+    src: my.cnf.j2
+    dest: /root/.my.cnf
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: install /home/{{ default_user }}/.my.cnf (root db user)
+  ansible.builtin.template:
+    src: my.cnf.j2
+    dest: /home/{{ default_user }}/.my.cnf
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+    mode: '0600'
+
+- name: install /admin/bin/slurm-db-backup
+  ansible.builtin.template:
+    src: slurm-db-backup.j2
+    dest: /admin/bin/slurm-db-backup
+    owner: root
+    group: root
+    mode: '00750'
+
+- name: install /etc/systemd/system/slurm-db-backup.service
+  ansible.builtin.template:
+    src: slurm-db-backup.service.j2
+    dest: /etc/systemd/system/slurm-db-backup.service
+    owner: root
+    group: root
+    mode: '00644'
+  register: sdbs
+
+- name: install /etc/systemd/system/slurm-db-backup.timer
+  ansible.builtin.template:
+    src: slurm-db-backup.timer.j2
+    dest: /etc/systemd/system/slurm-db-backup.timer
+    owner: root
+    group: root
+    mode: '00644'
+  register: sdbt
+
+- name: start/restart and enable slurm-db-backup.timer
+  ansible.builtin.systemd_service:
+    name: slurm-db-backup.timer
+    state: "{{ 'restarted' if sdbs.changed or sdbt.changed else 'started' }}"
+    enabled: yes
+    daemon_reload: yes

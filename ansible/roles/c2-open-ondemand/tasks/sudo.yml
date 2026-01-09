@@ -1,0 +1,10 @@
+- name: install /etc/sudoers.d/saracook
+  ansible.builtin.copy:
+    content: |
+      saracook ALL=(ALL) ALL
+    dest: /etc/sudoers.d/saracook
+    owner: root
+    group: root
+    mode: '0440'
+    validate: /usr/sbin/visudo -cf %s
+  when: ood_tier == 'dev'

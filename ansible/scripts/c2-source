@@ -31,6 +31,7 @@ export OOD_DEV_OIDC_CLIENT_ID="$( wallet get file $WALLET_FILE_PREFIX/c2-ood-dev
 export OOD_DEV_OIDC_CLIENT_SECRET="$( wallet get file $WALLET_FILE_PREFIX/c2-ood-dev-oidc-client-secret )"
 export OOD_PROD_OIDC_CLIENT_ID="$( wallet get file $WALLET_FILE_PREFIX/c2-ood-prod-oidc-client-id )"
 export OOD_PROD_OIDC_CLIENT_SECRET="$( wallet get file $WALLET_FILE_PREFIX/c2-ood-prod-oidc-client-secret )"
+export POWERSCALE_H700_ADMIN_PASSWORD="$( wallet get file $WALLET_FILE_PREFIX/c2-powerscale-h700-admin-password )"
 export ROOT_INFRA_SSH_PRIVATE_KEY="$( wallet get file $WALLET_FILE_PREFIX/c2-root-infra-ssh-private-key )"
 export ROOT_INFRA_SSH_PUBLIC_KEY="$( wallet get file $WALLET_FILE_PREFIX/c2-root-infra-ssh-public-key )"
 export SLURM_DB_ROOT_PASSWORD="$( wallet get file $WALLET_FILE_PREFIX/c2-slurm-db-root-password )"
