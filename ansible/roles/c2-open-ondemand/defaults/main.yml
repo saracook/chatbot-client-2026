@@ -73,6 +73,7 @@ ood_templates:
   - etc/ood/config/apps/dashboard/views/widgets/pinned_apps/_app.html.erb
   - etc/ood/config/apps/dashboard/views/widgets/_carina_splash.html
   - etc/ood/config/apps/dashboard/views/widgets/_dash_list.html.erb
+  - etc/ood/config/apps/dashboard/views/widgets/_pinned_apps.html.erb
   - etc/ood/config/apps/dashboard/views/widgets/_recently_used_apps.html.erb
   - etc/ood/config/apps/dashboard/views/widgets/_sessions.html.erb
   - etc/ood/config/apps/myjobs/app/views/layouts/nav/_styles.html.erb
