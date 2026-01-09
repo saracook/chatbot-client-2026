@@ -1,25 +1,34 @@
 #!/bin/bash
 
-[ -n "$1" ] || exit 0
-
-# source isilon credentials
 DIR="$( cd "$( dirname "$( readlink -f "$0" )" )" && pwd )"
 ME="$( basename "$( readlink -f "$0" )" )"
-. $DIR/$ME.env
+ISILON_HOMEBASE="/ifs/carina-prod/home"
+ISILON_URL="https://h700.mgmt.carina:8080/platform/8/quota/quotas"
+QUOTA_SIZE="26843545600" # 25GiB
 
-# check for existence of home directory
+# noop if userid is not passed
+[ -n "$1" ] || exit 0
+
+# noop if home directory does not exist
 [ -d /home/users/$1 ] || exit 0
 
-ISILON_HOMEBASE="/ifs/carina-prod/home"
+# source isilon credentials
+. $DIR/$ME.env
 
-# determine if a quota is already set
-ISILON_QUOTA_COUNT=$(curl --get --data-urlencode "path=$ISILON_HOMEBASE/$1" -s -f -k -u "${ISILON_USER}:${ISILON_PASSWORD}" -X GET "https://h700.mgmt.carina:8080/platform/8/quota/quotas" -H "Content-Type: application/json" | jq '.quotas | length')
-
+# noop if quota is already set
+ISILON_QUOTA_COUNT=$(curl \
+                     --data-urlencode "path=$ISILON_HOMEBASE/$1" \
+                     --fail \
+                     --header "Content-Type: application/json" \
+                     --insecure \
+                     --request GET \
+                     --silent \
+                     --user "${ISILON_USER}:${ISILON_PASSWORD}" \
+                     $ISILON_URL
+                     | jq '.quotas | length')
 [ $ISILON_QUOTA_COUNT -eq 0 ] || exit 0
 
-# Parameters for quota POST request
-QUOTA_SIZE=26843545600 # 25Gb
-ISILON_URL="https://h700.mgmt.carina:8080/platform/8/quota/quotas"
+# payload for quota post request
 JSON_DATA=$(cat <<EOF
 {
   "include_snapshots": false,
@@ -32,7 +41,12 @@ JSON_DATA=$(cat <<EOF
 EOF
 )
 
-curl -s -f -k -u "${ISILON_USER}:${ISILON_PASSWORD}" -X POST "https://h700.mgmt.carina:8080/platform/8/quota/quotas" \
-     -H "Content-Type: application/json" \
-     -d "$JSON_DATA"
-
+curl \
+--data "$JSON_DATA" \
+--fail \
+--header "Content-Type: application/json" \
+--insecure \
+--request POST \
+--silent \
+--user "${ISILON_USER}:${ISILON_PASSWORD}" \
+$ISILON_URL
