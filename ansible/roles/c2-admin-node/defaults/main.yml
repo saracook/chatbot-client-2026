@@ -1,2 +1,5 @@
 wallet_client_version: 1.4
 powerscale_h700_admin_password: "{{ lookup('env', 'POWERSCALE_H700_ADMIN_PASSWORD') }}"
+
+slurm_db_host: "{{ groups['c2_slurm_database'][0] }}"
+slurm_db_root_password: "{{ lookup('env', 'SLURM_DB_ROOT_PASSWORD') }}"

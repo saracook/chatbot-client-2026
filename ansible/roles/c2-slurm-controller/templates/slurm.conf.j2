@@ -61,13 +61,16 @@ SlurmctldLogFile=/var/log/slurm/slurmctld.log
 SlurmdDebug=info
 SlurmdLogFile=/var/log/slurm/slurmd.log
 
+# FIlESYSTEM
+TmpFS=/local/scratch
+
 # GRES
 GresTypes=gpu
 
 # COMPUTE NODES
 NodeName=DEFAULT State=UNKNOWN
 {% for node in groups['c2_compute_node'] %}
-NodeName={{ node }} CPUs={{ hostvars[node]['cpus'] }} RealMemory={{ hostvars[node]['real_memory_mb'] }} MemSpecLimit={{ hostvars[node]['mem_spec_limit_mb'] }} SocketsPerBoard={{ hostvars[node]['sockets_per_board'] }} CoresPerSocket={{ hostvars[node]['cores_per_socket'] }} ThreadsPerCore={{ hostvars[node]['threads_per_core'] }} {{ 'Gres=' ~ hostvars[node]['gres'] if node in groups['c2_gpu_node'] else '' }}
+NodeName={{ node }} CPUs={{ hostvars[node]['cpus'] }} RealMemory={{ hostvars[node]['real_memory_mb'] }} TmpDisk={{ hostvars[node]['tmp_disk_mb'] }} MemSpecLimit={{ hostvars[node]['mem_spec_limit_mb'] }} SocketsPerBoard={{ hostvars[node]['sockets_per_board'] }} CoresPerSocket={{ hostvars[node]['cores_per_socket'] }} ThreadsPerCore={{ hostvars[node]['threads_per_core'] }} {{ 'Gres=' ~ hostvars[node]['gres'] if node in groups['c2_gpu_node'] else '' }}
 {% endfor %}
 
 # PARTITIONS

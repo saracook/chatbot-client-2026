@@ -5,6 +5,7 @@ base_os_packages:
   - udisks2
   - upower
   ## misc packages
+  - bc
   - bind-utils
   - dnf-plugins-core
   - git
@@ -29,3 +30,6 @@ base_os_epel_packages:
   - htop
 
 lmod_modulepath: /software/modulefiles
+
+root_infra_ssh_private_key: "{{ lookup('env', 'ROOT_INFRA_SSH_PRIVATE_KEY') }}"
+root_infra_ssh_public_key: "{{ lookup('env', 'ROOT_INFRA_SSH_PUBLIC_KEY') }}"

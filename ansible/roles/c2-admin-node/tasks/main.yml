@@ -5,3 +5,11 @@
         - admin-node
   tags:
     - always
+
+- ansible.builtin.include_tasks:
+    file: slurm-db-backup.yml
+    apply:
+      tags:
+        - slurm-db-backup
+  tags:
+    - always
