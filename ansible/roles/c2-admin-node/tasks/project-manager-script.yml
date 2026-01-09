@@ -1,30 +1,61 @@
+# check for existence of prod credentials
 - name: check for existing prod API cert
   ansible.builtin.stat:
-    path: /admin/bin/project_manager/c2-wgm-api-client.pem
-  register: wgmapicrt
+    path: /admin/bin/project_manager/c2-wgm-api-prod.pem
+  register: prodapicrt
 
 - name: check for existing prod API key
   ansible.builtin.stat:
     path: /admin/bin/project_manager/c2-wgm-api-prod.key
-  register: wgmapikey
+  register: prodapikey
 
+# check for existence of dev credentials
+- name: check for existing dev API cert
+  ansible.builtin.stat:
+    path: /admin/bin/project_manager/c2-wgm-api-dev.pem
+  register: devapicrt
+
+- name: check for existing dev API key
+  ansible.builtin.stat:
+    path: /admin/bin/project_manager/c2-wgm-api-dev.key
+  register: devapikey
+
+# install cert and key if missing
 - name: install prod API cert
   ansible.builtin.copy:
-    content: "{{ lookup('pipe', 'wallet get file password/its-rc/carina-nero/carina-wg-api-prod-crt | base65') | b64decode }}"
-    dest: /admin/bin/project_manager/c2-wgm-api-client.pem
+    content: "{{ lookup('pipe', 'wallet get file password/its-rc/carina-nero/carina-wg-api-prod-crt | base64') | b64decode }}"
+    dest: /admin/bin/project_manager/c2-wgm-api-prod.pem
     owner: root
     group: carina_admins
     mode: '00600'
-  when: not wgmapicrt.stat.exists
+  when: not prodapicrt.stat.exists
 
 - name: install prod API key
   ansible.builtin.copy:
-    content: "{{ lookup('pipe', 'wallet get file password/its-rc/carina-nero/carina-wg-api-prod-key | base65') | b64decode }}"
-    dest: /admin/bin/c2-wgm-api-prod.key
+    content: "{{ lookup('pipe', 'wallet get file password/its-rc/carina-nero/carina-wg-api-prod-key | base64') | b64decode }}"
+    dest: /admin/bin/project_manager/c2-wgm-api-prod.key
     owner: root
     group: carina_admins
     mode: '00600'
-  when: not wgmapikey.stat.exists
+  when: not prodapikey.stat.exists
+
+- name: install dev API cert
+  ansible.builtin.copy:
+    content: "{{ lookup('pipe', 'wallet get file password/its-rc/carina-nero/carina-wg-api-dev-crt | base64') | b64decode }}"
+    dest: /admin/bin/project_manager/c2-wgm-api-dev.pem
+    owner: root
+    group: carina_admins
+    mode: '00600'
+  when: not devapicrt.stat.exists
+
+- name: install dev API key
+  ansible.builtin.copy:
+    content: "{{ lookup('pipe', 'wallet get file password/its-rc/carina-nero/carina-wg-api-dev-key | base64') | b64decode }}"
+    dest: /admin/bin/project_manager/c2-wgm-api-dev.key
+    owner: root
+    group: carina_admins
+    mode: '00600'
+  when: not devapikey.stat.exists
 
 - name: install project manager script
   ansible.builtin.copy:

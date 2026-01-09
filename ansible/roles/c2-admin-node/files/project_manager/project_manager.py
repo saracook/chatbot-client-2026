@@ -30,12 +30,12 @@ DELL_ROOT_PW = os.getenv('DELL_ROOT_PASSWORD')
 # }
 
 # Production certs
-DEFAULT_CERT = './c2-wgm-api-client.pem'
+DEFAULT_CERT = './c2-wgm-api-prod.pem'
 DEFAULT_KEY = './c2-wgm-api-prod.key'
 
 # UAT certs (dev)
-DEBUG_CERT = './carina-app.pem'
-DEBUG_KEY = './carina.key'
+DEBUG_CERT = './c2-wgm-api-dev.pem'
+DEBUG_KEY = './c2-wgm-api-dev.key'
 
 
 def get_workgroup(wg_name, cert, key):
@@ -285,7 +285,7 @@ def update_quota(pi_sunet, project, soft_quota, hard_quota):
 def dell_credential_check():
     dell_password = os.getenv("DELL_ROOT_PASSWORD")
     if dell_password is None:
-        print(f"Password not set for Isilon storage. Exiting now.. Please set this to continue")
+        print(f"Password not set for Isilon storage. Please run the following command to continue:\nexport DELL_ROOT_PASSWORD=$(wallet get file password/its-rc/carina-nero/c2-powerscale-h700-root-password)")
         sys.exit(1)
 
 
@@ -371,11 +371,9 @@ def main():
 
     if args.get_fs:
         result = get_fs(args.get_fs)
-        print(result)
 
     if args.get_fs_quota:
         result = get_fs_quota(args.pi_sunet, args.get_fs_quota)
-        print(result)
 
     if args.create_dir:
         result = create_dir(args.pi_sunet, args.create_dir)
@@ -383,7 +381,6 @@ def main():
     if args.update_quota:
         result = update_quota(args.pi_sunet, args.update_quota,
                               args.soft_quota, args.hard_quota)
-        print(result)
 
 
 if __name__ == "__main__":
