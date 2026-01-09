@@ -1,0 +1,71 @@
+{% comment %}
+  File: _includes/photo-card.html
+  Creates a Bootstrap card with an image overlay.
+
+  Parameters:
+  - file: (Required) Path to the background image.
+  - alt: (Recommended) Alt text for the image for accessibility. Defaults to empty.
+  - status: (Optional) Status of Carina, one of up/down/maint.
+  - title: (Optional) The card's title.
+  - text: (Optional) The card's body text.
+  - class: (Optional) Additional CSS classes for the main div.
+{% endcomment %}
+
+{% comment %} Graceful exit if the most critical parameter is missing {% endcomment %}
+{% if include.file %}
+
+    {% case include.status %}
+    {% when "down" %}
+        {% assign title = "Carina is Down" %}
+        {% assign text = "Carina is currently experiencing an outage." %}
+        {% assign status_class = "carina-status status-down" %}
+
+    {% when "maint" %}
+        {% assign title = "Carina is Down for Maintenance" %}
+        {% assign text = "Carina is currently undergoing scheduled maintenance" %}
+        {% assign status_class = "carina-status status-maint" %}
+
+    {% when "up" %}
+        {% assign title = "Carina is Up" %}
+        {% assign text = "Carina is operating normally." %}
+        {% assign status_class = "carina-status status-up" %}
+
+    {% endcase %}
+
+  {% comment %} Main card container {% endcomment %}
+  <div class="card text-bg-dark {{ include.class }} {{status_class | default: '' }}">
+    
+    {% comment %} Background image {% endcomment %}
+    <img src="{{ include.file | relative_url }}" class="card-img" alt="{{ include.alt | default: '' }}">
+    <div class="card-img-overlay">
+      
+      {% comment %} Only show the title if one was provided {% endcomment %}
+        {% if include.title or title %}
+            <h2 class="card-title mt-5">
+            {{ include.title | default: title }}
+            </h2>
+        {% endif %}
+        
+        {% comment %} Only show the text if one was provided {% endcomment %}
+        {% if include.text or text %}
+            <p class="card-text">
+            {{ include.text | default: text }}
+            </p>
+        {% endif %}
+      
+    </div>
+  </div>
+
+{% else %}
+
+  {% comment %} 
+    Show a clear error message during development if 'file' is missing.
+    This block will be empty in the production build.
+  {% endcomment %}
+  {% if jekyll.environment == "development" %}
+    <div style="padding: 1rem; border: 2px dashed red; background-color: #ffebeb;">
+      <strong>Include Error:</strong> The required 'file' parameter was not provided for <code>photo-card.html</code>.
+    </div>
+  {% endif %}
+
+{% endif %}

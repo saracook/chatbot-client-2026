@@ -1,0 +1,12 @@
+.sidebar .action-box {
+	background-color:pink;
+}
+
+.sidebar .sidebar-toc {
+	background-color: limegreen;
+	color:white;
+}
+
+.sidebar .sidebar-toc a {
+	color:white;
+}

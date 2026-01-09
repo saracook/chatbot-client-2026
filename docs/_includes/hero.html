@@ -1,0 +1,17 @@
+<aside class="su-hero">
+  <div class="su-hero__media">
+    <img src="{{ page.hero-image | relative_url}}" alt="{{ page.hero-alt }}" />
+  </div>
+  {% if page.hero-headline %}
+  <div class="su-card su-hero__card">
+    <div class="su-card__contents">
+      <p class="h2">{{ page.hero-headline }}</p>
+      {% if page.hero-button-text %}
+      <div class="su-card__button">
+        <a href="{{ page.hero-button-url }}" class="su-link su-button">{{ page.hero-button-text }}</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+</aside>

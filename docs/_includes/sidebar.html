@@ -1,0 +1,17 @@
+
+
+{% if page.toc == true %}
+    {% include sidebar-toc.html %}
+{% endif %}
+
+{% if page.seealso == true %}
+    {% include sidebar-see-also.html %}
+{% endif %}
+
+{% if page.home != true %}
+    {% include sidebar-support.html %}
+{% endif %}
+
+{% include sidebar-box.html title="Request a Carina Project" content="<ul><li><a href='/request-carina-project' class='btn btn-carina'>Get Started</a></li></ul>" %}
+
+

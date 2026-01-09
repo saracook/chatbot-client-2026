@@ -1,0 +1,59 @@
+{% comment %}
+  A robust include for creating a <figure> element with an optional link,
+  caption, custom classes, and max-width.
+
+  Usage:
+  {% include figure.html
+      file="path/to/image.jpg"
+      alt="A descriptive alt text."
+      caption="This is the caption."
+      caption-class="text-center fst-italic"
+      url="https://example.com"
+      class="float-right"
+      max-width="600"
+  %}
+{% endcomment %}
+
+{%- assign file = include.file -%}
+{%- assign alt = include.alt | default: "" -%}
+{%- assign caption = include.caption -%}
+{%- assign url = include.url -%}
+{%- assign class = include.class -%}
+{%- assign max-width = include.max-width -%}
+{%- assign caption_class = include['caption-class'] -%} {%- comment %} Use bracket notation for keys with hyphens {% endcomment %}
+
+
+{% comment %} Error out gracefully if the required 'file' parameter is missing. {% endcomment %}
+{%- if file == nil or file == "" -%}
+  <div style="padding: 1rem; border: 2px dashed red; background-color: #ffdddd;">
+    <strong>Jekyll Include Error:</strong> The 'file' parameter is required for <code>figure.html</code>.
+  </div>
+{%- else -%}
+
+  <figure {% if class %}class="{{ class }}"{% endif %}>
+    {%- if url -%}
+      <a href="{{ url }}" target="_blank" rel="noopener noreferrer" class="no_icon">
+    {%- endif -%}
+
+    {% comment %} Capture style attributes to avoid an empty style="" tag {% endcomment %}
+    {%- capture image_styles -%}
+      {%- if max-width -%}max-width: {{ max-width }}px;{%- endif -%}
+    {%- endcapture -%}
+
+    <img class="img-fluid"
+         src="{{ file | relative_url }}"
+         alt="{{ alt }}"
+         {% if image_styles != "" %}style="{{ image_styles | strip }}"{% endif %}
+    />
+
+    {%- if url -%}
+      </a>
+    {%- endif -%}
+
+    {%- if caption -%}
+      <figcaption {% if caption_class %}class="{{ caption_class }}"{% endif %} {% if image_styles != "" %}style="{{ image_styles | strip }}"{% endif %}>
+        {{ caption }}
+      </figcaption>
+    {%- endif -%}
+  </figure>
+{%- endif -%}
