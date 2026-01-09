@@ -9,6 +9,7 @@ toc: true
 ## What is Slurm?
 
 Slurm is a workload manager. Carina is a shared computing environment, and Slurm's role is to take in everyone's requests for resources and calculate the most efficient way to allocate them.
+
 {% include image.html class="figure my-4 p-3 border border-light-subtle" file="/assets/images/slurm-chart.png" alt="Slurm" %}
 
 ## Slurm Jobs
@@ -145,3 +146,6 @@ SchedMD, the maker of Slurm, maintains extensive documentation.
 [ FAQ ](https://slurm.schedmd.com/faq.html) 
 
 [ Printable Reference Sheet ](https://slurm.schedmd.com/pdfs/summary.pdf)
+
+
+{% include support-callout.html %}
