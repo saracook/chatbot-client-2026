@@ -7,9 +7,9 @@
 
 if [[ $# -ne 2 || -z "$1" || -z "$2" ]]; then
 
-          echo "Usage: $0 <input_file> <max_parallel_jobs>"
+echo "Usage: $0 <input_file> <max_parallel_jobs>"
 
-            exit 1
+exit 1
 
 fi
 
@@ -25,9 +25,9 @@ MAX_JOBS="$2"
 
 if [[ ! -f "$INPUT_FILE" ]]; then
 
-          echo "[!] Error: Input file '$INPUT_FILE' not found."
+echo "[!] Error: Input file '$INPUT_FILE' not found."
 
-            exit 1
+exit 1
 
 fi
 
@@ -69,152 +69,152 @@ USER_KILL=false
 
 log_failure() {
 
-            local msg="$1"
+local msg="$1"
 
-                echo "[$(date '+%Y-%m-%d %H:%M:%S')] $msg" >> "$LOG_FILE"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] $msg" >> "$LOG_FILE"
 
-        }
+}
 
 
 
-        # Global Ctrl+C handler
+# Global Ctrl+C handler
 
-        handle_global_sigint() {
+handle_global_sigint() {
 
-                    echo -e "\n[!] Caught Ctrl+C. Terminating all jobs..."
+echo -e "\n[!] Caught Ctrl+C. Terminating all jobs..."
 
-                        USER_KILL=true
+USER_KILL=true
 
-                            for pid in "${PIDS[@]}"; do
+for pid in "${PIDS[@]}"; do
 
-                                            if kill -0 "$pid" 2>/dev/null; then
+if kill -0 "$pid" 2>/dev/null; then
 
-                                                                log_failure "[PID $pid] Command killed by user (Ctrl+C): ${CMD_MAP[$pid]} | Batch file: $INPUT_FILE | Log file: $LOG_FILE"
+log_failure "[PID $pid] Command killed by user (Ctrl+C): ${CMD_MAP[$pid]} | Batch file: $INPUT_FILE | Log file: $LOG_FILE"
 
-                                                                            kill -TERM "$pid" 2>/dev/null
+kill -TERM "$pid" 2>/dev/null
 
-                                                                                    fi
+fi
 
-                                                                                        done
+done
 
-                                                                                            exit 1
+exit 1
 
-                                                                                    }
+}
 
-                                                                                    trap handle_global_sigint SIGINT
+trap handle_global_sigint SIGINT
 
 
 
-                                                                                    # Run command in a subshell with inline signal trapping
+# Run command in a subshell with inline signal trapping
 
-                                                                                    run_and_track() {
+run_and_track() {
 
-                                                                                                local cmd="$1"
+local cmd="$1"
 
-                                                                                                    local line_number="$2"
+local line_number="$2"
 
 
 
-                                                                                                        # Wrap command in inline shell that logs SIGTERM/SIGINT
+# Wrap command in inline shell that logs SIGTERM/SIGINT
 
-                                                                                                            bash -c "
+bash -c "
 
-                                                                                                                    trap 'echo \"[PID \$\$] Command killed by signal (SIGINT/SIGTERM): $cmd | Batch file: $INPUT_FILE | Log file: $LOG_FILE\" >> $LOG_FILE; exit 130' SIGINT SIGTERM
+trap 'echo \"[PID \$\$] Command killed by signal (SIGINT/SIGTERM): $cmd | Batch file: $INPUT_FILE | Log file: $LOG_FILE\" >> $LOG_FILE; exit 130' SIGINT SIGTERM
 
-                                                                                                                            $cmd
+$cmd
 
-                                                                                                                                " &
+" &
 
-                                                                                                                                    local child_pid=$!
+local child_pid=$!
 
-                                                                                                                                        PIDS+=($child_pid)
+PIDS+=($child_pid)
 
-                                                                                                                                            CMD_MAP[$child_pid]="$cmd"
+CMD_MAP[$child_pid]="$cmd"
 
-                                                                                                                                    }
+}
 
 
 
-                                                                                                                                    check_finished_pids() {
+check_finished_pids() {
 
-                                                                                                                                                for i in "${!PIDS[@]}"; do
+for i in "${!PIDS[@]}"; do
 
-                                                                                                                                                     local pid="${PIDS[$i]}"
+local pid="${PIDS[$i]}"
 
-                                                                                                                                                     if ! kill -0 "$pid" 2>/dev/null; then
+if ! kill -0 "$pid" 2>/dev/null; then
 
-                                                                                                                                                         wait "$pid" 2>/dev/null
+wait "$pid" 2>/dev/null
 
-                                                                                                                                                             local status=$?
+local status=$?
 
-                                                                                                                                                         local cmd="${CMD_MAP[$pid]:-[unknown]}"
+local cmd="${CMD_MAP[$pid]:-[unknown]}"
 
 
 
-                                                                                                                                                             if [[ $status -ge 128 ]]; then
+if [[ $status -ge 128 ]]; then
 
-                                                                                                                                                             local sig=$((status - 128))
+local sig=$((status - 128))
 
-                                                                                                                                                             log_failure "[PID $pid] Command killed by signal $sig: $cmd | Batch file: $INPUT_FILE | Log file: $LOG_FILE"
+log_failure "[PID $pid] Command killed by signal $sig: $cmd | Batch file: $INPUT_FILE | Log file: $LOG_FILE"
 
-                                                                                                                                                         elif [[ $status -ne 0 ]]; then
+elif [[ $status -ne 0 ]]; then
 
-                                                                                                                                                                 log_failure "[PID $pid] Command failed (exit $status): $cmd | Batch file: $INPUT_FILE | Log file: $LOG_FILE"
+log_failure "[PID $pid] Command failed (exit $status): $cmd | Batch file: $INPUT_FILE | Log file: $LOG_FILE"
 
-                                                                                                                                                             fi
+fi
 
 
 
-                                                                                                                                                         unset 'PIDS[i]'
+unset 'PIDS[i]'
 
-                                                                                                                                                             unset 'CMD_MAP[$pid]'
+unset 'CMD_MAP[$pid]'
 
-                                                                                                                                                     fi
+fi
 
-                                                                                                                                                 done
+done
 
-                                                                                                                                                     PIDS=("${PIDS[@]}")  # compact array
+PIDS=("${PIDS[@]}")  # compact array
 
-                                                                                                                                             }
+}
 
 
 
-                                                                                                                                             echo "[*] Total commands to run: $TOTAL_CMDS"
+echo "[*] Total commands to run: $TOTAL_CMDS"
 
 
 
-                                                                                                                                             while [[ $CMDS_STARTED -lt $TOTAL_CMDS || ${#PIDS[@]} -gt 0 ]]; do
+while [[ $CMDS_STARTED -lt $TOTAL_CMDS || ${#PIDS[@]} -gt 0 ]]; do
 
-                                                                                                                                                 while [[ ${#PIDS[@]} -lt $MAX_JOBS && $NEXT_CMD_INDEX -lt $TOTAL_CMDS ]]; do
+while [[ ${#PIDS[@]} -lt $MAX_JOBS && $NEXT_CMD_INDEX -lt $TOTAL_CMDS ]]; do
 
-                                                                                                                                                         run_and_track "${COMMANDS[$NEXT_CMD_INDEX]}" "$((NEXT_CMD_INDEX+1))"
+run_and_track "${COMMANDS[$NEXT_CMD_INDEX]}" "$((NEXT_CMD_INDEX+1))"
 
-                                                                                                                                                         ((CMDS_STARTED++))
+((CMDS_STARTED++))
 
-                                                                                                                                                         ((NEXT_CMD_INDEX++))
+((NEXT_CMD_INDEX++))
 
-                                                                                                                                                     done
+done
 
 
 
-                                                                                                                                                 if [[ ${#PIDS[@]} -gt 0 ]]; then
+if [[ ${#PIDS[@]} -gt 0 ]]; then
 
-                                                                                                                                                         wait -n 2>/dev/null
+wait -n 2>/dev/null
 
-                                                                                                                                                         check_finished_pids
+check_finished_pids
 
-                                                                                                                                                     fi
+fi
 
 
 
-                                                                                                                                                 now=$(date "+%H:%M:%S")
+now=$(date "+%H:%M:%S")
 
-                                                                                                                                                     echo -ne "[${now}] Running: ${#PIDS[@]}/$MAX_JOBS | Started: $CMDS_STARTED/$TOTAL_CMDS\r"
+echo -ne "[${now}] Running: ${#PIDS[@]}/$MAX_JOBS | Started: $CMDS_STARTED/$TOTAL_CMDS\r"
 
-                                                                                                                                             done
+done
 
 
 
-                                                                                                                                             echo -e "\n[✔] All jobs completed."
+echo -e "\n[✔] All jobs completed."
 
 
