@@ -416,6 +416,39 @@ a {
   color: #006CB8;
 }
 
+.btn-outline-primary {
+    --bs-btn-color: #006CB8;
+    --bs-btn-border-color: #006CB8;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #006CB8;
+    --bs-btn-hover-border-color: #006CB8;
+    --bs-btn-focus-shadow-rgb: 0,108,184;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #006CB8;
+    --bs-btn-active-border-color: #006CB8;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-gradient: none;
+}
+
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #006CB8;
+    --bs-btn-border-color: #006CB8;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #0b5ed7;
+    --bs-btn-hover-border-color: #0a58ca;
+    --bs-btn-focus-shadow-rgb: 49,132,253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #0a58ca;
+    --bs-btn-active-border-color: #00548f;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+.text-bg-primary {
+    color: #fff!important;
+    background-color: #006CB8 !important;
+}
+
 p.annotation {
   font-size:.8em;
   color: #666;
