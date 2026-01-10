@@ -13,11 +13,3 @@
         - slurm-db-backup
   tags:
     - always
-
-- ansible.builtin.include_tasks:
-    file: stata-desktop-launchers.yml
-    apply:
-      tags:
-        - stata-desktop-launchers
-  tags:
-    - always

@@ -1,7 +1,0 @@
-- name: install /admin/bin/stata-desktop-launchers
-  ansible.builtin.template:
-    src: stata-desktop-launchers.j2
-    dest: /admin/bin/stata-desktop-launchers
-    owner: root
-    group: carina_admins
-    mode: '00770'
