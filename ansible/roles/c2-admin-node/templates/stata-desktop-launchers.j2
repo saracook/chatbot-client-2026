@@ -1,0 +1,93 @@
+#!/bin/bash
+
+# generate open ondemand (ood) desktop launchers for users based on
+# user-provided license files (i.e. "BYOL" = bring-your-own-license).
+# license files are collected in a central location, owned by
+# <user>:root with mode 00600, and "injected" into the stata
+# installation base directory as stata.lic using proot bind mounting,
+# due to the stata limitation that the license file location is not
+# configurable and is hard-coded to be at this location.
+
+# todo: licenses may be specific to a particular edition or cover
+# multiple editions. we're assuming here that licenses cover both
+# standard edition (i.e.  SE) and multi-processing edition (i.e. MP).
+# capture which editions licenses cover and only generate desktop
+# launchers for the editions supported by them.
+
+# noop if not run as root
+[ $( id -u ) -eq 0 ] || exit 0
+# noop if /home/users not mounted
+mountpoint -q /home/users || exit 0
+# noop if /software not mounted
+mountpoint -q /software || exit 0
+
+LICENSE_DIR="/software/licensefiles/stata"
+MODULE_DIR="/software/modules/stata"
+DESKTOP_ENTRY="$( cat <<'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=STATA ${VERSION} ${EDITION_UC}
+GenericName=STATA
+Exec=proot -b ${LICENSE_DIR}/${VERSION}/${USR}.lic:${MODULE_DIR}/${VERSION}/stata.lic ${MODULE_DIR}/${VERSION}/xstata-${EDITION_LC} -f0
+Icon=${MODULE_DIR}/${VERSION}/stata${VERSION}.png
+Terminal=false
+StartupNotify=false
+EOF
+)"
+
+for LICENSE_FILE in $( find $LICENSE_DIR -type f -name '*.lic' )
+do
+
+  USR="$( basename $LICENSE_FILE .lic )"
+  VERSION="$( basename "$( dirname $LICENSE_FILE )" )"
+
+  if ! id $USR &>/dev/null
+  then
+    echo "$USR is not a valid user" >&2
+    continue
+  fi
+
+  if [ ! -d /home/users/$USR ]
+  then
+    echo "directory /home/users/$USR does not exist" >&2
+    continue
+  fi
+
+  # ensure that directories exist
+  runuser -g users -u $USR -- mkdir -p /home/users/$USR/Desktop
+  runuser -g users -u $USR -- mkdir -p /home/users/$USR/.local/share/applications
+
+  # generate standard edition desktop file
+  DESKTOP_SE_FILE="/home/users/$USR/.local/share/applications/STATA${VERSION}SE.desktop"
+  echo "generating $DESKTOP_SE_FILE"
+  echo "$DESKTOP_ENTRY" | \
+  EDITION_LC="se" \
+  EDITION_UC="SE" \
+  LICENSE_DIR="$LICENSE_DIR" \
+  MODULE_DIR="$MODULE_DIR" \
+  USR="$USR" \
+  VERSION="$VERSION" \
+  envsubst > $DESKTOP_SE_FILE
+  chown $USR: $DESKTOP_SE_FILE && chmod 0755 $DESKTOP_SE_FILE
+  DESKTOP_SE_LINK="/home/users/$USR/Desktop/STATA${VERSION}SE.desktop"
+  echo "linking $DESKTOP_SE_LINK to $DESKTOP_SE_FILE"
+  runuser -g users -u $USR -- ln -f -s $DESKTOP_SE_FILE $DESKTOP_SE_LINK
+
+  # generate multi-processing edition desktop file
+  DESKTOP_MP_FILE="/home/users/$USR/.local/share/applications/STATA${VERSION}MP.desktop"
+  echo "generating $DESKTOP_MP_FILE"
+  echo "$DESKTOP_ENTRY" | \
+  EDITION_LC="mp" \
+  EDITION_UC="MP" \
+  LICENSE_DIR="$LICENSE_DIR" \
+  MODULE_DIR="$MODULE_DIR" \
+  USR="$USR" \
+  VERSION="$VERSION" \
+  envsubst > $DESKTOP_MP_FILE
+  chown $USR: $DESKTOP_MP_FILE && chmod 0755 $DESKTOP_MP_FILE
+  DESKTOP_MP_LINK="/home/users/$USR/Desktop/STATA${VERSION}MP.desktop"
+  echo "linking $DESKTOP_MP_LINK to $DESKTOP_MP_FILE"
+  runuser -g users -u $USR -- ln -f -s $DESKTOP_MP_FILE $DESKTOP_MP_LINK
+
+done
