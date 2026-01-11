@@ -4,8 +4,13 @@
 
 - title: "Home"
   url: "/"
-- title: "Who Can Use Carina?"
-  url: "/carina-who"
+- title: "Access"
+  id: carina-policy
+  folderitems:
+    - title: "Who can use Carina?"
+      url: "/carina-who"
+    - title: "Stanford Data"
+      url: "/stanford-data"
 - title: "Connect"
   url: "/connect"
   id: connect
@@ -21,7 +26,12 @@
     - title: "Data Management"  
       url: "/data-management"
 - title: "Carina Facts"
-  url: "/carina-facts"
+  id: carina-facts
+  folderitems:
+    - title: "Prem vs Cloud"
+      url: "/prem-vs-cloud"
+    - title: "Carina Specs"
+      url: "/carina-facts"
 - title: "Cost"
   url: "/cost"
 

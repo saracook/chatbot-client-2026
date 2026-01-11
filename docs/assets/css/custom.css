@@ -110,7 +110,8 @@ pre.highlight {
 
 .sidebar h3 {
   font-size: 1.2em;
-  font-weight: 400
+  font-weight: 400;
+  margin-top: 0;
 }
 
 .sidebar ul,
@@ -126,6 +127,9 @@ pre {
 .sidebar h2 {
   font-size: 1.2em;
   font-weight: 600
+}
+.sidebar .list-group-item{
+  padding-left: 1em
 }
 
 a .fa {
@@ -276,10 +280,9 @@ ul {
   text-decoration: none;
 }
 
-.sidebar .list-group-item {
-    padding: var(--bs-list-group-item-padding-y) var(--bs-list-group-item-padding-x);
+.sidebar ul.inline-toc{
+  margin-bottom:0;
 }
-
 .sidebar .list-group-flush>.list-group-item {
     border-width: 0 0 var(--bs-list-group-border-width);
 }
@@ -515,7 +518,7 @@ li > i.fa-brands {
     font-size: 1.8rem;
 }
 
-.sidebar-support .card-header {
+.sidebar .card-header {
   padding-left:1em
 }
 
