@@ -25,7 +25,7 @@
     src: slurm-db-backup.j2
     dest: /admin/bin/slurm-db-backup
     owner: root
-    group: root
+    group: carina_admins
     mode: '00750'
 
 - name: install /etc/systemd/system/slurm-db-backup.service
