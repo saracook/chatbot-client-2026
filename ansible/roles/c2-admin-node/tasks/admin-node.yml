@@ -5,12 +5,12 @@
     update_cache: yes
     enablerepo: stanford
 
-- name: install new user home quota script
+- name: install /admin/bin/set-home-quota{,.env}
   ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: root
-    group: "carina_admins"
+    group: carina_admins
     mode: "{{ item.mode }}"
   loop:
     - { src: set-home-quota.j2, dest: /admin/bin/set-home-quota, mode: "0750" }

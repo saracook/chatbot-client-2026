@@ -7,14 +7,6 @@
     - always
 
 - ansible.builtin.include_tasks:
-    file: ood.yml
-    apply:
-      tags:
-        - ood
-  tags:
-    - always
-
-- ansible.builtin.include_tasks:
     file: user-slice-resource-limits.yml
     apply:
       tags:

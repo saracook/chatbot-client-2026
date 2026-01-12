@@ -22,44 +22,68 @@
     enabled: no
     daemon_reload: yes
 
-# nb: /etc/skel/Desktop/SAS94.desktop
-#     symlink installed in role c2-login-node .
-- name: install sas desktop file
-  ansible.builtin.copy:
-    content: |
-      [Desktop Entry]
-      Version=1.0
-      Type=Application
-      Name=SAS 9.4
-      GenericName=SAS
-      Exec=/software/modules/sas/9.4/SASHome/SASFoundation/9.4/sas
-      Icon=/software/modules/sas/9.4/SASHome/saslogo.png
-      Terminal=true
-      StartupNotify=true
-    dest: /usr/share/applications/SAS94.desktop
+# nb: if these files change the desktop-launchers script must be updated
+- name: install sas/stata desktop launcher files
+  ansible.builtin.template:
+    src: "{{ item.src }}.j2"
+    dest: /usr/share/applications/{{ item.dest }}
+    mode: '00644'
+  loop:
+    - src: SAS.desktop
+      dest: SAS94.desktop
+      version: 9.4
+    - src: STATA.desktop
+      dest: STATA18SE.desktop
+      version: 18
+      edition: SE
+    - src: STATA.desktop
+      dest: STATA18MP.desktop
+      version: 18
+      edition: MP
+    - src: STATA.desktop
+      dest: STATA19SE.desktop
+      version: 19
+      edition: SE
+    - src: STATA.desktop
+      dest: STATA19MP.desktop
+      version: 19
+      edition: MP
+
+- name: install /usr/local/bin/desktop-launchers
+  ansible.builtin.template:
+    src: desktop-launchers.j2
+    dest: /usr/local/bin/desktop-launchers
+    mode: '00755'
+
+- name: install /etc/xdg/autostart/desktop-launchers.desktop
+  ansible.builtin.template:
+    src: desktop-launchers.desktop.j2
+    dest: /etc/xdg/autostart/desktop-launchers.desktop
     mode: '00644'
 
-- name: create directory /usr/share/xfce4/backdrops
-  ansible.builtin.file:
-    path: /usr/share/xfce4/backdrops
-    state: directory
+- name: configure carina desktop background image
+  block:
 
-- name: install /usr/share/xfce4/backdrops/carina-desktop.svg
-  ansible.builtin.copy:
-    src: usr/share/xfce4/backdrops/carina-desktop.svg
-    dest: /usr/share/xfce4/backdrops/carina-desktop.svg
+    - name: create directory /usr/share/xfce4/backdrops
+      ansible.builtin.file:
+        path: /usr/share/xfce4/backdrops
+        state: directory
+    
+    - name: install /usr/share/xfce4/backdrops/carina-desktop.svg
+      ansible.builtin.copy:
+        src: usr/share/xfce4/backdrops/carina-desktop.svg
+        dest: /usr/share/xfce4/backdrops/carina-desktop.svg
+    
+    - name: create directory /etc/xdg/xfce4/xfconf/xfce-perchannel-xml
+      ansible.builtin.file:
+        path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml
+        state: directory
+    
+    - name: install /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+      ansible.builtin.copy:
+        src: etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+        dest: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
 
-- name: create directory /etc/xdg/xfce4/xfconf/xfce-perchannel-xml
-  ansible.builtin.file:
-    path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml
-    state: directory
-
-- name: install /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
-  ansible.builtin.copy:
-    src: etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
-    dest: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
-
-# todo: update stata module file to inject per-group license
 - name: install /usr/local/sbin/proot
   ansible.builtin.get_url:
     url: "{{ proot_binary_url }}"
