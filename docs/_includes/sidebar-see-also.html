@@ -1,0 +1,26 @@
+<!-- Sidebar See Also uses site.data.navigation -->
+{% assign static_navigation = site.data.navigation %}
+{% assign my_folder = page.folder %}
+{% for item in static_navigation %}
+{% if item.id == my_folder %}
+{% if item.folderitems %}
+
+<div class="card sidebar-also">
+  <div class="card-header">
+    <h3 class="my-0">See Also</h3>
+  </div>
+  <ul class="list-group list-group-flush sidebar-also">
+    {% for folderitem in item.folderitems %}
+    <li class="{% if folderitem.url==page.url %}active{% endif %} list-group-item">
+      {% if folderitem.external_url %}
+      <a class="exlink" href="{{folderitem.external_url | relative_url }}" target="_blank">{{folderitem.title}}</a>
+      {% else %}
+      <a class="link" href="{{folderitem.url | relative_url }}">{{folderitem.title}}</a>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+{% endif %}
+{% endfor %}

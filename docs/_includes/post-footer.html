@@ -1,0 +1,14 @@
+<!-- {% if page.toc %}
+<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/toc.css">
+<script type="text/javascript" src="{{ site.baseurl}}/assets/js/toc.js"></script>
+{% endif %}  -->
+
+<!-- Custom JavaScript/css files set in YAML front matter -->
+{% for css in page.customcss %}
+{% capture css_path %}{{ site.baseurl }}{{ css }}{% endcapture %}
+<link rel="stylesheet" href="{{ css_path }}">
+{% endfor %}
+{% for js in page.customjs %}
+{% capture js_path %}{{ site.baseurl }}{{ js }}{% endcapture %}
+<script type="text/javascript" src="{{ js_path }}"></script>
+{% endfor %}    

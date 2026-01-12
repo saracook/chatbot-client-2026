@@ -1,0 +1,38 @@
+- title: On-Prem vs. Cloud
+  permalink: /prem-vs-cloud
+- title: Request a Carina Account
+  permalink: /request-carina-project
+- title: Carina Status
+  permalink: /status
+- title: Cost
+  permalink: /cost
+- title: Carina Computing Platform
+  permalink: /
+- title: Carina Resources
+  permalink: /carina-resources
+- title: Events
+  permalink: /events
+- title: Common Use-Cases
+  permalink: /common-use-cases
+- title: Slurm Primer
+  permalink: /slurm
+- title: Slurm on Carina
+  permalink: /carina-resources/slurm-carina
+- title: Carina Troubleshooting
+  permalink: /carina-resources/carina-troubleshooting
+- title: Connect to Carina
+  permalink: /carina-resources/connect-carina
+- title: Clone from GitHub
+  permalink: /carina-resources/connect-carina/clone-github
+- title: Access Carina via SSH
+  permalink: /carina-resources/connect-carina/access-carina-ssh
+- title: Connecting to the full-tunnel VPN
+  permalink: /carina-prem-resources/connect-carina/connecting-full-tunnel-vpn
+- title: Access Carina with JupyterLab
+  permalink: /carina-prem-resources/connect-carina/access-carina-jupyterlab
+- title: Access Carina via Desktop
+  permalink: /carina-resources/connect-carina/access-carina-desktop
+- title: 'Medicine Box: Working with Files'
+  permalink: /integrations/medicine-box-files
+- title: 'Medicine Box: Setup'
+  permalink: /integrations/medicine-box-setup
