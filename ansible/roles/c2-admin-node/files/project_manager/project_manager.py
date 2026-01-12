@@ -183,6 +183,7 @@ def create_dir(pi, project):
 
     # Set quota on newly created directory
     quota_payload = {
+        "container": True,
         "include_snapshots": False,
         "path": f'{directory_path}',
         "thresholds": {
