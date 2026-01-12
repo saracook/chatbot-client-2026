@@ -5,7 +5,7 @@ title: "Carina Documentation"
 image: "/assets/src-site-image.png"
 site_title: Carina
 # this appears in the html browser tab for the site title (seen mostly by search engines, not users)
-baseurl: '/carina'
+baseurl: ""
 owner:
   # The owner name must be provided.
   name: "Stanford Research Computing"
@@ -63,6 +63,6 @@ safe: true
 # https://decanter.stanford.edu/component/identity-lockup/
 
 lockup_line2: 
-lockup_link: /index.html
+lockup_link: /
 lockup_line1: Carina
 lockup_modifier_class: su-lockup--option-a

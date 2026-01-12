@@ -1,6 +1,8 @@
 ---
-title: "Stanford Data Sources"
+title: "Stanford Data Sources on Carina"
 permalink: /stanford-data
+seealso: true
+folder: carina-policy
 toc: true
 ---
 

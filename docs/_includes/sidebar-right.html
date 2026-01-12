@@ -1,6 +1,8 @@
 {% capture sidebar_ct %}
-<a class="btn btn-primary" href="{{ site.baseurl }}/connect">Connect to Carina 2.0</a>
-<p class="mt-4"><a class="btn btn-outline-primary" href="{{ site.baseurl }}/migrate">Data Migration</a></p>
+<div class="d-grid gap-2">
+  <a class="btn btn-primary" href="{{ site.baseurl }}/connect">Connect to Carina 2.0</a>
+  <a class="btn btn-outline-primary" href="{{ site.baseurl }}/migrate">Data Migration</a>
+</div>
 {% endcapture %}
 
 {% include sidebar-box.html content=sidebar_ct title="Current Carina Users" %}
