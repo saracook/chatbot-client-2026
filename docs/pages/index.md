@@ -12,7 +12,7 @@ seealso: false
 
 Carina is a secure computing environment, designed and approved for PHI and other high-risk data.
 
-Carina is integrated with University regulations such as the [Data Risk Assessment](https://uit.stanford.edu/security/dra.html) and is compliant with Stanford’s [minimum security requirements for hosting High Risk Data](https://uit.stanford.edu/guide/securitystandards.html).
+Carina is integrated with University regulations such as the [Data Risk Assessment](https://uit.stanford.edu/security/dra) and is compliant with Stanford’s [minimum security requirements for hosting High Risk Data](https://uit.stanford.edu/guide/securitystandards).
 
 Carina is available to any team led by a researcher with Principal Investigator privileges at Stanford (e.g.: faculty, or researchers with a PI waiver) working exclusively with high-risk data.
 

@@ -20,7 +20,7 @@ A job is a set of tasks that is submitted to Slurm, along with a request for the
 
 Before asking Slurm for resources, you need to determine how much compute power you need, and for how long. Slurm will only give you what you ask for, so if you ask for too little, your job may not finish before Slurm reclaims your resources. If you ask for too much, Slurm will hold your job in the queue until all requested resources are available, which could slow down your work.
 
-Resource estimation can be tricky. We periodically offer a workshop on it, watch our [Classes page](https://srcc.stanford.edu/classes.html) for details.
+Resource estimation can be tricky. We periodically offer a workshop on it, watch our [Classes page](https://srcc.stanford.edu/classes) for details.
 
 Slurm has some [reporting functions](#utilization) which can help you understand your usage.
 

@@ -16,9 +16,9 @@ Note: External collaborators, or users without a SUNet ID, can be sponsored by a
 
 ## 2. Data must be high-risk
 
-Carina is exclusively available for research using [high-risk data](https://uit.stanford.edu/guide/riskclassifications.html).
+Carina is exclusively available for research using [high-risk data](https://uit.stanford.edu/guide/riskclassifications).
 
-If your project does not involve high-risk data, [Stanford Research Computing](https://srcc.stanford.edu/systems.html) has robust research computing options for low- and moderate-risk data.
+If your project does not involve high-risk data, [Stanford Research Computing](https://srcc.stanford.edu/systems) has robust research computing options for low- and moderate-risk data.
 
 ### NIH Controlled-Access Data
 
@@ -26,7 +26,7 @@ Carina 2.0 is certified for high-risk data, including NIH Controlled-Access Data
 
 ## 3. A Data Risk Assessment must be completed
 
-Each new data set brought into the Carina environment will undergo a [Data Risk Assessment](https://uit.stanford.edu/security/dra.html). Stanford’s Information Security Office (ISO) and the University Privacy Office (UPO) evaluate projects based on all applicable security and privacy laws and regulations as well as University policy. Once the DRA is approved, the data set can be brought on the Carina platform.
+Each new data set brought into the Carina environment will undergo a [Data Risk Assessment](https://uit.stanford.edu/security/dra). Stanford’s Information Security Office (ISO) and the University Privacy Office (UPO) evaluate projects based on all applicable security and privacy laws and regulations as well as University policy. Once the DRA is approved, the data set can be brought on the Carina platform.
 
 Effectively and safely computing on high-risk data requires a flexible yet compliant compute environment.  Stanford Research Computing  is committed to enabling research using high-risk data at Stanford by offering a variety of on-premise and cloud solutions that are compliant with [Stanford's minimum security requirements for high-risk data](https://uit.stanford.edu/guide/securitystandards.html).
 

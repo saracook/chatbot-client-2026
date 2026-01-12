@@ -6,7 +6,7 @@ folder: carina-policy
 toc: true
 ---
 
-{% include note.html content="The Stanford Medicine Research Data Repository (STARR) and Population Health Sciences (PHS) are covered by a [Data Risk Assessment](https://uit.stanford.edu/security/dra.html). Carina projects using *only* STARR or PHS data will not need a new DRA." %}
+{% include note.html content="The Stanford Medicine Research Data Repository (STARR) and Population Health Sciences (PHS) are covered by a [Data Risk Assessment](https://uit.stanford.edu/security/dra). Carina projects using *only* STARR or PHS data will not need a new DRA." %}
 
 ## Access to STAnford Research Repository (STARR)
 
