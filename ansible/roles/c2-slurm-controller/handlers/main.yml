@@ -11,4 +11,5 @@
     daemon_reload: yes
 
 - name: run partition qos
-  ansible.builtin.command: /admin/bin/slurm-partition-qos
+  ansible.builtin.command: 
+    cmd: /admin/bin/slurm-partition-qos
