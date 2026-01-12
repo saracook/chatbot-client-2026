@@ -1,0 +1,8 @@
+- name: install partition qos script
+  ansible.builtin.template:
+    src: slurm-partition-qos.j2
+    dest: /admin/bin/slurm-partition-qos
+    owner: root
+    group: root
+    mode: '0700'
+  notify: "run partition qos" 
