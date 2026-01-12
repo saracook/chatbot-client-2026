@@ -9,3 +9,6 @@
     name: slurmrestd.service
     state: restarted
     daemon_reload: yes
+
+- name: run partition qos
+  ansible.builtin.command: /admin/bin/slurm-partition-qos
