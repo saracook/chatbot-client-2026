@@ -40,15 +40,6 @@
     mode: '00644'
   register: sdbdsc
 
-- name: install partition qos script
-  ansible.builtin.template:
-    src: partition-qos.j2
-    dest: /etc/slurm/partition-qos
-    owner: root
-    group: root
-    mode: '0700'
-  notify: "run partition qos" 
-
 - name: start/restart and enable slurmdbd.service
   ansible.builtin.systemd_service:
     name: slurmdbd.service
