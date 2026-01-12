@@ -14,6 +14,10 @@
       url: "/carina-who"
     - title: "Carina + Stanford Data"
       url: "/stanford-data"
+    - title: "Data Migration: Individuals"
+      url: "/migrate"
+    - title: "Data Migration: Projects"
+      url: "/migrate-projects"
 - title: "Using Carina"
   id: using-carina
   folderitems:

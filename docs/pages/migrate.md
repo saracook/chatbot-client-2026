@@ -3,6 +3,8 @@ title: "Data Migration"
 permalink: /migrate
 toc: true
 customjs: /assets/js/migrate.js
+seealso: true
+folder: carina-policy
 ---
 You are responsible for migrating any desired files in your personal $HOME directory from Carina 1.0 to Carina 2.0. 
 
