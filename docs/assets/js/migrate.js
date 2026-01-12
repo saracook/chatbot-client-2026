@@ -28,11 +28,11 @@
             sessionStorage.setItem('dryRun', dryRun);
             const dryRunFlag = dryRun ? '--dry-run' : '';
 
-            const rsyncCmd = `rsync -avz ${dryRunFlag} ${sunetid}@login.carina.stanford.edu:/home/${sunetid}/  ${localDirectory}`;
+            const rsyncCmd = `rsync -avz  ${dryRunFlag}  ${sunetid}@login.carina.stanford.edu:/home/${sunetid}/   ${localDirectory}`;
             document.getElementById('rsyncCmd').value = rsyncCmd;
 
-            const rsyncCmd2 = `rsync -avz ${dryRunFlag} ${localDirectory} ${sunetid}@login.carina.stanford.edu:/home/${sunetid}/  `;
-            document.getElementById('rsyncCmd2').value = rsyncCmd;
+            const rsyncCmd2 = `rsync -avz  ${dryRunFlag}  ${localDirectory}  ${sunetid}@c2-login.carina.stanford.edu:/home/users/${sunetid}/  `;
+            document.getElementById('rsyncCmd2').value = rsyncCmd2;
 
         });
 
@@ -41,8 +41,19 @@
             rsyncCmdInput.select();
             rsyncCmdInput.setSelectionRange(0, 99999); // For mobile devices
             navigator.clipboard.writeText(rsyncCmdInput.value).then(() => {
-                alert('Rsync command copied to clipboard!');
+                console.log('Rsync command copied to clipboard!');
             }, () => {
-                alert('Failed to copy rsync command to clipboard.');
+                console.log('Failed to copy rsync command to clipboard.');
+            });
+        });
+
+        document.getElementById('copyBtn2').addEventListener('click', function() {
+            const rsyncCmdInput = document.getElementById('rsyncCmd2');
+            rsyncCmdInput.select();
+            rsyncCmdInput.setSelectionRange(0, 99999); // For mobile devices
+            navigator.clipboard.writeText(rsyncCmdInput.value).then(() => {
+                console.log('Rsync command copied to clipboard!');
+            }, () => {
+                console.log('Failed to copy rsync command to clipboard.');
             });
         });

@@ -419,6 +419,18 @@ a {
   color: #006CB8;
 }
 
+[type=checkbox]:checked+label:before, [type=radio]:checked+label:before {
+    background-color: #006CB8;
+    -webkit-box-shadow: 0 0 0 1px #006CB8;
+    box-shadow: 0 0 0 1px #006CB8;
+}
+
+[type=button], [type=image], [type=reset], [type=submit], button {
+    padding: 1rem 2rem 1.15rem;
+    background-color: #006CB8;
+    color: #fff;
+}
+
 .btn-outline-primary {
     --bs-btn-color: #006CB8;
     --bs-btn-border-color: #006CB8;
@@ -525,4 +537,9 @@ li > i.fa-brands {
 .su-main-nav>ul>li>ul {
     margin-left: 0;
     padding-left:0;
+}
+
+ input.form-control-lg,
+ label{
+  max-width: 100%;
 }
