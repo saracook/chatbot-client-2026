@@ -15,7 +15,7 @@
     - always
 
 - ansible.builtin.include_tasks:
-    file: project-manager-script.yml
+    file: project-manager.yml
     apply:
       tags:
         - project-manager

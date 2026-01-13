@@ -1,25 +1,3 @@
-# check for existence of prod credentials
-- name: check for existing prod API cert
-  ansible.builtin.stat:
-    path: /admin/bin/project_manager/c2-wgm-api-prod.pem
-  register: prodapicrt
-
-- name: check for existing prod API key
-  ansible.builtin.stat:
-    path: /admin/bin/project_manager/c2-wgm-api-prod.key
-  register: prodapikey
-
-# check for existence of dev credentials
-- name: check for existing dev API cert
-  ansible.builtin.stat:
-    path: /admin/bin/project_manager/c2-wgm-api-dev.pem
-  register: devapicrt
-
-- name: check for existing dev API key
-  ansible.builtin.stat:
-    path: /admin/bin/project_manager/c2-wgm-api-dev.key
-  register: devapikey
-
 # install cert and key if missing
 - name: install prod API cert
   ansible.builtin.copy:
@@ -28,7 +6,6 @@
     owner: root
     group: carina_admins
     mode: '00600'
-  when: not prodapicrt.stat.exists
 
 - name: install prod API key
   ansible.builtin.copy:
@@ -37,7 +14,6 @@
     owner: root
     group: carina_admins
     mode: '00600'
-  when: not prodapikey.stat.exists
 
 - name: install dev API cert
   ansible.builtin.copy:
@@ -46,7 +22,6 @@
     owner: root
     group: carina_admins
     mode: '00600'
-  when: not devapicrt.stat.exists
 
 - name: install dev API key
   ansible.builtin.copy:
@@ -55,15 +30,15 @@
     owner: root
     group: carina_admins
     mode: '00600'
-  when: not devapikey.stat.exists
 
+# deploy script
 - name: install project manager script
   ansible.builtin.copy:
     src: "{{ item.src }}"
-    dest: /admin/bin/project_manager
+    dest: "{{ item.dest }}"
     owner: root
     group: carina_admins
     mode: "0750"
   loop:
-    - { src: 'files/project_manager/project_manager.py'}
-    - { src: 'files/project_manager/requirements.txt'}
+    - { src: 'files/admin/bin/project_manager/project_manager.py', dest: '/admin/bin/projects_manager/project_manager.py'}
+    - { src: 'files/admin/bin/project_manager/requirements.txt', dest: '/admin/bin/project_manager/requirements.txt'}
