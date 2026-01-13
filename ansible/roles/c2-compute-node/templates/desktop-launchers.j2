@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# create ~/Desktop/*.desktop symbolic links to open ondemand (ood)
+# desktop launcher files for sas/stata. for stata "byol" (i.e.
+# bring-your-own-license), determine whether or not to create the
+# symlinks based on the presence of user-provided license files.
+# license files are collected in a central location, owned by
+# <user>:root with mode 00600, and "injected" into the stata
+# installation base directory as stata.lic using proot bind mounting,
+# due to the stata limitation that the license file location is not
+# configurable and is hard-coded to be at this location.
+
+# this script is invoked for users automatically when their desktop
+# session starts via a *.desktop file in /etc/xdg/autostart .
+
+# nb: desktop launcher target files are installed to
+# /usr/share/applications on compute nodes via ansible. if the files
+# being installed change, this script must be updated accordingly.
+
+# todo: stata licenses may be specific to a particular edition or may
+# cover multiple editions. we're assuming here that licenses for a given
+# version cover both standard edition (i.e. SE) and multi-processing
+# edition (i.e. MP). determine how to capture which editions licenses
+# cover and only generate desktop launcher symlinks for the editions
+# supported by them.
+
+# noop if /home/users not mounted
+mountpoint -q /home/users || exit 0
+# noop if /software not mounted
+mountpoint -q /software || exit 0
+
+STATA_LICENSE_DIR="/software/licensefiles/stata"
+
+# ensure that desktop directory exists
+mkdir -p /home/users/$USER/Desktop
+
+# make symlink to sas desktop file
+ln -f -s /usr/share/applications/SAS94.desktop /home/users/$USER/Desktop/SAS94.desktop
+
+# make/remove symlinks to stata 18 se/mp desktop files
+if [ -r "$STATA_LICENSE_DIR/18/$USER.lic" ]
+then
+  ln -f -s /usr/share/applications/STATA18SE.desktop /home/users/$USER/Desktop/STATA18SE.desktop
+  ln -f -s /usr/share/applications/STATA18MP.desktop /home/users/$USER/Desktop/STATA18MP.desktop
+else
+  rm -f /home/users/$USER/Desktop/STATA18SE.desktop
+  rm -f /home/users/$USER/Desktop/STATA18MP.desktop
+fi
+
+# make/remove symlinks to stata 19 se/mp desktop files
+if [ -r "$STATA_LICENSE_DIR/19/$USER.lic" ]
+then
+  ln -f -s /usr/share/applications/STATA19SE.desktop /home/users/$USER/Desktop/STATA19SE.desktop
+  ln -f -s /usr/share/applications/STATA19MP.desktop /home/users/$USER/Desktop/STATA19MP.desktop
+else
+  rm -f /home/users/$USER/Desktop/STATA19SE.desktop
+  rm -f /home/users/$USER/Desktop/STATA19MP.desktop
+fi

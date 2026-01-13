@@ -13,3 +13,11 @@
         - slurm-db-backup
   tags:
     - always
+
+- ansible.builtin.include_tasks:
+    file: project-manager.yml
+    apply:
+      tags:
+        - project-manager
+  tags:
+    - always
