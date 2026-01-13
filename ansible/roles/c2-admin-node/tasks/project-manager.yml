@@ -40,5 +40,5 @@
     group: carina_admins
     mode: "0750"
   loop:
-    - { src: 'files/admin/bin/project_manager/project_manager.py', dest: '/admin/bin/projects_manager/project_manager.py'}
+    - { src: 'files/admin/bin/project_manager/project_manager.py', dest: '/admin/bin/project_manager/project_manager.py'}
     - { src: 'files/admin/bin/project_manager/requirements.txt', dest: '/admin/bin/project_manager/requirements.txt'}
