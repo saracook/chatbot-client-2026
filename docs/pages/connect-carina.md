@@ -32,4 +32,4 @@ This will land you on a login node. You are now logged in, but you do not have a
 
 Your $HOME is `/home/users/<sunetid>`. 
 
-Project folders are at `/projects/<project_id>/main`.
+Project folders are at `/projects/<PI>/<projectID>/main`.
