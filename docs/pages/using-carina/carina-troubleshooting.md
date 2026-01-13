@@ -27,7 +27,7 @@ A lack of free disk space can cause Carina OnDemand and its apps to fail to conn
 
 The error messages may not tell you that disk space is the issue, but it is the most likely cause.
 
-The good news is, you can solve the problem on your own. Your account will still allow you to [connect via SSH](/connect) when you are over your disk quota. 
+The good news is, you can solve the problem on your own. Your account will still allow you to [connect via SSH](/connect-carina) when you are over your disk quota. 
 
 Connect via SSH, then check your disk usage. It is safe to do this on a login node.
 

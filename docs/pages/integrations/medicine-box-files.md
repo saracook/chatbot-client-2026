@@ -6,7 +6,7 @@ toc: true
 
 This page covers some of the quirks of interacting with files on Medicine Box from inside Carina.  It assumes that you have set up your connection using [the setup tutorial](medicine-box-setup.html).
 
-To start, [connect to Carina via ssh](https://carina-resources/connect-carina/access-carina-ssh.html) and load `rclone`.
+To start, [connect to Carina via ssh](/connect-carina.html) and load `rclone`.
 
 `module load rclone`
 

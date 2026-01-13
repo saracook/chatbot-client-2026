@@ -1,6 +1,6 @@
 ---
 title: "Clone from GitHub"
-permalink: /carina-resources/connect-carina/clone-github
+permalink: /clone-github
 
 toc: true
 ---

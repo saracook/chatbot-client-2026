@@ -4,7 +4,7 @@ permalink: /prem-vs-cloud
 toc: false
 ---
 
-Carina is Stanford University’s on-prem computing environment for [high-risk data](https://uit.stanford.edu/guide/riskclassifications). [Carina](carina-resources.html) leverages the Stanford Research Computing private cloud. 
+Carina is Stanford University’s on-prem computing environment for [high-risk data](https://uit.stanford.edu/guide/riskclassifications). [Carina](/carina-facts.html) leverages the Stanford Research Computing private cloud. 
 
 The Nero GCP environment is Stanford's cloud service for high risk data, built on Google Cloud Platform.
 

@@ -17,7 +17,7 @@ Install [rclone](https://rclone.org/downloads/index.html) on your laptop - you w
 
 ## Step 2: On Carina, load rclone and configure your Box endpoint
 
-[Connect to Carina via SSH](https://carina-resources/connect-carina/access-carina-ssh.html)
+[Connect to Carina via SSH](/connect-carina.html)
 
 Load the rclone module using module load (ml)
 
