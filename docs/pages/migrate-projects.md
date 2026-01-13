@@ -10,7 +10,7 @@ The Carina team will manage data migration for project folders.
 
 ## Where are my files?
 
-Carina 2.0 has a copy of your project directory at /projects/<project_id>/main. This snapshot was taken between mid-December 2025 and the beginning of January 2026. 
+Carina 2.0 has a copy of your project directory at /projects/[project_id]/main. This snapshot was taken between mid-December 2025 and the beginning of January 2026. 
 
 ## What do I need to do when I'm ready to move to Carina 2.0?
 
