@@ -1,7 +1,7 @@
 ---
 title: "Launching Apps in Carina OnDemand"
 permalink: /ood-apps
-folder: "getting-started"
+folder: using-carina
 seealso: true
 toc: true
 ---

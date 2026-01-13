@@ -1,7 +1,7 @@
 ---
 title: "Carina OnDemand"
 permalink: /ood-carina
-folder: "getting-started"
+folder: using-carina
 seealso: true
 toc: true
 ---
