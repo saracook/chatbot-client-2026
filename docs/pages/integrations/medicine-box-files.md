@@ -1,10 +1,10 @@
 ---
 title: "Medicine Box: Working with Files"
-permalink: /integrations/medicine-box-files
+permalink: /medicine-box-files
 toc: true
 ---
 
-This page covers some of the quirks of interacting with files on Medicine Box from inside Carina.  It assumes that you have set up your connection using [the setup tutorial](medicine-box-setup.html).
+This page covers some of the quirks of interacting with files on Medicine Box from inside Carina.  It assumes that you have set up your connection using [the setup tutorial](/medicine-box-setup.html).
 
 To start, [connect to Carina via ssh](/connect-carina.html) and load `rclone`.
 
@@ -20,7 +20,7 @@ To see the remote resources you have configured, use the `listremotes` command.
 
 {% include image.html class="figure my-4 p-3 border border-light-subtle" file="/assets/images/rclone-remotes.png" alt="rclone listremotes command" %}
 
-This shows the remote resource MedBox, which was created [in this tutorial](medicine-box-setup.html).
+This shows the remote resource MedBox, which was created [in this tutorial](/medicine-box-setup.html).
 
 ### lsjson and ls
 

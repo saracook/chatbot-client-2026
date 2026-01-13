@@ -32,7 +32,7 @@
 - title: "About Carina"
   id: carina-facts
   folderitems:
-    - title: "Prem vs Cloud"
+    - title: "On-Prem vs Cloud"
       url: "/prem-vs-cloud"
     - title: "Carina Specs"
       url: "/carina-facts"

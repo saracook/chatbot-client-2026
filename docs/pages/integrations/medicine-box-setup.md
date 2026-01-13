@@ -1,6 +1,6 @@
 ---
 title: "Medicine Box: Setup"
-permalink: /integrations/medicine-box-setup
+permalink: /medicine-box-setup
 
 toc: true
 ---
