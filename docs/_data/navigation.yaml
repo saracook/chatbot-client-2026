@@ -21,14 +21,18 @@
 - title: "Using Carina"
   id: using-carina
   folderitems:
-    - title: "Slurm on Carina"
-      url: "/slurm-carina"
+    - title: "Carina OnDemand"
+      url: "/ood-carina"
+    - title: "Launching Apps with OnDemand"
+      url: "/ood-apps"
     - title: "Slurm Primer"
       url: "/slurm"
     - title: "Troubleshooting Carina"
       url: "/troubleshooting"
     - title: "Data Management"  
       url: "/data-management"
+    - title: "Using GitHub with Carina"  
+      url: "/clone-github"
 - title: "About Carina"
   id: carina-facts
   folderitems:
