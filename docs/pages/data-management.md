@@ -12,6 +12,6 @@ toc: true
 
 After a bit of setup, file transfers between Carina and Medicine Box are easy.
 
-[setup tutorial](integrations/medicine-box-setup.html) 
+[setup tutorial](/medicine-box-setup.html) 
 
-[copying files tutorial](integrations/medicine-box-files.html)
+[copying files tutorial](/medicine-box-files.html)
