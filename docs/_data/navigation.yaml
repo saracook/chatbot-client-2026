@@ -27,6 +27,8 @@
       url: "/ood-apps"
     - title: "OnDemand App Toolbox"
       url: "/ood-toolbox"
+    - title: "Slurm on Carina"
+      url: "/slurm-carina"
     - title: "Slurm Primer"
       url: "/slurm"
     - title: "Troubleshooting Carina"
