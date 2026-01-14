@@ -6,7 +6,7 @@ seealso: true
 toc: true
 ---
 
-Carina has several software packages available via module load. To see a complete list, use `ml avail` in a terminal.
+Carina has several software packages available via module load on the command line. To see a complete list, use `ml avail` in a terminal.
 
 ## Environment & Package Management Utilities
 
@@ -20,7 +20,7 @@ Conda can be considered the underlying technology, but there are different snake
 
 ### Anaconda
 
-This may be the only module you need, because Anaconda (via Conda) lets you install Python and scientific libraries in your own user space.  
+This may be the only module you need, because Anaconda lets you install Python and scientific libraries in your own user space. Channels like [conda-forge](https://conda-forge.org/) have optimized versions of libraries and applications ready to be included in your environment.
 
 [Anaconda Documentation](https://www.anaconda.com/docs/getting-started/main)
 
@@ -97,17 +97,16 @@ Load the MATLAB module with module load/ml
 
 `module load matlab` or `ml matlab`
 
+Run a script and pipe the output to a log file
+
+`matlab -nodisplay -batch "run('myscript.m')" > output.log`
+
 Run a MATLAB script ('myscript.m') in non-graphical "batch" mode 
 
 `matlab -nodisplay -r "run('myscript.m'); exit;"`
 
 <div class="text-body-secondary fst-italic ps-4 mb-4">-nodisplay: Do not start the Java desktop<br />
  -r: Run the specified MATLAB command and then exit</div>
-
-Run a script and pipe the output to a log file
-
-`matlab -nodisplay -batch "run('myscript.m')" > output.log`
-
 
 ### R
 
@@ -190,4 +189,4 @@ Copy a local directory to the remote
 
 Sync a local directory to a remote (makes destination identical to source)
 
-    `rclone sync /path/to/local/project my-gdrive:backups/project-sync`
+`rclone sync /path/to/local/project my-gdrive:backups/project-sync`
