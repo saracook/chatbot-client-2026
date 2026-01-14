@@ -29,6 +29,8 @@
       url: "/ood-toolbox"
     - title: "Slurm on Carina"
       url: "/slurm-carina"
+    - title: "Software Modules"
+      url: "/software"
     - title: "Slurm Primer"
       url: "/slurm"
     - title: "Troubleshooting Carina"

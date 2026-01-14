@@ -5,7 +5,7 @@ permalink: /medicine-box-setup
 toc: true
 ---
 
-This page covers the steps to set up a connection between Carina and Medicine Box which will allow transfers between them using`rclone`.
+This page covers the steps to set up a connection between Carina and Medicine Box which will allow transfers between them using `rclone`.
 
 Some of the steps will be done via an ssh connection to Carina, but you will also need to use a terminal and browser on a computer that is compliant with [AMIE](amie.stanford.edu) and can access [Medicine Box](https://stanfordmedicine.app.box.com/). This machine is called *laptop* in the following steps.
 
@@ -33,7 +33,7 @@ Then type n to start creating a new remote, and name your new remote instance. T
 
 [not shown: a long list of possible destinations]
 
-At the next prompt, type in`box`.
+At the next prompt, type in `box`.
 
 Accept the defaults for the next five prompts, and do not enter advanced config.
 

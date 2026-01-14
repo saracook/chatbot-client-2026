@@ -237,11 +237,7 @@ code {
   border: 1px solid #b6b1a9
 }
 
-@media (max-width:769px) {
-  .sidebar {
-    font-size: 16px
-  }
-}
+
 
 .sidebar>div,
 .sidebar>div.alert {
@@ -252,6 +248,21 @@ code {
 .sidebar-right>div {
   margin: 1em 0 1em 2em;
   display: block
+}
+@media (max-width:769px) {
+  .sidebar {
+    font-size: 16px
+  }
+
+  .sidebar-right>div {
+    margin: 1em 0 1em 0;
+  }
+
+  .sidebar>div,
+  .sidebar>div.alert {
+    margin: 1em 0 1em 0;
+    display: block
+  }
 }
 
 .sidebar>div:first-child {

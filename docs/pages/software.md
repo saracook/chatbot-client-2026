@@ -1,142 +1,193 @@
 ---
-title: "Software on Carina"
+title: "Software Modules on Carina"
 permalink: /software
 folder: "using-carina"
 seealso: true
 toc: true
 ---
 
-### anaconda3/2025.06
+Carina has several software packages available via module load. To see a complete list, use `ml avail` in a terminal.
 
-*   **Summary:** Anaconda is a popular, open-source distribution of the Python and R programming languages for scientific computing and data science. It simplifies package management and deployment by including the `conda` package manager and over 250 pre-installed scientific packages (like NumPy, Pandas, and SciPy). Its primary feature is the ability to create isolated, reproducible environments.
+## Environment & Package Management Utilities
 
-*   **Command Line Examples:**
-    ```bash
-    # Load the anaconda module (in a shared environment)
-    module load anaconda3/2025.06
+You can't install software on Carina, but you can create a Conda environment on Carina where you have the power to install the exact versions of every package your project requires. The benefits of using Conda include: 
 
-    # Create a new isolated environment named 'my-project' with a specific Python version
-    conda create --name my-project python=3.11 pandas
+* The environment can run anywhere without touching the underlying system
+* Anyone can spin up an exact copy of the environment from a simple requirements file
+* Projects are organized and isolated
 
-    # Activate the environment to use its packages
-    conda activate my-project
+Conda can be considered the underlying technology, but there are different snake-themed wrappers for it. We offer two that are especially good for HPC systems, Anaconda and Micromamba. Most projects will use one or the other to maintain their environment and packages. 
 
-    # Run a Python script using the environment's interpreter
-    python run_analysis.py
+### Anaconda
 
-    # Deactivate the environment when finished
-    conda deactivate
-    ```
+This may be the only module you need, because Anaconda (via Conda) lets you install Python and scientific libraries in your own user space.  
 
----
+[Anaconda Documentation](https://www.anaconda.com/docs/getting-started/main)
 
-### matlab/r2025b
+**Command Line Examples:**
 
-*   **Summary:** MATLAB (Matrix Laboratory) is a high-performance language and interactive environment for numerical computation, visualization, and programming. It is widely used in engineering, science, and finance for tasks like matrix manipulation, algorithm development, data analysis, and creating models. It is a commercial product known for its extensive set of specialized "toolboxes."
+Load the Anaconda module using module load/ml
 
-*   **Command Line Examples:**
-    ```bash
-    # Load the MATLAB module
-    module load matlab/r2025b
+`module load anaconda3` or `ml anaconda3`
 
-    # Start the MATLAB graphical desktop environment
-    matlab
+Create a new isolated environment named 'my-project' with a specific Python version
 
-    # Run a MATLAB script ('myscript.m') in non-graphical "batch" mode
-    # -nodisplay: Do not start the Java desktop
-    # -r: Run the specified MATLAB command and then exit
-    matlab -nodisplay -r "run('myscript.m'); exit;"
+`conda create --name my-project python=3.11 pandas`
 
-    # Run a script and pipe the output to a log file
-    matlab -nodisplay -batch "run('myscript.m')" > output.log
-    ```
+Activate the environment to use its packages
 
----
+`conda activate my-project`
 
-### micromamba/2.3.3
+Run a Python script using the environment's interpreter
 
-*   **Summary:** Micromamba is a fast, lightweight, C++ reimplementation of the `conda` package manager. It provides the same core functionality for creating environments and installing packages but is significantly faster and has a much smaller footprint. It is ideal for CI/CD pipelines, automated scripts, and users who need a nimble alternative to the full Anaconda distribution.
+`python run_analysis.py`
 
-*   **Command Line Examples:**
-    ```bash
-    # Load the micromamba module
-    module load micromamba/2.3.3
+List packages in the current environment
 
-    # Create a new environment named 'fast-env' from the popular 'conda-forge' channel
-    micromamba create --name fast-env -c conda-forge numpy scipy
+`conda list`
 
-    # Activate the new environment
-    micromamba activate fast-env
+Deactivate the environment when finished
 
-    # Install an additional package
-    micromamba install matplotlib
+`conda deactivate`
 
-    # List packages in the current environment
-    micromamba list
-    ```
+### Micromamba
 
----
+Micromamba is a fast, lightweight, C++ reimplementation of the `conda` package manager. It provides the same core functionality for creating environments and installing packages but is significantly faster and has a much smaller footprint. 
 
-### r/4.5.1
+[Micromamba documentation](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html)
 
-*   **Summary:** R is a free, open-source programming language and software environment for statistical computing and graphics. It is a dominant tool in academia and data science for statistical analysis, data visualization, and machine learning. R has a vast ecosystem of user-contributed packages available through the Comprehensive R Archive Network (CRAN).
+**Command Line Examples:**
 
-*   **Command Line Examples:**
-    ```bash
-    # Load the R module
-    module load r/4.5.1
+Load the Micromamba module using module load/ml
 
-    # Start the R interactive console
-    R
+`module load micromamba` or `ml micromamba`
 
-    # Run an R script ('analysis.R') non-interactively from the command line
-    Rscript analysis.R
+Create a new environment named 'my-env' from the popular [conda-forge](https://conda-forge.org/) channel
 
-    # Run a script and save the output and messages to a log file
-    Rscript analysis.R > analysis.log 2>&1
-    ```
+`micromamba create --name my-env -c conda-forge numpy scipy`
 
----
+Activate the new environment
 
-### rclone/1.71.2
+`micromamba activate my-env`
 
-*   **Summary:** Rclone is a powerful command-line program to manage files on cloud storage. Often called "The Swiss army knife for cloud storage," it supports over 40 backends, including Google Drive, Amazon S3, Dropbox, and OneDrive. It is used for syncing, copying, moving, and listing files between a local machine and remote cloud services.
+Install an additional package
 
-*   **Command Line Examples:**
-    ```bash
-    # Load the rclone module
-    module load rclone/1.71.2
+`micromamba install matplotlib`
 
-    # Run the interactive configuration to set up a new remote (e.g., Google Drive)
-    rclone config
+List packages in the current environment
 
-    # List the contents of a directory on a configured remote named 'my-gdrive'
-    rclone ls my-gdrive:research_data
+`micromamba list`
 
-    # Copy a local directory to the remote
-    rclone copy /path/to/local/project my-gdrive:backups/project
+Deactivate environment
 
-    # Sync a local directory to a remote (makes destination identical to source)
-    rclone sync /path/to/local/project my-gdrive:backups/project-sync
-    ```
+`micromamba deactivate`
 
----
+## Software for Computation and Analysis
 
-### sas/9.4
+### MATLAB
 
-*   **Summary:** SAS (Statistical Analysis System) is a commercial software suite used for advanced analytics, business intelligence, data management, and predictive analytics. It has its own programming language (SAS language) and is a standard in industries like pharmaceuticals, finance, and insurance for clinical trial analysis, risk management, and large-scale data processing.
+MATLAB (Matrix Laboratory) is a high-performance language and interactive environment for numerical computation, visualization, and programming. It is widely used in engineering, science, and finance for tasks like matrix manipulation, algorithm development, data analysis, and creating models. It is a commercial product known for its extensive set of specialized "toolboxes."
+MATLAB is also available via [Carina OnDemand](/ood-toolbox#server-based-apps).
 
-*   **Command Line Examples:**
-    ```bash
-    # Load the SAS module
-    module load sas/9.4
+[MATLAB documentation](https://www.mathworks.com/help/matlab/index.html)
 
-    # Run a SAS program ('my_job.sas') in batch mode
-    # -nodms: Run in non-interactive "Display Manager System" mode
-    # -log: Specifies the file to write the execution log to
-    # -print: Specifies the file to write procedure output to
-    sas my_job.sas -nodms -log my_job.log -print my_job.lst
+**Command Line Examples:**
 
-    # Start the interactive SAS environment (if configured on the system)
-    sas
-    ```
+Load the MATLAB module with module load/ml
+
+`module load matlab` or `ml matlab`
+
+Run a MATLAB script ('myscript.m') in non-graphical "batch" mode 
+
+`matlab -nodisplay -r "run('myscript.m'); exit;"`
+
+<div class="text-body-secondary fst-italic ps-4 mb-4">-nodisplay: Do not start the Java desktop<br />
+ -r: Run the specified MATLAB command and then exit</div>
+
+Run a script and pipe the output to a log file
+
+`matlab -nodisplay -batch "run('myscript.m')" > output.log`
+
+
+### R
+
+R is a free, open-source programming language and software environment for statistical computing and graphics. It is a dominant tool in academia and data science for statistical analysis, data visualization, and machine learning. 
+
+R Studio is also available via [Carina OnDemand](/ood-toolbox#server-based-apps).
+
+[R documentation](https://cran.r-project.org/)
+
+**Command Line Examples:**
+
+Load the R module with module load
+
+`module load r` or `ml r/` (the slash is important and specific to r)
+
+Start the R interactive console
+
+`R`
+
+Run an R script ('analysis.R') non-interactively from the command line
+
+`Rscript analysis.R`
+
+Run a script and save the output and messages to a log file
+
+`Rscript analysis.R > analysis.log 2>&1`
+
+### SAS
+
+SAS (Statistical Analysis System) is a commercial software suite used for advanced analytics, business intelligence, data management, and predictive analytics. 
+
+SAS is also available on the [Carina Desktop](/ood-toolbox#carina-desktop).
+
+[SAS documentation](https://support.sas.com/en/documentation.html)
+
+**Command Line Examples:**
+
+Load the SAS module with module load/ml
+
+`module load sas` or `ml sas`
+
+Run a SAS program ('my_job.sas') in batch mode
+
+`sas my_job.sas -nodms -log my_job.log -print my_job.lst`
+
+<div class="text-body-secondary fst-italic ps-4 mb-4">
+-nodms: run in non-interactive "Display Manager System" mode<br />
+-log: specifies the file to write the execution log to<br />
+-print: specifies the file to write procedure output to
+</div>
+
+## Copy Utility
+
+### rclone
+
+rclone is a powerful command-line program to manage files on cloud storage. It supports over 40 backends, including Google Drive, Amazon S3, Dropbox, and OneDrive. 
+
+[Tutorial for connecting Carina and Medicine Box](/medicine-box-setup.html)
+
+[rclone documentation](https://rclone.org/docs/)
+
+**Command Line Examples:**
+
+
+Load the rclone with module load/ml
+
+`module load rclone` or `ml rclone`
+
+Run the interactive configuration to set up a new remote (e.g., Google Drive)
+
+`rclone config`
+
+List the contents of a directory on a configured remote named 'my-gdrive'
+
+`rclone ls my-gdrive:research_data`
+
+Copy a local directory to the remote
+
+`rclone copy /path/to/local/project my-gdrive:backups/project`
+
+Sync a local directory to a remote (makes destination identical to source)
+
+    `rclone sync /path/to/local/project my-gdrive:backups/project-sync`

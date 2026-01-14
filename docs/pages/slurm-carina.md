@@ -28,3 +28,23 @@ Jobs in `long` need more than two days, and can run up to five days.
 GPUs can be requested on any of the partitions. For example, including this in an sbatch script will request 1 gpu.
 
 `#SBATCH --gres=gpu:1`
+
+### Quickstart
+
+To understand these commands, read the [Slurm Primer](/slurm)
+
+This will give you a compute node in the dev partition with one core for one hour:
+
+`srun --pty bash`
+
+This command requests 2 GPUs on a compute node in the `dev` partition:
+
+`srun --pty -p dev --gres=gpu:2 bash`
+
+See your current activity:
+
+`squeue -u <sunetid>`
+
+Stop all of your jobs
+
+`scancel -u <sunetid>`
