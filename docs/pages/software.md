@@ -87,6 +87,7 @@ Deactivate environment
 ### MATLAB
 
 MATLAB (Matrix Laboratory) is a high-performance language and interactive environment for numerical computation, visualization, and programming. It is widely used in engineering, science, and finance for tasks like matrix manipulation, algorithm development, data analysis, and creating models. It is a commercial product known for its extensive set of specialized "toolboxes."
+
 MATLAB is also available via [Carina OnDemand](/ood-toolbox#server-based-apps).
 
 [MATLAB documentation](https://www.mathworks.com/help/matlab/index.html)
@@ -120,7 +121,7 @@ R Studio is also available via [Carina OnDemand](/ood-toolbox#server-based-apps)
 
 Load the R module with module load
 
-`module load r` or `ml r/` (the slash is important and specific to r)
+`module load r` or `ml R` (note the capital R)
 
 Start the R interactive console
 
