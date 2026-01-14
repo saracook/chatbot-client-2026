@@ -61,6 +61,16 @@ First, try the command with the --dry-run flag to check your file paths.
 
 #### Dotfiles
 
-When you upload your files to Carina 2.0, don't forget to get config files and directories like .conda, .config, and .bashrc. 
+When you upload your files to Carina 2.0, be sure to include config files and directories such as .conda, .config, and .bashrc. 
 
 You may have application config files in your $HOME. For example, if you used JupyterLab on Carina 1.0, your settings are saved in the $HOME/.jupyter folder there. 
+
+### Check your paths: /home and /share
+
+Carina 2.0 does not have the same file structure as the first Carina. If you have hard-coded paths to your `/share` or `/home` directories, you will need to adjust those scripts. 
+
+Scripts that use $HOME to refer to your home directory will continue to work.
+
+Your $HOME is `/home/users/<sunetid>`. If you have scripts that reference your `/home/<sunetid>` folder, change the reference to $HOME.
+
+Share folders are now Project folders. References to `/share/pi/<PI>` will need to be updated to use the project folder, which will be in the form `/projects/<PI>/<projectID>/`

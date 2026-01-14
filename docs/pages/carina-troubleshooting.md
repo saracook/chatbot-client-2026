@@ -38,3 +38,11 @@ Your $HOME quota is 25GB, and you should keep a few GB free for your application
 If you are over your quota, move or delete files via the command line in your terminal to free up space. You should be able to access Carina OnDemand once space is available.
 
 {% include support-callout.html %}
+
+## Script Issues
+
+### This script worked on the old Carina, why doesn't it work here?
+
+The most likely cause is hard-coded paths that need to be updated for Carina 2.0.
+
+The changes are [documented here](/migrate#check-your-paths-home-and-share).
