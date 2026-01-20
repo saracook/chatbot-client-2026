@@ -14,9 +14,9 @@ card-top: /assets/images/dell-card-top.png
 
   <ul class="list-group list-group-flush mt-0">
     <li class="list-group-item">8 NVIDIA L40S GPUs</li>
+    <li class="list-group-item">256 CPUs/512 threads</li>
     <li class="list-group-item">1.5 TB of RAM</li>
     <li class="list-group-item">~28 TB of local NVMe storage</li>
   </ul>
  <img src="{{ page.card-top | relative_url }}" class="card-img-top" alt="Dell PowerEdge XE7745 node for Carina 2.0">
-
 </div>

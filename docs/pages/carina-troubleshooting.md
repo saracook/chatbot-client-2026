@@ -6,20 +6,21 @@ permalink: /troubleshooting
 toc: true
 ---
 
-High Performance Computing is futuristic and exciting...until it isn't. We are collecting common problems and pitfalls here to get you back up and running quickly.
+High Performance Computing is futuristic and exciting...until it isn't. We are collecting common problems and pitfalls here to get you back up and running quickly. 
 
 ## Connection & Startup Issues
 
 It's frustrating when you can't connect! Here are the first things to check:
 
-
 ### Are you on the Full-Tunnel Stanford VPN?
 
-This is a common issue! Confirm that you are connected to the [Stanford VPN](https://uit.stanford.edu/service/vpn) using the full tunnel. 
+{% include image.html file="/assets/images/fulltunnelwambus.png" alt="A kitty in a box reminds everyone to connect to the full tunnel VPN" class="float-start me-4 w-25 mb-5" %}
+
+This is a common issue! Confirm that you are connected to the [Stanford VPN](https://uit.stanford.edu/service/vpn) using the full tunnel option. 
 
 ### Do you have space in your $HOME?
 
-{% include image.html file="/assets/images/home-full.png" alt="A cat who is too big for the box it is in demonstrates the danger of a full $HOME" class="float-end ms-4" %}
+{% include image.html file="/assets/images/home-full.png" alt="A cat who is too big for the box it is in demonstrates the danger of a full $HOME" class="float-end ms-4 mb-5" %}
 
 **Running out of disk space will disrupt your work.** 
 

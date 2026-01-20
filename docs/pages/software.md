@@ -6,7 +6,9 @@ seealso: true
 toc: true
 ---
 
-Carina has several software packages available via module load on the command line. To see a complete list, use `ml avail` in a terminal.
+Carina has several software packages available via module load on the command line. To see a complete list of the available modules, use `ml avail` in a terminal. 
+
+To see which modules are currently loaded, use 'ml list'.
 
 ## Environment & Package Management Utilities
 
