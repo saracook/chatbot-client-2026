@@ -614,3 +614,12 @@ label {
         border-color: #064F8F;
     }
 }
+
+div.alert.alert-success{
+  background-color: white;
+  border: 3px solid #198754;
+}
+
+div.alert.alert-success code{
+  background-color: #e0ebe6;
+}

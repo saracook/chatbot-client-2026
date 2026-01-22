@@ -123,7 +123,7 @@ R Studio is also available via [Carina OnDemand](/ood-toolbox#server-based-apps)
 
 Load the R module with module load
 
-`module load r` or `ml R` (note the capital R)
+`module load R` or `ml R` (note the capital R)
 
 Start the R interactive console
 
@@ -170,26 +170,3 @@ rclone is a powerful command-line program to manage files on cloud storage. It s
 [Tutorial for connecting Carina and Medicine Box](/medicine-box-setup.html)
 
 [rclone documentation](https://rclone.org/docs/)
-
-**Command Line Examples:**
-
-
-Load the rclone with module load/ml
-
-`module load rclone` or `ml rclone`
-
-Run the interactive configuration to set up a new remote (e.g., Google Drive)
-
-`rclone config`
-
-List the contents of a directory on a configured remote named 'my-gdrive'
-
-`rclone ls my-gdrive:research_data`
-
-Copy a local directory to the remote
-
-`rclone copy /path/to/local/project my-gdrive:backups/project`
-
-Sync a local directory to a remote (makes destination identical to source)
-
-`rclone sync /path/to/local/project my-gdrive:backups/project-sync`

@@ -1,3 +1,45 @@
-<div class="alert alert-success d-flex align-items-center tip" role="alert"><i class="fa-solid fa-circle-check fa-2xl"></i>
-  <div markdown="span"><span class="title">Tip:</span> {{include.content}}</div>
+{%- comment -%}
+  A flexible callout box.
+
+  Usage:
+   include tip.html
+      type="success" (success, info, warning, danger)
+      title="My Title"
+      icon="fa-icon-name"
+      content="Your markdown content here."
+  
+{%- endcomment -%}
+
+{%- comment -%}
+  1. Set the alert type (color). Defaults to 'success'.
+{%- endcomment -%}
+{%- assign alert_type = include.type | default: "success" -%}
+
+{%- comment -%}
+  2. Set a default icon based on the alert type.
+     This makes it easy to use without having to remember icon names.
+{%- endcomment -%}
+{%- case alert_type -%}
+  {%- when "warning" -%}
+    {%- assign default_icon = "fa-triangle-exclamation" -%}
+  {%- when "danger" -%}
+    {%- assign default_icon = "fa-circle-xmark" -%}
+  {%- when "info" -%}
+    {%- assign default_icon = "fa-circle-info" -%}
+  {%- else -%}
+    {%- assign default_icon = "fa-circle-check" -%}
+{%- endcase -%}
+
+{%- comment -%}
+  3. Determine the final icon: use the user-provided 'icon' if it exists,
+     otherwise use the default we just set.
+{%- endcomment -%}
+{%- assign final_icon = include.icon | default: default_icon -%}
+
+<div class="alert alert-{{ alert_type }} d-flex align-items-center" role="alert">
+  <i class="fa-solid {{ final_icon }} fa-2xl me-5"></i>
+  <div markdown="span">
+    <span class="title">{{ include.title | default: "Tip" }}:</span>
+    {{ include.content }}
+  </div>
 </div>
