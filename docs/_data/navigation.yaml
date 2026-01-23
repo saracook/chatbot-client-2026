@@ -25,7 +25,7 @@
   folderitems:
     - title: "Carina OnDemand"
       url: "/ood-carina"
-    - title: "Data Management"
+    - title: "Data Transfer"
       url: "/data-management"
     - title: "Launching Apps with OnDemand"
       url: "/ood-apps"
