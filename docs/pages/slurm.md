@@ -93,7 +93,7 @@ This is a very basic example of srun, to see more of what it can do, consult the
 
 If you finish your session before the requested time is up, you can either close your terminal or use [scancel](#scancel) to end the job.
 
-## squeue
+### squeue
 
 [squeue](https://slurm.schedmd.com/squeue.html) is a powerful tool for monitoring your activity on Carina. To see the status of your jobs, use the command `squeue -u <sunetid>`. You will see something like this:
 
@@ -111,7 +111,7 @@ If the job did not complete successfully, its state will be `FAILED (F)`. Have y
 
 These are the most common states on Carina, but there are [more possible states](https://slurm.schedmd.com/job_state_codes.html) in the Slurm documentation.
 
-## scancel
+### scancel
 
 [ scancel ](https://slurm.schedmd.com/scancel.html) is a useful utility for ending jobs. The typical use case is ending a job started with `sbatch` or an interactive session started with `srun`.
 

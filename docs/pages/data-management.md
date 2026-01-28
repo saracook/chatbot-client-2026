@@ -75,7 +75,7 @@ There's a fix for that! We need to add the `-P` flag, which keeps the original f
 
 ### get & mget
 
-{% include image.html file="/assets/images/internet-cats.png" alt="Cats make things better"  class="mb-5 p-4 border border-dark-subtle w-75" %}
+{% include image.html file="/assets/images/internet-cats.png" alt="Cats make things better"  class="mb-5 p-4 border border-dark-subtle w-75" caption="picture of a cat" %}
 
 Using the same connection as the `put` commands, it is possible to pull files down from the remote (Carina) to the local (Laptop) environment using the `get` and `mget` commands.
 

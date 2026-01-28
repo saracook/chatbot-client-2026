@@ -12,4 +12,14 @@
     {% include sidebar-support.html %}
 {% endif %}
 
+{% assign cutoff_date = "2026-02-18" | date: "%s" %}
+{% assign current_date = "now" | date: "%s" %}
+
+{% if current_date <= cutoff_date %}
+
+{% include sidebar-box.html title="Upcoming Workshop" content="<a href='https://srcc.stanford.edu/events/lunch-learn/carina-20-and-open-ondemand'>Carina 2.0 and Open OnDemand</a>
+
+<p>Wednesday, February 18, 2026 at 2:00 pm</p>" %}
+{% endif %}
+
 {% include sidebar-box.html title="Request a Carina Project" content="<ul><li><a href='/request-carina-project' class='btn btn-carina'>Get Started</a></li></ul>" %}
