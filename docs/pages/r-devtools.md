@@ -1,5 +1,5 @@
 ---
-title: "Install DevTools in R"
+title: "Install devtools in R"
 permalink: /r-devtools
 folder: "using-carina"
 seealso: true

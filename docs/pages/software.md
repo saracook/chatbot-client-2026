@@ -119,6 +119,8 @@ R Studio is also available via [Carina OnDemand](/ood-toolbox#server-based-apps)
 
 [R documentation](https://cran.r-project.org/)
 
+[Installing devtools for R](/r-devtools)
+
 **Command Line Examples:**
 
 Load the R module with module load
