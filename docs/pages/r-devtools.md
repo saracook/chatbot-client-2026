@@ -103,7 +103,7 @@ These R versions are available in Carina OnDemand and via `module load`:
 * R/4.4.3
 * R/4.5.1 (current default)
 
-To use a specific version in OnDemand, select it in the session launch form. For command line, specify the version when loading the module, for example 'ml R/4.4.3'.
+To use a specific version in OnDemand, select it in the session launch form. For command line, specify the version when loading the module, for example `ml R/4.4.3`.
 
 ### Next Steps
 
