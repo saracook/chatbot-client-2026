@@ -13,4 +13,4 @@ style="min-height:700px;"></div>
 <!-- Calendly inline widget end -->
 </div>
 
-Busy on Wednesdays? We can work with your schedule! Send an email to srcc-support@stanford.edu with a summary of your question or problem, and some proposed meeting times. 
+Busy on Wednesdays? We can work with your schedule! Send an email to [srcc-support@stanford.edu](mailto:srcc-support@stanford.edu?subject=Carina%20Meeting%20Request) with a summary of your question or problem, and some proposed meeting times. 
