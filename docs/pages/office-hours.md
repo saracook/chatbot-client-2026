@@ -12,3 +12,5 @@ style="min-height:700px;"></div>
 <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
 <!-- Calendly inline widget end -->
 </div>
+
+Busy on Wednesdays? We can work with your schedule! Send an email to srcc-support@stanford.edu with a summary of your question or problem, and some proposed meeting times. 
