@@ -14,7 +14,7 @@ Carina 2.0 has a copy of your project directory at /projects/[PI]/[project_id]/m
 
 ## What do I need to do when I'm ready to move to Carina 2.0?
 
-Any work done on Carina 1.0 after the snapshot will need to be merged into Carina 2.0. When you are ready to move your work to Carina 2.0, request a final sync by sending an email to srcc-support@stanford.edu. 
+Any work done on Carina 1.0 after the snapshot will need to be merged into Carina 2.0. When you are ready to move your work to Carina 2.0, request a final sync by sending an email to [srcc-support@stanford.edu](mailto:srcc-support@stanford.edu?subject=Carina%20Migration%20Request). Team Carina will work with you to close down your Carina 1.0 space and merge any changes in /share into your data on Carina 2.0. This is a personalized process; we will give you a timeline once we analyze your migration, and can schedule the work around your needs.
 
 ## I'm missing some work from December; when was this snapshot taken?
 
