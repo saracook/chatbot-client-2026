@@ -6,9 +6,9 @@ seealso: true
 toc: true
 ---
 
-Carina has several software packages available via module load on the command line. To see a complete list of the available modules, use `ml avail` in a terminal. 
+Carina has several software packages available via module load on the command line. *** To see a complete list of the available modules, use `ml avail` in a terminal. *** Each package has a default version (for example, `python/3.14.3  (D)`), and other versions may be available as well. To load a non-default version, specify the version in your module load command, like `ml python/3.13.12`.
 
-To see which modules are currently loaded, use 'ml list'.
+To see which modules are _currently loaded_ in your environment, use 'ml list'.
 
 ## Environment & Package Management Utilities
 
@@ -18,11 +18,11 @@ You can't install software on Carina, but you can create a Conda environment on 
 * Anyone can spin up an exact copy of the environment from a simple requirements file
 * Projects are organized and isolated
 
-Conda can be considered the underlying technology, but there are different snake-themed wrappers for it. We offer two that are especially good for HPC systems, Anaconda and Micromamba. Most projects will use one or the other to maintain their environment and packages. 
+Conda can be considered the underlying technology, but there are different snake-themed wrappers for it. We offer two that are especially good for HPC systems, Anaconda and Micromamba. 
 
 ### Anaconda
 
-This may be the only module you need, because Anaconda lets you install Python and scientific libraries in your own user space. Channels like [conda-forge](https://conda-forge.org/) have optimized versions of libraries and applications ready to be included in your environment.
+Anaconda lets you install Python and scientific libraries in your own user space. Channels like [conda-forge](https://conda-forge.org/) have optimized versions of libraries and applications ready to be included in your environment.
 
 [Anaconda Documentation](https://www.anaconda.com/docs/getting-started/main)
 
@@ -172,3 +172,15 @@ rclone is a powerful command-line program to manage files on cloud storage. It s
 [Tutorial for connecting Carina and Medicine Box](/medicine-box-setup.html)
 
 [rclone documentation](https://rclone.org/docs/)
+
+## GPU Support
+
+### CUDA 
+
+CUDA (Compute Unified Device Architecture) is a parallel computing platform developed by NVIDIA that allows developers to use GPUs for general-purpose processing. 
+
+**Command Line Examples:**
+
+Load CUDA with module load/ml
+
+`module load cuda` or `ml cuda`
