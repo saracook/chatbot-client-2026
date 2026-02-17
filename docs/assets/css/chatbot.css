@@ -1,0 +1,66 @@
+button#chatModalButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+#chatModal {
+
+    z-index: 20000;
+
+    button.btn-close {
+        background-color: white;
+        color: black
+    }
+
+    .pfp {
+        width: 40px;
+        height: 40px;
+    }
+
+    .bg-digital-red {
+        background-color: #B1040E;
+    }
+
+    .digital-red{
+        color:#B1040E
+    }
+    code {
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+
+    .loader {
+        width: 15px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        animation: l5 2s infinite linear alternate;
+        margin-left: 23px;
+    }
+
+    @keyframes l5 {
+        0% {
+            box-shadow: 20px 0 #000, -20px 0 #0002;
+            background: #000
+        }
+
+        33% {
+            box-shadow: 20px 0 #000, -20px 0 #0002;
+            background: #0002
+        }
+
+        66% {
+            box-shadow: 20px 0 #0002, -20px 0 #000;
+            background: #0002
+        }
+
+        100% {
+            box-shadow: 20px 0 #0002, -20px 0 #000;
+            background: #000
+        }
+    }
+
+}

@@ -1,0 +1,31 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatModal" id="chatModalButton">
+  Ask Ada
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable me-1">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="chatModalLabel">Ask Ada</h5>
+        <button type="button" class="btn-close p-3 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <div id="messageHolder" class=""></div>
+      </div>
+      <div class="modal-footer">
+    <label for="chat" class="sr-only">Ask a question</label>
+        <input type="text" class="flex-1 border m-2 
+               p-2 outline-none ring-2 ring-fog-dark
+               border-transparent text-lg" placeholder="Ask A Question" name="chat" id="chat" />
+        <button id="btn" class="button bg-digital-red ">
+          Send
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/chatbot.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
