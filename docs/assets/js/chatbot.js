@@ -17,7 +17,7 @@ const sendMessage = async (message) => {
     "cluster": currentCluster
   }
   try {
-    const response = await fetch(proxyUrl, {
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
