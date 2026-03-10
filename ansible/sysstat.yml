@@ -1,5 +1,0 @@
-- hosts: storage
-  become: yes
-  roles:
-    - role: sysstat
-      tags: sysstat

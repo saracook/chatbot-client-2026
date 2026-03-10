@@ -1,9 +1,0 @@
-- import_playbook: c2-check-env.yml
-
-- name: configure grafana server
-  hosts: c2_grafana
-  become: yes
-  roles:
-    - role: c2-grafana
-
-- import_playbook: c2-clean-env.yml

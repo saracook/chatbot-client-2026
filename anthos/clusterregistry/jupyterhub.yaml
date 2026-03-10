@@ -1,8 +1,0 @@
-kind: ClusterSelector
-apiVersion: configmanagement.gke.io/v1
-metadata:
-  name: jupyterhub
-spec:
-  selector:
-    matchLabels:
-      jupyterhub: enabled

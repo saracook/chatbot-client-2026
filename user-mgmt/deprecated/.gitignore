@@ -1,8 +1,0 @@
-/venv
-.idea
-.DS_Store
-.dart_tool
-.flutter-plugins
-.flutter-plugins-dependencies
-.packages
-**/build

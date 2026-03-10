@@ -1,7 +1,0 @@
-- ansible.builtin.include_tasks:
-    file: pxe-server-ks-oemdrv.yml
-    apply:
-      tags:
-        - pxe-server-ks-oemdrv
-  tags:
-    - always

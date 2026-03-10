@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: ceph-rbd
-  labels:
-    istio-injection: disabled
-  annotations:
-    configmanagement.gke.io/cluster-selector: selector-ceph

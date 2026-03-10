@@ -1,8 +1,0 @@
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: cephfs-csi-nodeplugin
-  namespace: cephfs
-  annotations:
-    configmanagement.gke.io/cluster-selector: selector-ceph

@@ -1,7 +1,0 @@
-- ansible.builtin.include_tasks:
-    file: ansible.yml
-    apply:
-      tags:
-        - ansible
-  tags:
-    - always

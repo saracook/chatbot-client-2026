@@ -1,9 +1,0 @@
-<volume>
-  <name>{{ inventory_hostname }}-{{ item }}</name>
-  <capacity unit='G'>{{ hostvars[inventory_hostname][item ~ '_disk_gb'] }}</capacity>
-  <allocation unit='G'>{{ hostvars[inventory_hostname][item ~ '_disk_gb'] }}</allocation>
-  <target>
-    <path>/dev/{{ hostvars[kvm_host]['pool'] }}/{{ inventory_hostname }}-{{ item }}</path>
-    <format type='raw'/>
-  </target>
-</volume>

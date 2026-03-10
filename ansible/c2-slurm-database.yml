@@ -1,9 +1,0 @@
-- import_playbook: c2-check-env.yml
-
-- name: configure slurm database
-  hosts: c2_slurm_database
-  become: yes
-  roles:
-    - role: c2-slurm-database
-
-- import_playbook: c2-clean-env.yml

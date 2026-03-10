@@ -1,7 +1,0 @@
-- ansible.builtin.include_tasks:
-    file: net-config.yml
-    apply:
-      tags:
-        - net-config
-  tags:
-    - always

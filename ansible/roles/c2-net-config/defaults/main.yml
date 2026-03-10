@@ -1,6 +1,0 @@
-# when true remove and re-create directory:
-# /etc/NetworkManager/system-connections
-clean: false
-
-# when true restart service if any *.nmconnection files changed.
-restart: false

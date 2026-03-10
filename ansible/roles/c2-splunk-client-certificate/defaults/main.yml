@@ -1,8 +1,0 @@
-# nb: see splunk.cfg for cert details
-splunk_client_tls_cfg_tmpl: splunk-client-tls.cfg.j2
-splunk_client_tls_cfg: "/var/tmp/c2-splunk-client-tls-crt/splunk.cfg"
-splunk_client_tls_key: "/var/tmp/c2-splunk-client-tls-crt/splunk.key"
-splunk_client_tls_key_passphrase: "{{ lookup('env', 'SPLUNK_CLIENT_TLS_KEY_PASSPHRASE') }}"
-splunk_client_tls_csr: "/var/tmp/c2-splunk-client-tls-crt/splunk.csr"
-splunk_client_tls_crt: "/var/tmp/c2-splunk-client-tls-crt/splunk.crt"
-splunk_rootca_tls_crt: "/var/tmp/c2-splunk-client-tls-crt/rootca.crt"

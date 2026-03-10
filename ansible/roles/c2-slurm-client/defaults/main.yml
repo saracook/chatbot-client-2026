@@ -1,7 +1,0 @@
-# defined in global variables:
-# slurm_user
-# slurm_uid
-# slurm_group
-# slurm_gid
-
-munged_threads: 10

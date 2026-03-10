@@ -1,3 +1,0 @@
-# ./base/apps/kustomization.yaml
-resources:
-- namespace.yaml

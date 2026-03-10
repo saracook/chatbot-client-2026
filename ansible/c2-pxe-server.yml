@@ -1,9 +1,0 @@
-- import_playbook: c2-check-env.yml
-
-- name: configure pxe server
-  hosts: c2_pxe_server
-  become: yes
-  roles:
-    - role: c2-pxe-server
-
-- import_playbook: c2-clean-env.yml

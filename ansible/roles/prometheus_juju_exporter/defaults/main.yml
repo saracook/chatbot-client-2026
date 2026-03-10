@@ -1,2 +1,0 @@
-snap_channel: 2.9/stable
-prometheus_juju_exporter_url: https://github.com/canonical/prometheus-juju-exporter/tree/main

@@ -1,7 +1,0 @@
-- ansible.builtin.include_tasks:
-    file: splunk-client-certificate.yml
-    apply:
-      tags:
-        - splunk-client-certificate
-  tags:
-    - always

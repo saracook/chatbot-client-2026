@@ -1,9 +1,0 @@
-- hosts: all
-  become: yes
-  roles:
-    - role: packages
-      tags: packages
-    - role: crowdstrike
-      tags: crowdstrike
-    - role: bigfix
-      tags: bigfix

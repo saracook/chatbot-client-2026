@@ -1,3 +1,0 @@
-falcon_sensor_version: 7.25.0
-falcon_sensor_cid: "{{ lookup('env', 'CROWDSTRIKE_FALCON_CID') }}"
-falcon_sensor_tags: SRCC

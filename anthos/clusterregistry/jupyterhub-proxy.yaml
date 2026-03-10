@@ -1,8 +1,0 @@
-kind: ClusterSelector
-apiVersion: configmanagement.gke.io/v1
-metadata:
-  name: jupyterhub-proxy
-spec:
-  selector:
-    matchLabels:
-      jupyterhub-proxy: enabled

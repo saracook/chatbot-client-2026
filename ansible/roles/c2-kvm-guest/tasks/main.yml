@@ -1,7 +1,0 @@
-- ansible.builtin.include_tasks:
-    file: data-disk.yml
-    apply:
-      tags:
-        - data-disk
-  tags:
-    - always

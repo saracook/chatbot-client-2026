@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  annotations:
-    configmanagement.gke.io/cluster-selector: jupyterhub
-  name: istio-egress
-  labels:
-    jupyter: req

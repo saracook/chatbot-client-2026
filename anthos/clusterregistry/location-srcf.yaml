@@ -1,8 +1,0 @@
-kind: ClusterSelector
-apiVersion: configmanagement.gke.io/v1
-metadata:
-  name: location-srcf
-spec:
-  selector:
-    matchLabels:
-      location: srcf

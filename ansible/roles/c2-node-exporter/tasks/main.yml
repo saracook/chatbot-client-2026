@@ -1,7 +1,0 @@
-- ansible.builtin.include_tasks:
-    file: node-exporter.yml
-    apply:
-      tags:
-        - node-exporter
-  tags:
-    - always

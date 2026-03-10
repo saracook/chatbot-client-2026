@@ -1,9 +1,0 @@
-[Unit]
-Description=Slurm db backup service
-Wants=slurm-db-backup.timer
-
-[Service]
-Type=oneshot
-User=root
-Group=root
-ExecStart=-/admin/bin/slurm-db-backup

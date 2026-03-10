@@ -1,4 +1,0 @@
-# nb: configured to resolve to c2-login-0{1,2}.stanford.edu via weighted
-#     round robin in cloud dns zone carina-stanford-edu in project
-#     srcc-anthos-secure-prod.
-login_domain: c2-login.carina.stanford.edu

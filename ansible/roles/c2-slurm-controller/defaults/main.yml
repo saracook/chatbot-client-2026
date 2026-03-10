@@ -1,4 +1,0 @@
-slurmrestd_user: slurmrestd
-slurmrestd_uid: 6001
-slurmrestd_group: "{{ slurmrestd_user }}"
-slurmrestd_gid: "{{ slurmrestd_uid }}"

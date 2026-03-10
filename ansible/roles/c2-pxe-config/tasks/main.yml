@@ -1,7 +1,0 @@
-- ansible.builtin.include_tasks:
-    file: pxe-config.yml
-    apply:
-      tags:
-        - pxe-config
-  tags:
-    - always

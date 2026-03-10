@@ -1,7 +1,0 @@
-- ansible.builtin.include_tasks:
-    file: slurm-client.yml
-    apply:
-      tags:
-        - slurm-client
-  tags:
-    - always
