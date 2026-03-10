@@ -1,7 +1,7 @@
 const apiUrl = "https://ada-lovelace.stanford.edu/chatbot/api/v1/query/";
 const proxyUrl = 'http://localhost:5050/'; // The URL of your proxy server
 console.log('apiUrl', apiUrl);
-const baseurl = "chatbot-client-2026"
+const baseurl = ""
 
 //curl -X POST "https://ada-lovelace.stanford.edu/chatbot/api/v1/query/" -H "Content-Type: application/json" -d '{"query":"How do I submit a slurm job on sherlock?", "cluster":"sherlock"}' | jq
 
