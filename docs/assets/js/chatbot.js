@@ -1,6 +1,7 @@
 const apiUrl = "https://ada-lovelace.stanford.edu/chatbot/api/v1/query/";
 const proxyUrl = 'http://localhost:5050/'; // The URL of your proxy server
 console.log('apiUrl', apiUrl);
+const baseurl = "chatbot-client-2026"
 
 //curl -X POST "https://ada-lovelace.stanford.edu/chatbot/api/v1/query/" -H "Content-Type: application/json" -d '{"query":"How do I submit a slurm job on sherlock?", "cluster":"sherlock"}' | jq
 
@@ -53,7 +54,7 @@ const addMessage = (msg, direction, cluster) => {
   const messageHolder = document.getElementById("messageHolder");
   const message = document.createElement("div");
   const bgColorClass = direction !== "start" ? "bg-digital-red" : "bg-gray-100";
-  const pfp = '<img class="pfp rounded-circle me-4" src="/assets/images/ada.png" alt="Ada" />'
+  const pfp = '<img class="pfp rounded-circle me-4" src="' + baseurl + '/assets/images/ada.png" alt="Ada" />'
   const icon = direction !== "start" ? "" : pfp;
   const colClass = direction !== "start" ? "flex-col" : "";
   const cornerClass = direction !== "start" ? "" : "rounded-5";
