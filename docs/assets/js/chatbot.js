@@ -1,184 +1,143 @@
+// Clean version with improvements:
+
 const apiUrl = "https://ada-lovelace.stanford.edu:8080/chatbot/api/v1/query/";
-// const apiUrl = "http://localhost:7000/chatbot/api/v1/query"
-const proxyUrl = 'http://localhost:5050/'; // The URL of your proxy server
-console.log('apiUrl', apiUrl);
 const baseurl = "";
+let currentCluster = "sherlock";
 
-//curl -X POST "https://ada-lovelace.stanford.edu/chatbot/api/v1/query/" -H "Content-Type: application/json" -d '{"query":"How do I submit a slurm job on sherlock?", "cluster":"sherlock"}' | jq
-
-// const data = '{"query":"How do I submit a slurm job on sherlock?", "cluster":"sherlock"}';
-const data = JSON.stringify({
-  'query': 'How do I submit a slurm job on sherlock?',
-  'cluster': 'sherlock'
-});
-
-let xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-xhr.open('POST', apiUrl);
-xhr.setRequestHeader('Content-Type', 'application/json');
-
-xhr.onload = function() {
-  console.log(xhr.response);
-};
-
-xhr.send(data);
-
-// const data = '{"query":"How do I submit a slurm job on sherlock?", "cluster":"sherlock"}';
-const thisdata = JSON.stringify({
-  'query': 'How do I submit a slurm job on sherlock?',
-  'cluster': 'sherlock'
-});
-
-let xhr1 = new XMLHttpRequest();
-xhr1.withCredentials = true;
-xhr1.open('POST', apiUrl);
-xhr1.setRequestHeader('Content-Type', 'application/json');
-
-xhr1.onload = function() {
-  console.log(xhr1.response);
-};
-
-xhr1.send(thisdata);
-
-
-//curl -X POST -H "Content-Type: application/json" -d '{"user_query":"why?"}' http://sh03-13n01:8000/query/
-
-var currentCluster = "sherlock";
-var existing = [];
 const sendMessage = async (message) => {
+  if (!message.trim()) return; // Don't send empty messages
+  
   addMessage(message, "end");
   addThinking();
-  let sendData = {
-    "query": message,
-    "cluster": currentCluster
-  }
+  
+  const sendData = {
+    query: message,
+    cluster: currentCluster
+  };
+  
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',
+      credentials: 'include', // if auth needed
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(sendData)
     });
+    
     if (!response.ok) {
-      throw new Error(
-        `Unable to Fetch Data, Please check URL
-                or Network connectivity!!`
-      );
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    
     const resData = await response.json();
-    console.log('resData:', resData);
-    console.log('resData.answer:', resData.answer);
-    convertMarkdown(resData.answer, resData.cluster);
+    console.log('Response:', resData);
+    
+    await convertMarkdown(resData.answer, resData.cluster);
     currentCluster = resData.cluster;
+    
   } catch (error) {
-    console.error('Some Error Occured:', error);
-    var errorMessage = "Something has gone wrong, please try again.";
-    console.error('errorMessage:', errorMessage);
-    convertMarkdown(errorMessage, currentCluster);
+    console.error('Error occurred:', error);
+    const errorMessage = `Sorry, something went wrong: ${error.message}. Please try again.`;
+    await convertMarkdown(errorMessage, currentCluster);
   }
-}
+};
 
 const convertMarkdown = async (message, cluster) => {
-  console.log("convertMarkdown ", message);
   const mdMessage = marked.parse(message);
-  console.log('mdMessage', mdMessage);
   addMessage(mdMessage, "start", cluster);
-}
-const addMessage = (msg, direction, cluster) => {
+};
+
+const addMessage = (msg, direction, cluster = null) => {
   removeThinking();
+  
   const messageHolder = document.getElementById("messageHolder");
   const message = document.createElement("div");
-  const bgColorClass = direction !== "start" ? "bg-digital-red" : "bg-gray-100";
-  const pfp = '<img class="pfp rounded-circle me-4" src="' + baseurl + '/assets/images/ada.png" alt="Ada" />'
-  const icon = direction !== "start" ? "" : pfp;
-  const colClass = direction !== "start" ? "flex-col" : "";
-  const cornerClass = direction !== "start" ? "" : "rounded-5";
-  const colorClass = direction !== "start" ? "text-white" : "text-dark";
-  const clusterClass = cluster;
-  var clusterString = "";
-  if (cluster) {
-    clusterString = `<div class="cluster-label ${clusterClass}"> ${cluster}</div>`
-  }
-  const flexClass = "items-" + direction;
-  console.log('colorClass', colorClass);
+  
+  const isUser = direction !== "start";
+  const bgColorClass = isUser ? "bg-digital-red" : "bg-gray-100";
+  const colorClass = isUser ? "text-white" : "text-dark";
+  const cornerClass = isUser ? "" : "rounded-5";
+  const colClass = isUser ? "flex-col" : "";
+  const flexClass = `items-${direction}`;
+  
+  const pfp = `<img class="pfp rounded-circle me-4" src="${baseurl}/assets/images/ada.png" alt="Ada" />`;
+  const icon = isUser ? "" : pfp;
+  
+  const clusterLabel = cluster 
+    ? `<div class="cluster-label ${cluster}">${cluster}</div>` 
+    : "";
+  
   message.innerHTML = `
-     <div class="d-flex m-5 ${colClass} ${flexClass}">
-     ${icon}
-     <div class="${bgColorClass} ${colorClass} ${cornerClass}  flex-grow-1 p-4 rounded-5 border border-dark-subtle">${msg}
-     </div>         
-    `
+    <div class="d-flex m-5 ${colClass} ${flexClass}">
+      ${icon}
+      <div class="${bgColorClass} ${colorClass} ${cornerClass} flex-grow-1 p-4 rounded-5 border border-dark-subtle">
+        ${msg}
+        ${clusterLabel}
+      </div>         
+    </div>`;
+  
   messageHolder.appendChild(message);
   scrollDown();
+};
 
-}
-
-const scrollDown = function(){
+const scrollDown = () => {
   const messageHolder = document.getElementById("messageHolder");
-           messageHolder.scrollIntoView({
-                block: 'end',
-                behavior: 'smooth',
-                inline: 'nearest'
-            });
-             console.log('scrolling message');
-            document.getElementById("chat").focus();
-}
-
+  messageHolder.scrollIntoView({
+    block: 'end',
+    behavior: 'smooth',
+    inline: 'nearest'
+  });
+  document.getElementById("chat")?.focus();
+};
 
 const addThinking = () => {
-  console.log('adding thinking');
-  var message = document.createElement("div");
+  const message = document.createElement("div");
   message.id = 'thinking';
-  const messageText = '<i class="fa-solid fa-asterisk fa-spin me-2 ms-5 digital-red"></i> Ada is thinking...';
+  
   const messageHolder = document.getElementById("messageHolder");
-    message.innerHTML = `
-<div class="d-flex">
-     <img class="pfp rounded-circle" src="/assets/images/ada.png" alt="Ada">
-     <div class=" flex-grow-1">
-     ${messageText}
-     </div>         
-    </div>    
-    `
+  message.innerHTML = `
+    <div class="d-flex">
+      <img class="pfp rounded-circle" src="${baseurl}/assets/images/ada.png" alt="Ada">
+      <div class="flex-grow-1">
+        <i class="fa-solid fa-asterisk fa-spin me-2 ms-5 digital-red"></i> Ada is thinking...
+      </div>         
+    </div>`;
+  
   messageHolder.appendChild(message);
   scrollDown();
-}
+};
 
 const removeThinking = () => {
-  console.log('removing thinking');
-  const thinking = document.getElementById("thinking");
-  if (thinking) {
-    thinking.remove();
-  }
-    scrollDown();
-}
+  document.getElementById("thinking")?.remove();
+  scrollDown();
+};
 
+// Event Listeners
 const messageInput = document.getElementById("chat");
 const sendBtn = document.getElementById("btn");
-console.log('messageInput', messageInput);
 
-messageInput.addEventListener("keypress", function(event) {
-  if (event.key === "Enter") {
-    //console.log('submitting', event);
-    const message = messageInput.value;
+const handleSend = () => {
+  const message = messageInput.value;
+  if (message.trim()) {
     sendMessage(message);
-    console.log('message input enter', message);
     messageInput.value = "";
+  }
+};
+
+messageInput?.addEventListener("keypress", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    handleSend();
   }
 });
 
-
+sendBtn?.addEventListener("click", handleSend);
 
 const myModalEl = document.getElementById('chatModal');
-myModalEl.addEventListener('shown.bs.modal', function (event) {
-  document.getElementById("chat").focus();
+myModalEl?.addEventListener('shown.bs.modal', () => {
+  document.getElementById("chat")?.focus();
 });
 
-sendBtn.addEventListener("click", function() {
-  const message = messageInput.value;
-  console.log('message input send', message);
-  sendMessage(message);
-  messageInput.value = "";
-});
-
-const helloMessage = "Hi! I'm Ada. I can help you learn how to use Stanford's HPC resources."
+// Initial greeting
+const helloMessage = "Hi! I'm Ada. I can help you learn how to use Stanford's HPC resources.";
 addMessage(helloMessage, "start");
