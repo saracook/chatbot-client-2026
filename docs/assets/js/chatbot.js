@@ -1,6 +1,6 @@
 // Clean version with improvements:
 
-const apiUrl = "https://ada-lovelace.stanford.edu:8080/chatbot/api/v1/query/";
+const apiUrl = "http://ada-lovelace.stanford.edu:8080/chatbot/api/v1/query/";
 const baseurl = "";
 let currentCluster = "sherlock";
 
