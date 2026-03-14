@@ -1,9 +1,45 @@
-const apiUrl = "https://ada-lovelace.stanford.edu/chatbot/api/v1/query/";
+const apiUrl = "https://ada-lovelace.stanford.edu:8080/chatbot/api/v1/query/";
+// const apiUrl = "http://localhost:7000/chatbot/api/v1/query"
 const proxyUrl = 'http://localhost:5050/'; // The URL of your proxy server
 console.log('apiUrl', apiUrl);
-const baseurl = ""
+const baseurl = "";
 
 //curl -X POST "https://ada-lovelace.stanford.edu/chatbot/api/v1/query/" -H "Content-Type: application/json" -d '{"query":"How do I submit a slurm job on sherlock?", "cluster":"sherlock"}' | jq
+
+// const data = '{"query":"How do I submit a slurm job on sherlock?", "cluster":"sherlock"}';
+const data = JSON.stringify({
+  'query': 'How do I submit a slurm job on sherlock?',
+  'cluster': 'sherlock'
+});
+
+let xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+xhr.open('POST', apiUrl);
+xhr.setRequestHeader('Content-Type', 'application/json');
+
+xhr.onload = function() {
+  console.log(xhr.response);
+};
+
+xhr.send(data);
+
+// const data = '{"query":"How do I submit a slurm job on sherlock?", "cluster":"sherlock"}';
+const thisdata = JSON.stringify({
+  'query': 'How do I submit a slurm job on sherlock?',
+  'cluster': 'sherlock'
+});
+
+let xhr1 = new XMLHttpRequest();
+xhr1.withCredentials = true;
+xhr1.open('POST', apiUrl);
+xhr1.setRequestHeader('Content-Type', 'application/json');
+
+xhr1.onload = function() {
+  console.log(xhr1.response);
+};
+
+xhr1.send(thisdata);
+
 
 //curl -X POST -H "Content-Type: application/json" -d '{"user_query":"why?"}' http://sh03-13n01:8000/query/
 
