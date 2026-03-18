@@ -159,20 +159,21 @@ button#chatModalButton {
   }
 }
 
-/* Normal state - speech bubble visible */
+/* Container for both states */
 #chatButtonContainer {
   position: fixed;
-  bottom: 80px;
+  bottom: 50%; /* Same as collapsed */
   right: 20px;
   z-index: 1000;
   transition: all 0.3s ease;
+  transform: translateY(50%); /* Same as collapsed */
 }
 
-
+/* Collapsed state - vertical tab, show ~15px of the 20px width */
 #chatButtonContainer.collapsed {
-  bottom: 50%;
   right: -5px;
-  transform: translateY(50%);
+  /* bottom and transform stay the same */
+}
 
 /* Show the speech bubble tail again when expanded */
 #chatButtonContainer.collapsed.hover-expanded .speech-bubble:after {
