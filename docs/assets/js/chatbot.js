@@ -12,12 +12,18 @@ document.addEventListener('DOMContentLoaded', function() {
   const chatModal = document.getElementById('chatModal');
   const dismissButton = document.getElementById('dismissButton');
   const chatIcon = document.getElementById('chatIcon');
+  const chatText = document.getElementById('chatText');
   
   // Check if user previously dismissed the bubble
   if (localStorage.getItem('adaBubbleDismissed') === 'true') {
     chatContainer.classList.add('collapsed');
-    chatIcon.classList.remove('d-none');
-    chatIcon.classList.add('d-block');
+    if (chatIcon) {
+      chatIcon.classList.remove('d-none');
+      chatIcon.classList.add('d-inline-block');
+    }
+    if (chatText) {
+      chatText.classList.add('d-none');
+    }
   }
   
   // Dismiss button - collapse to edge
@@ -25,20 +31,30 @@ document.addEventListener('DOMContentLoaded', function() {
     e.stopPropagation(); // Prevent modal from opening
     e.preventDefault();
     chatContainer.classList.add('collapsed');
-    chatIcon.classList.remove('d-none');
-    chatIcon.classList.add('d-block');
+    if (chatIcon) {
+      chatIcon.classList.remove('d-none');
+      chatIcon.classList.add('d-inline-block');
+    }
+    if (chatText) {
+      chatText.classList.add('d-none');
+    }
     localStorage.setItem('adaBubbleDismissed', 'true');
   });
 
   // When modal is closed, collapse the button
   chatModal.addEventListener('hidden.bs.modal', function() {
     chatContainer.classList.add('collapsed');
-    chatIcon.classList.remove('d-none');
-    chatIcon.classList.add('d-block');
+    if (chatIcon) {
+      chatIcon.classList.remove('d-none');
+      chatIcon.classList.add('d-inline-block');
+    }
+    if (chatText) {
+      chatText.classList.add('d-none');
+    }
     localStorage.setItem('adaBubbleDismissed', 'true');
   });
-  
 });
+
 // ===== MESSAGE HANDLING =====
 const sendMessage = async (message) => {
   // Validate input
@@ -65,13 +81,11 @@ const sendMessage = async (message) => {
       body: JSON.stringify(sendData)
     });
     
-    
     if (!response.ok) {
       throw new Error(
         `HTTP error! status: ${response.status}`
       );
     }
-    
     
     const resData = await response.json();
     console.log('Response:', resData);
@@ -125,7 +139,6 @@ const addMessage = (msg, direction, cluster) => {
   scrollDown();
 };
 
-
 const scrollDown = function() {
   const messageHolder = document.getElementById("messageHolder");
   messageHolder.scrollIntoView({
@@ -138,16 +151,16 @@ const scrollDown = function() {
 };
 
 const addThinking = () => {
+  console.log('adding thinking');
   const message = document.createElement("div");
   message.id = 'thinking';
-  
   const messageHolder = document.getElementById("messageHolder");
   
   message.innerHTML = `
-    <div class="d-flex">
-      <img class="pfp rounded-circle" src="/assets/images/ada.png" alt="Ada">
+    <div class="d-flex m-5">
+      <img class="pfp rounded-circle me-4" src="/assets/images/ada.png" alt="Ada">
       <div class="flex-grow-1">
-        <span class="thinking-dots">...</span>
+        <i class="fa-solid fa-asterisk fa-spin me-2 digital-red"></i> Ada is thinking...
       </div>
     </div>    
   `;
@@ -155,7 +168,6 @@ const addThinking = () => {
   messageHolder.appendChild(message);
   scrollDown();
 };
-
 
 const removeThinking = () => {
   console.log('removing thinking');
@@ -179,19 +191,12 @@ messageInput.addEventListener("keypress", function(event) {
   }
 });
 
-
 const myModalEl = document.getElementById('chatModal');
 myModalEl.addEventListener('shown.bs.modal', function (event) {
   document.getElementById("chat").focus();
   // Optional: Clear thinking indicator if modal reopens while waiting
   removeThinking();
 });
-
-// Optional: Clear chat when modal is hidden
-// myModalEl.addEventListener('hidden.bs.modal', function (event) {
-//   document.getElementById("messageHolder").innerHTML = "";
-//   addMessage(helloMessage, "start");
-// });
 
 sendBtn.addEventListener("click", function() {
   const message = messageInput.value;
