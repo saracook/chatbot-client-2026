@@ -82,7 +82,6 @@ const sendMessage = async (message) => {
     convertMarkdown(errorMessage, currentCluster);
   }
 };
-};
 
 const convertMarkdown = async (message, cluster) => {
   const mdMessage = marked.parse(message);
@@ -122,7 +121,7 @@ const addMessage = (msg, direction, cluster) => {
   messageHolder.appendChild(message);
   scrollDown();
 };
-};
+
 
 const scrollDown = function() {
   const messageHolder = document.getElementById("messageHolder");
@@ -153,7 +152,7 @@ const addThinking = () => {
   messageHolder.appendChild(message);
   scrollDown();
 };
-};
+
 
 const removeThinking = () => {
   console.log('removing thinking');
@@ -175,7 +174,7 @@ messageInput.addEventListener("keypress", function(event) {
     sendMessage(message);
     messageInput.value = "";
   }
-};
+});
 
 messageInput?.addEventListener("keypress", (event) => {
   if (event.key === "Enter") {
