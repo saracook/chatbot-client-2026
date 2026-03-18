@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Check if user previously dismissed the bubble
   if (localStorage.getItem('adaBubbleDismissed') === 'true') {
     chatContainer.classList.add('collapsed');
-    chatIcon.classList.remove('d-none').add('d-block');
+    chatIcon.classList.remove('d-none');
+    chatIcon.classList.add('d-block');
   }
   
   // Dismiss button - collapse to edge
@@ -24,14 +25,16 @@ document.addEventListener('DOMContentLoaded', function() {
     e.stopPropagation(); // Prevent modal from opening
     e.preventDefault();
     chatContainer.classList.add('collapsed');
-    chatIcon.classList.remove('d-none').add('d-block');
+    chatIcon.classList.remove('d-none');
+    chatIcon.classList.add('d-block');
     localStorage.setItem('adaBubbleDismissed', 'true');
   });
-  
+
   // When modal is closed, collapse the button
   chatModal.addEventListener('hidden.bs.modal', function() {
     chatContainer.classList.add('collapsed');
-    chatIcon.classList.remove('d-none').add('d-block');
+    chatIcon.classList.remove('d-none');
+    chatIcon.classList.add('d-block');
     localStorage.setItem('adaBubbleDismissed', 'true');
   });
   
@@ -144,8 +147,8 @@ const addThinking = () => {
     <div class="d-flex">
       <img class="pfp rounded-circle" src="/assets/images/ada.png" alt="Ada">
       <div class="flex-grow-1">
-        ${messageText}
-      </div>         
+        <span class="thinking-dots">...</span>
+      </div>
     </div>    
   `;
   
@@ -176,12 +179,6 @@ messageInput.addEventListener("keypress", function(event) {
   }
 });
 
-messageInput?.addEventListener("keypress", (event) => {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    handleSend();
-  }
-});
 
 const myModalEl = document.getElementById('chatModal');
 myModalEl.addEventListener('shown.bs.modal', function (event) {
