@@ -1,18 +1,55 @@
-// Clean version with improvements:
+const apiUrl = "https://ada-lovelace.stanford.edu:8080/chatbot/api/v1/query/";
+// const apiUrl = "http://localhost:7000/chatbot/api/v1/query"
+console.log('apiUrl', apiUrl);
 
-const apiUrl = "https://ada-lovelace.stanford.edu/chatbot/api/v1/query/";
-const baseurl = "";
-let currentCluster = "sherlock";
+var currentCluster = "sherlock";
+var existing = [];
 
+// ===== BUTTON COLLAPSE FUNCTIONALITY =====
+document.addEventListener('DOMContentLoaded', function() {
+  const chatContainer = document.getElementById('chatButtonContainer');
+  const chatButton = document.getElementById('chatModalButton');
+  const chatModal = document.getElementById('chatModal');
+  const dismissButton = document.getElementById('dismissButton');
+  const chatIcon = document.getElementById('chatIcon');
+  
+  // Check if user previously dismissed the bubble
+  if (localStorage.getItem('adaBubbleDismissed') === 'true') {
+    chatContainer.classList.add('collapsed');
+    chatIcon.classList.remove('d-none').add('d-block');
+  }
+  
+  // Dismiss button - collapse to edge
+  dismissButton.addEventListener('click', function(e) {
+    e.stopPropagation(); // Prevent modal from opening
+    e.preventDefault();
+    chatContainer.classList.add('collapsed');
+    chatIcon.classList.remove('d-none').add('d-block');
+    localStorage.setItem('adaBubbleDismissed', 'true');
+  });
+  
+  // When modal is closed, collapse the button
+  chatModal.addEventListener('hidden.bs.modal', function() {
+    chatContainer.classList.add('collapsed');
+    chatIcon.classList.remove('d-none').add('d-block');
+    localStorage.setItem('adaBubbleDismissed', 'true');
+  });
+  
+});
+// ===== MESSAGE HANDLING =====
 const sendMessage = async (message) => {
-  if (!message.trim()) return; // Don't send empty messages
+  // Validate input
+  if (!message || message.trim() === '') {
+    console.log('Empty message, not sending');
+    return;
+  }
   
   addMessage(message, "end");
   addThinking();
   
-  const sendData = {
-    query: message,
-    cluster: currentCluster
+  let sendData = {
+    "query": message,
+    "cluster": currentCluster
   };
   
   try {
@@ -25,9 +62,13 @@ const sendMessage = async (message) => {
       body: JSON.stringify(sendData)
     });
     
+    
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(
+        `HTTP error! status: ${response.status}`
+      );
     }
+    
     
     const resData = await response.json();
     console.log('Response:', resData);
@@ -37,9 +78,10 @@ const sendMessage = async (message) => {
     
   } catch (error) {
     console.error('Error occurred:', error);
-    const errorMessage = `Sorry, something went wrong: ${error.message}. Please try again.`;
-    await convertMarkdown(errorMessage, currentCluster);
+    var errorMessage = "Something went wrong. Please try again or contact support if the issue persists.";
+    convertMarkdown(errorMessage, currentCluster);
   }
+};
 };
 
 const convertMarkdown = async (message, cluster) => {
@@ -47,47 +89,50 @@ const convertMarkdown = async (message, cluster) => {
   addMessage(mdMessage, "start", cluster);
 };
 
-const addMessage = (msg, direction, cluster = null) => {
+const addMessage = (msg, direction, cluster) => {
   removeThinking();
   
   const messageHolder = document.getElementById("messageHolder");
   const message = document.createElement("div");
+  const bgColorClass = direction !== "start" ? "bg-digital-red" : "bg-gray-100";
+  const pfp = '<img class="pfp rounded-circle me-4" src="/assets/images/ada.png" alt="Ada" />';
+  const icon = direction !== "start" ? "" : pfp;
+  const colClass = direction !== "start" ? "flex-col" : "";
+  const cornerClass = direction !== "start" ? "" : "rounded-5";
+  const colorClass = direction !== "start" ? "text-white" : "text-dark";
+  const clusterClass = cluster;
+  var clusterString = "";
   
-  const isUser = direction !== "start";
-  const bgColorClass = isUser ? "bg-digital-red" : "bg-gray-100";
-  const colorClass = isUser ? "text-white" : "text-dark";
-  const cornerClass = isUser ? "" : "rounded-5";
-  const colClass = isUser ? "flex-col" : "";
-  const flexClass = `items-${direction}`;
+  if (cluster) {
+    clusterString = `<div class="cluster-label ${clusterClass}"> ${cluster}</div>`;
+  }
   
-  const pfp = `<img class="pfp rounded-circle me-4" src="${baseurl}/assets/images/ada.png" alt="Ada" />`;
-  const icon = isUser ? "" : pfp;
-  
-  const clusterLabel = cluster 
-    ? `<div class="cluster-label ${cluster}">${cluster}</div>` 
-    : "";
+  const flexClass = "items-" + direction;
+  console.log('colorClass', colorClass);
   
   message.innerHTML = `
     <div class="d-flex m-5 ${colClass} ${flexClass}">
       ${icon}
       <div class="${bgColorClass} ${colorClass} ${cornerClass} flex-grow-1 p-4 rounded-5 border border-dark-subtle">
         ${msg}
-        ${clusterLabel}
       </div>         
-    </div>`;
+    </div>
+  `;
   
   messageHolder.appendChild(message);
   scrollDown();
 };
+};
 
-const scrollDown = () => {
+const scrollDown = function() {
   const messageHolder = document.getElementById("messageHolder");
   messageHolder.scrollIntoView({
     block: 'end',
     behavior: 'smooth',
     inline: 'nearest'
   });
-  document.getElementById("chat")?.focus();
+  console.log('scrolling message');
+  document.getElementById("chat").focus();
 };
 
 const addThinking = () => {
@@ -95,30 +140,38 @@ const addThinking = () => {
   message.id = 'thinking';
   
   const messageHolder = document.getElementById("messageHolder");
+  
   message.innerHTML = `
     <div class="d-flex">
-      <img class="pfp rounded-circle" src="${baseurl}/assets/images/ada.png" alt="Ada">
+      <img class="pfp rounded-circle" src="/assets/images/ada.png" alt="Ada">
       <div class="flex-grow-1">
-        <i class="fa-solid fa-asterisk fa-spin me-2 ms-5 digital-red"></i> Ada is thinking...
+        ${messageText}
       </div>         
-    </div>`;
+    </div>    
+  `;
   
   messageHolder.appendChild(message);
   scrollDown();
 };
+};
 
 const removeThinking = () => {
-  document.getElementById("thinking")?.remove();
+  console.log('removing thinking');
+  const thinking = document.getElementById("thinking");
+  if (thinking) {
+    thinking.remove();
+  }
   scrollDown();
 };
 
-// Event Listeners
+// ===== EVENT LISTENERS =====
 const messageInput = document.getElementById("chat");
 const sendBtn = document.getElementById("btn");
 
-const handleSend = () => {
-  const message = messageInput.value;
-  if (message.trim()) {
+messageInput.addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault(); // Prevent form submission if inside a form
+    const message = messageInput.value;
     sendMessage(message);
     messageInput.value = "";
   }
@@ -131,13 +184,26 @@ messageInput?.addEventListener("keypress", (event) => {
   }
 });
 
-sendBtn?.addEventListener("click", handleSend);
-
 const myModalEl = document.getElementById('chatModal');
-myModalEl?.addEventListener('shown.bs.modal', () => {
-  document.getElementById("chat")?.focus();
+myModalEl.addEventListener('shown.bs.modal', function (event) {
+  document.getElementById("chat").focus();
+  // Optional: Clear thinking indicator if modal reopens while waiting
+  removeThinking();
 });
 
-// Initial greeting
+// Optional: Clear chat when modal is hidden
+// myModalEl.addEventListener('hidden.bs.modal', function (event) {
+//   document.getElementById("messageHolder").innerHTML = "";
+//   addMessage(helloMessage, "start");
+// });
+
+sendBtn.addEventListener("click", function() {
+  const message = messageInput.value;
+  console.log('message input send', message);
+  sendMessage(message);
+  messageInput.value = "";
+});
+
+// ===== INITIALIZATION =====
 const helloMessage = "Hi! I'm Ada. I can help you learn how to use Stanford's HPC resources.";
 addMessage(helloMessage, "start");

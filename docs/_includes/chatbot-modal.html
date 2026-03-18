@@ -1,9 +1,13 @@
 {% assign baseurl = site.baseurl | default: "" %}
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatModal" id="chatModalButton">
-  Ask Ada
-</button>
+<div id="chatButtonContainer">
+  <button type="button" class="speech-bubble" data-bs-toggle="modal" data-bs-target="#chatModal" id="chatModalButton">
+    Ask Ada <i class="fa-solid fa-message d-none mt-1" id="chatIcon"></i>
+    <button type="button" class="btn-close-bubble" id="dismissButton" aria-label="Dismiss">×</button>
+  </button>
+</div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">

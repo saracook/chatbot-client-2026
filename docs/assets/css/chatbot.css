@@ -1,66 +1,180 @@
-button#chatModalButton {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
+/* Container for both states */
+#chatButtonContainer {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  z-index: 1000;
+  transition: all 0.3s ease;
 }
 
+/* Collapsed state - vertical tab on edge */
+#chatButtonContainer.collapsed {
+  bottom: 50%;
+  right: 0;
+  transform: translateY(50%) translateX(calc(100% - 45px));
+}
+
+/* Hover expansion */
+#chatButtonContainer.collapsed.hover-expanded {
+  transform: translateY(50%) translateX(0) !important;
+}
+
+#chatButtonContainer.collapsed .speech-bubble {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  padding: 20px 12px;
+  border-radius: 5px 0 0 5px;
+  min-height: 120px;
+}
+
+#chatButtonContainer.collapsed .speech-bubble:after {
+  display: none; /* Hide speech bubble tail when collapsed */
+}
+
+/* Button styles - REMOVE fixed positioning */
+button#chatModalButton {
+  position: relative;
+  z-index: auto;
+}
+
+.speech-bubble {
+  position: relative;
+  background: #B1040E;
+  border-radius: .4em;
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.speech-bubble:hover,
+.speech-bubble:active,
+.speech-bubble:focus {
+  background: #B1040E;
+}
+
+.speech-bubble:hover:after {
+  background-color: transparent;
+}
+
+.speech-bubble:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 20px solid transparent;
+  border-top-color: #B1040E;
+  border-bottom: 0;
+  border-left: 0;
+  margin-left: -10px;
+  margin-bottom: -20px;
+  background-color: transparent;
+}
+
+/* Close button for speech bubble */
+.btn-close-bubble {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: white;
+  border: 2px solid #B1040E;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 18px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  color: #B1040E;
+  font-weight: bold;
+  z-index: 1001;
+}
+
+.btn-close-bubble:hover {
+  background: #B1040E;
+  color: white;
+}
+
+/* Hide dismiss button when collapsed */
+#chatButtonContainer.collapsed .btn-close-bubble {
+  display: none;
+}
+
+/* Modal styles */
 #chatModal {
+  z-index: 20000;
+}
 
-    z-index: 20000;
+#chatModal button.btn-close {
+  background-color: white;
+  color: black;
+}
 
-    button.btn-close {
-        background-color: white;
-        color: black
-    }
+#chatModal .pfp {
+  width: 40px;
+  height: 40px;
+}
 
-    .pfp {
-        width: 40px;
-        height: 40px;
-    }
+#chatModal .bg-digital-red {
+  background-color: #B1040E;
+}
 
-    .bg-digital-red {
-        background-color: #B1040E;
-    }
+#chatModal .digital-red {
+  color: #B1040E;
+}
 
-    .digital-red{
-        color:#B1040E
-    }
-    code {
-        white-space: normal;
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-        word-break: break-all;
-    }
+#chatModal code {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+}
 
-    .loader {
-        width: 15px;
-        aspect-ratio: 1;
-        border-radius: 50%;
-        animation: l5 2s infinite linear alternate;
-        margin-left: 23px;
-    }
+#chatModal .loader {
+  width: 15px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  animation: l5 2s infinite linear alternate;
+  margin-left: 23px;
+}
 
-    @keyframes l5 {
-        0% {
-            box-shadow: 20px 0 #000, -20px 0 #0002;
-            background: #000
-        }
+@keyframes l5 {
+  0% {
+    box-shadow: 20px 0 #000, -20px 0 #0002;
+    background: #000;
+  }
+  33% {
+    box-shadow: 20px 0 #000, -20px 0 #0002;
+    background: #0002;
+  }
+  66% {
+    box-shadow: 20px 0 #0002, -20px 0 #000;
+    background: #0002;
+  }
+  100% {
+    box-shadow: 20px 0 #0002, -20px 0 #000;
+    background: #000;
+  }
+}
 
-        33% {
-            box-shadow: 20px 0 #000, -20px 0 #0002;
-            background: #0002
-        }
+/* Normal state - speech bubble visible */
+#chatButtonContainer {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
 
-        66% {
-            box-shadow: 20px 0 #0002, -20px 0 #000;
-            background: #0002
-        }
 
-        100% {
-            box-shadow: 20px 0 #0002, -20px 0 #000;
-            background: #000
-        }
-    }
+#chatButtonContainer.collapsed {
+  bottom: 50%;
+  right: -5px;
+  transform: translateY(50%);
 
+/* Show the speech bubble tail again when expanded */
+#chatButtonContainer.collapsed.hover-expanded .speech-bubble:after {
+  display: block !important;
 }
