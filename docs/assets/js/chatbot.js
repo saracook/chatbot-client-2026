@@ -1,4 +1,4 @@
-const apiUrl = "https://ada-lovelace.stanford.edu:8000/query/";
+const apiUrl = "http://ada-lovelace.stanford.edu:8000/query/";
 // const apiUrl = "http://localhost:7000/chatbot/api/v1/query"
 console.log('apiUrl', apiUrl);
 
