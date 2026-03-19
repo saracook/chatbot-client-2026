@@ -2,7 +2,11 @@ const apiUrl = "https://ada-lovelace.stanford.edu/chatbot/api/v1/query/";
 // const apiUrl = "http://localhost:7000/chatbot/api/v1/query"
 console.log('apiUrl', apiUrl);
 
-var currentCluster = "sherlock";
+var currentCluster = document.getElementById('clusterSelect')?.value || "sherlock";
+
+document.getElementById('clusterSelect')?.addEventListener('change', function() {
+  currentCluster = this.value;
+});
 var existing = [];
 
 // ===== BUTTON COLLAPSE FUNCTIONALITY =====
@@ -91,7 +95,6 @@ const sendMessage = async (message) => {
     console.log('Response:', resData);
     
     await convertMarkdown(resData.answer, resData.cluster);
-    currentCluster = resData.cluster;
     
   } catch (error) {
     console.error('Error occurred:', error);

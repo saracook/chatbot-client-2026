@@ -20,14 +20,25 @@
       <div class="modal-body">
          <div id="messageHolder" class=""></div>
       </div>
-      <div class="modal-footer">
-    <label for="chat" class="sr-only">Ask a question</label>
-        <input type="text" class="flex-1 border m-2 
-               p-2 outline-none ring-2 ring-fog-dark
-               border-transparent text-lg" placeholder="Ask A Question" name="chat" id="chat" />
-        <button id="btn" class="button bg-digital-red ">
-          Send
-        </button>
+      <div class="modal-footer flex-column align-items-stretch gap-2">
+          <label for="clusterSelect" class="form-label mb-0 text-nowrap fw-semibold small d-block">SRC System: (this is just for internal testing)</label>
+          <select class="p-1 ps-3 fs-4" id="clusterSelect" aria-label="Choose system">
+            <option value="sherlock" selected>Sherlock</option>
+            <option value="elm">Elm</option>
+            <option value="oak">Oak</option>
+            <option value="farmshare">Farmshare</option>
+  </select>
+
+
+        <div class="d-flex align-items-center gap-2">
+
+        <div class="d-flex w-100 gap-2">
+          <label for="chat" class="sr-only">Ask a question</label>
+          <input type="text" class="form-control" placeholder="Ask A Question" name="chat" id="chat" />
+          <button id="btn" class="button bg-digital-red text-nowrap">
+            Send
+          </button>
+        </div>
       </div>
     </div>
   </div>
