@@ -179,3 +179,13 @@ button#chatModalButton {
 #chatButtonContainer.collapsed.hover-expanded .speech-bubble:after {
   display: block !important;
 }
+
+a.inline-cit{
+  text-decoration:none;
+  font-weight:500;
+  font-style:normal;
+}
+a.inline-cit:hover {
+    background-color: #C0C1C2 !important;
+    color: #333;
+}

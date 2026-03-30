@@ -10,13 +10,12 @@ document.getElementById('clusterSelect')?.addEventListener('change', function() 
 // ===== BUTTON COLLAPSE FUNCTIONALITY =====
 document.addEventListener('DOMContentLoaded', function() {
   const chatContainer = document.getElementById('chatButtonContainer');
-  const chatButton = document.getElementById('chatModalButton');
   const chatModal = document.getElementById('chatModal');
   const dismissButton = document.getElementById('dismissButton');
   const chatIcon = document.getElementById('chatIcon');
   const chatText = document.getElementById('chatText');
 
-  if (localStorage.getItem('adaBubbleDismissed') === 'true') {
+  if (sessionStorage.getItem('adaBubbleDismissed') === 'true') {
     chatContainer.classList.add('collapsed');
     chatIcon?.classList.replace('d-none', 'd-inline-block');
     chatText?.classList.add('d-none');
@@ -26,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     chatContainer.classList.add('collapsed');
     chatIcon?.classList.replace('d-none', 'd-inline-block');
     chatText?.classList.add('d-none');
-    localStorage.setItem('adaBubbleDismissed', 'true');
+    sessionStorage.setItem('adaBubbleDismissed', 'true');
   };
 
   dismissButton.addEventListener('click', (e) => { e.stopPropagation(); e.preventDefault(); collapseButton(); });
@@ -59,7 +58,14 @@ function parseApiResponse(response) {
     .replace(/\*\*Sources:\*\*[\s\S]*$/m, "")
     .trimEnd();
 
-  const html = marked.parse(answerWithoutSources);
+  const html = marked.parse(answerWithoutSources, {
+    renderer: (() => {
+      const r = new marked.Renderer();
+      r.link = ({ href, title, text }) =>
+        `<a href="${href}"${title ? ` title="${title}"` : ""} target="_blank" rel="noopener noreferrer" class="badge rounded-pill text-bg-light border p-3 pt-1 pb-1 ms-1 inline-cit">${text}</a>`;
+      return r;
+    })()
+  });
 
   const validSources = sources.filter(
     s => s && typeof s.title === "string" && typeof s.url === "string"
@@ -129,17 +135,24 @@ const addMessage = (msg, direction, cluster, isFallback = false, isOutOfScope = 
   const colorClass = direction !== "start" ? "text-white" : "text-dark";
   const flexClass = "items-" + direction;
 
-  const fallbackIcon = isFallback
-    ? `<i class="fa-solid fa-envelope me-2 text-warning"></i>`
+  const iconMarkup = isFallback
+    ? `<i class="fa-solid fa-envelope fa-3x text-warning flex-shrink-0"></i>`
     : isOutOfScope
-    ? `<i class="fa-solid fa-circle-question me-2 text-warning"></i>`
-    : "";
+    ? `<i class="fa-regular fa-circle-question fa-3x text-secondary flex-shrink-0"></i>`
+    : null;
+
+  const innerContent = iconMarkup
+    ? `<div class="d-flex align-items-start gap-3">
+        ${iconMarkup}
+        <div>${msg}</div>
+       </div>`
+    : msg;
 
   message.innerHTML = `
     <div class="d-flex m-5 ${colClass} ${flexClass}">
       ${icon}
-      <div class="${bgColorClass} ${colorClass} ${cornerClass} flex-grow-1 p-4 rounded-5 border ${isFallback || isOutOfScope ? "border-warning" : "border-dark-subtle"}">
-        ${fallbackIcon}${msg}
+      <div class="${bgColorClass} ${colorClass} ${cornerClass} flex-grow-1 p-4 rounded-5 border border-dark-subtle">
+        ${innerContent}
       </div>
     </div>
   `;
