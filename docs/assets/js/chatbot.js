@@ -10,6 +10,15 @@ var currentCluster = document.getElementById('clusterSelect')?.value || "sherloc
 
 document.getElementById('clusterSelect')?.addEventListener('change', function() {
   currentCluster = this.value;
+  const messageHolder = document.getElementById('messageHolder');
+  if (messageHolder?.firstElementChild) {
+    const history = loadHistory();
+    if (history.length > 0 && history[0].direction === 'start' && !history[0].cluster) {
+      history[0].msg = getGreeting();
+      sessionStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(history));
+    }
+    messageHolder.firstElementChild.querySelector('.bg-gray-100').innerHTML = getGreeting();
+  }
 });
 
 // ===== SESSION STORAGE =====
