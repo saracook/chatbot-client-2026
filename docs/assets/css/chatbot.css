@@ -189,3 +189,20 @@ a.inline-cit:hover {
     background-color: #C0C1C2 !important;
     color: #333;
 }
+#messageHolder h2,
+#messageHolder h3{
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: .5em;
+    font-size:1.1em;
+}
+#messageHolder h4{
+    font-weight: 500;
+    margin-top: .75em;
+    margin-bottom: .5em;
+    font-size:1em;
+}
+
+#messageHolder strong{
+  font-weight:600;
+}

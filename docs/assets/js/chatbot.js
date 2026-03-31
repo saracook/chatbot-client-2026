@@ -1,3 +1,8 @@
+const getGreeting = () => {
+  const select = document.getElementById('clusterSelect');
+  const clusterName = select?.options[select.selectedIndex]?.text || "Stanford's HPC resources";
+  return `Hi! I'm Ada. I can help you learn how to use ${clusterName}.`;
+};
 const apiUrl = "https://ada-lovelace.stanford.edu/chatbot/api/v1/query/";
 console.log('apiUrl', apiUrl);
 
@@ -6,6 +11,36 @@ var currentCluster = document.getElementById('clusterSelect')?.value || "sherloc
 document.getElementById('clusterSelect')?.addEventListener('change', function() {
   currentCluster = this.value;
 });
+
+// ===== SESSION STORAGE =====
+const CHAT_HISTORY_KEY = 'adaChatHistory';
+
+const loadHistory = () => {
+  try {
+    return JSON.parse(sessionStorage.getItem(CHAT_HISTORY_KEY) || '[]');
+  } catch { return []; }
+};
+
+const saveToHistory = (msg, direction, cluster, isFallback, isOutOfScope) => {
+  const history = loadHistory();
+  history.push({ msg, direction, cluster, isFallback, isOutOfScope });
+  sessionStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(history));
+  updateClearButton();
+};
+
+const clearHistory = () => {
+  sessionStorage.removeItem(CHAT_HISTORY_KEY);
+  const messageHolder = document.getElementById('messageHolder');
+  messageHolder.innerHTML = '';
+  updateClearButton();
+  addMessage(getGreeting(), 'start', null, false, false, false);
+};
+
+const updateClearButton = () => {
+  const btn = document.getElementById('clearChatButton');
+  if (!btn) return;
+  btn.style.display = loadHistory().length > 0 ? 'block' : 'none';
+};
 
 // ===== BUTTON COLLAPSE FUNCTIONALITY =====
 document.addEventListener('DOMContentLoaded', function() {
@@ -30,6 +65,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   dismissButton.addEventListener('click', (e) => { e.stopPropagation(); e.preventDefault(); collapseButton(); });
   chatModal.addEventListener('hidden.bs.modal', collapseButton);
+
+  const clearBtn = document.getElementById('clearChatButton');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', clearHistory);
+    updateClearButton();
+  }
 });
 
 // ===== RESPONSE PARSING =====
@@ -122,7 +163,9 @@ const sendMessage = async (message) => {
   }
 };
 
-const addMessage = (msg, direction, cluster, isFallback = false, isOutOfScope = false) => {
+const addMessage = (msg, direction, cluster, isFallback = false, isOutOfScope = false, save = true) => {
+  if (save) saveToHistory(msg, direction, cluster, isFallback, isOutOfScope);
+
   removeThinking();
 
   const messageHolder = document.getElementById("messageHolder");
@@ -211,4 +254,11 @@ document.getElementById('chatModal').addEventListener('shown.bs.modal', function
 });
 
 // ===== INITIALIZATION =====
-addMessage("Hi! I'm Ada. I can help you learn how to use Stanford's HPC resources.", "start");
+const history = loadHistory();
+if (history.length > 0) {
+  history.forEach(({ msg, direction, cluster, isFallback, isOutOfScope }) => {
+    addMessage(msg, direction, cluster, isFallback, isOutOfScope, false);
+  });
+  updateClearButton();
+} else {
+  addMessage(getGreeting(), 'start', null, false, false, false);}
