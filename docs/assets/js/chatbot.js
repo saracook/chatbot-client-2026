@@ -23,6 +23,7 @@ document.getElementById('clusterSelect')?.addEventListener('change', function() 
 
 // ===== SESSION STORAGE =====
 const CHAT_HISTORY_KEY = 'adaChatHistory';
+const CHAT_OPEN_KEY = 'adaChatOpen';
 
 const loadHistory = () => {
   try {
@@ -72,8 +73,20 @@ document.addEventListener('DOMContentLoaded', function() {
     sessionStorage.setItem('adaBubbleDismissed', 'true');
   };
 
-  dismissButton.addEventListener('click', (e) => { e.stopPropagation(); e.preventDefault(); collapseButton(); });
-  chatModal.addEventListener('hidden.bs.modal', collapseButton);
+  // Restore open modal state if user navigated from within the chat
+  if (sessionStorage.getItem(CHAT_OPEN_KEY) === 'true') {
+    const modal = bootstrap.Modal.getOrCreateInstance(chatModal);
+    modal.show();
+  }
+
+  chatModal.addEventListener('shown.bs.modal', () => {
+    sessionStorage.setItem(CHAT_OPEN_KEY, 'true');
+  });
+
+  chatModal.addEventListener('hidden.bs.modal', () => {
+    sessionStorage.removeItem(CHAT_OPEN_KEY);
+    collapseButton();
+  });
 
   const clearBtn = document.getElementById('clearChatButton');
   if (clearBtn) {
@@ -261,7 +274,6 @@ document.getElementById('chatModal').addEventListener('shown.bs.modal', function
   document.getElementById("chat").focus();
   removeThinking();
 });
-
 // ===== INITIALIZATION =====
 const history = loadHistory();
 if (history.length > 0) {
